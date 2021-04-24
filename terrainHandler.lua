@@ -15,27 +15,6 @@ function self.Update(dt)
 
 end
 
-function self.CheckPiecePlaceTrigger(pX, pY, pRot, pDef)
-	local tiles = pDef.tiles
-	local fullyCovered = true
-	for i = 1, #tiles do
-		local tile = util.RotateVectorOrthagonal(tiles[i], pRot * math.pi/2)
-		local x, y = pX + tile[1], pY + tile[2]
-		local blockData = blockMap[x] and blockMap[x][y]
-		if blockData then
-			-- Placement is triggered if there are no empty squares
-			if blockData.toughness == 0 then
-				fullyCovered = false
-			end
-			-- Placement is triggered if the block hits something that is too tough.
-			if blockData.toughness > pDef.carveStrength then
-				return true
-			end
-		end
-	end
-	return fullyCovered
-end
-
 function self.CarveTerrain(pX, pY, pRot, pDef)
 	local tiles = pDef.tiles
 	for i = 1, #tiles do
@@ -59,33 +38,6 @@ function self.CarveTerrain(pX, pY, pRot, pDef)
 	end
 end
 
-function self.CarveLeavingTiles(pX, pY, pRot, oldX, oldY, oldRot, pDef, tiles)
-	local newTiles = {}
-	for i = 1, #tiles do
-		local tile = util.RotateVectorOrthagonal(tiles[i], pRot * math.pi/2)
-		local x, y = pX + tile[1], pY + tile[2]
-		local blockData = blockMap[x] and blockMap[x][y]
-		if blockData and blockData.toughness ~= 0 then
-			tiles[i].covered = true
-			newTiles[#newTiles + 1] = tiles[i]
-		elseif tiles[i].covered then
-			tile = util.RotateVectorOrthagonal(tiles[i], oldRot * math.pi/2)
-			x, y = oldX + tile[1], oldY + tile[2]
-			local blockData = blockMap[x] and blockMap[x][y]
-			if blockData and (blockData.value or 0) > 0 then
-				EffectsHandler.Spawn("piece_fade", {x * Global.BLOCK_SIZE, y * Global.BLOCK_SIZE})
-				blockData.image = "empty"
-				blockData.toughness = 0
-			else
-				newTiles[#newTiles + 1] = tiles[i]
-			end
-		else
-			newTiles[#newTiles + 1] = tiles[i]
-		end
-	end
-	return newTiles
-end
-
 function self.GetValidPiecePlace(pDef, pX, pY, pRot)
 	local tiles = pDef.tiles
 	local border = pDef.border
@@ -93,7 +45,7 @@ function self.GetValidPiecePlace(pDef, pX, pY, pRot)
 		local tile = util.RotateVectorOrthagonal(tiles[i], pRot * math.pi/2)
 		local tx, ty = pX + tile[1], pY + tile[2]
 		local blockData = blockMap[tx] and blockMap[tx][ty]
-		if (not blockData) or blockData.toughness == 0 then
+		if (not blockData) or blockData.toughness == 0 or blockData.toughness > pDef.carveStrength then
 			return false
 		end
 	end
