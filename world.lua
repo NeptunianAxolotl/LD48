@@ -15,6 +15,10 @@ end
 function self.MouseReleased()
 end
 
+function self.KeyPressed(key, scancode, isRepeat)
+	PieceHandler.KeyPressed(key, scancode, isRepeat)
+end
+
 function self.Update(dt)
 	--local playerPos, playerVelocity, playerSpeed = Player.GetPhysics()
 	--local cameraX, cameraY, cameraScale = Camera.UpdateCamera(dt, playerPos, playerVelocity, playerSpeed, Player.IsDead() and 0.96 or 0.85)

@@ -172,7 +172,15 @@ function util.PolarToCart(mag, dir)
 end
 
 function util.RotateVector(v, angle)
-	return {v[1]*math.cos(angle) - v[2]*math.sin(angle), v[1]*math.sin(angle) + v[2]*math.cos(angle)}
+	local cosAngle = math.cos(angle)
+	local sinAngle = math.sin(angle)
+	return {v[1]*cosAngle - v[2]*sinAngle, v[1]*sinAngle + v[2]*cosAngle}
+end
+
+function util.RotateVectorOrthagonal(v, angle)
+	local cosAngle = math.floor(math.cos(angle) + 0.5)
+	local sinAngle = math.floor(math.sin(angle) + 0.5)
+	return {v[1]*cosAngle - v[2]*sinAngle, v[1]*sinAngle + v[2]*cosAngle}
 end
 
 function util.ReflectVector(v, angle)

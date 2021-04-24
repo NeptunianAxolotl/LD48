@@ -22,6 +22,7 @@ function love.mousereleased(x, y, button, istouch, presses)
 end
 
 function love.keypressed(key, scancode, isRepeat)
+	World.KeyPressed(key, scancode, isRepeat)
 end
 
 function love.mousepressed(x, y, button, istouch, presses)
@@ -46,6 +47,7 @@ function love.load(arg)
 	local major, minor, revision, codename = love.getVersion()
 	print(string.format("Version %d.%d.%d - %s", major, minor, revision, codename))
 
+	love.keyboard.setKeyRepeat(true)
 	math.randomseed(os.clock())
 	Resources.LoadResources()
 	World.Initialize()
