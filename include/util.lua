@@ -412,7 +412,7 @@ function util.PrintTable(data, name, indent, tableChecked)
 		return
 	end
 	print(indent .. name .. " = {")
-	local newIndent = indent .. "    "
+	local newIndent = indent .. "	"
 	for nameRaw, v in pairs(data) do
 		local name = tostring(nameRaw)
 		local ty = type(v)

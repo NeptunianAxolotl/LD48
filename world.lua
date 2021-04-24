@@ -65,7 +65,7 @@ function self.Initialize()
 	self.emptyTransform = love.math.newTransform()
 	
 	EffectsHandler.Initialize()
-    MusicHandler.Initialize()
+	MusicHandler.Initialize()
 	SoundHandler.Initialize()
 end
 
