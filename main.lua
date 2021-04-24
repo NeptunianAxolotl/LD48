@@ -1,7 +1,7 @@
 
 local Font = require("include/font")
-local Resources = require("resourceHandler")
 local World = require("world")
+local Resources = require("resourceHandler")
 
 --------------------------------------------------
 -- Draw

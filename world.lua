@@ -1,7 +1,6 @@
 local EffectsHandler = require("effectsHandler")
 local SoundHandler = require("soundHandler")
 local MusicHandler = require("musicHandler")
-local ModuleTest = require("moduleTest")
 
 local PriorityQueue = require("include/PriorityQueue")
 
@@ -19,8 +18,6 @@ function self.Update(dt)
 	local windowX, windowY = love.window.getMode()
 	local cameraX, cameraY, cameraScale = 0, 0, 1
 	--self.cameraTransform:setTransformation(windowX/2, 160 + (1 - cameraScale)*60, 0, cameraScale*windowY/1080, cameraScale*windowY/1080, cameraX, cameraY)
-	
-	ModuleTest.Update(dt)
 
 	EffectsHandler.Update(dt)
 	MusicHandler.Update(dt)
@@ -37,8 +34,6 @@ function self.Draw()
 
 	EffectsHandler.Draw(drawQueue)
 	-- Draw world
-
-	ModuleTest.Draw(dt)
 	
 	while true do
 		local d = drawQueue:pop()
