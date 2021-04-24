@@ -15,7 +15,8 @@ function self.Update(dt)
 
 end
 
-function self.CheckPiecePlaceTrigger(pX, pY, pRot, pDef, tiles)
+function self.CheckPiecePlaceTrigger(pX, pY, pRot, pDef)
+	local tiles = pDef.tiles
 	local fullyCovered = true
 	for i = 1, #tiles do
 		local tile = util.RotateVectorOrthagonal(tiles[i], pRot * math.pi/2)
@@ -35,7 +36,8 @@ function self.CheckPiecePlaceTrigger(pX, pY, pRot, pDef, tiles)
 	return fullyCovered
 end
 
-function self.CarveTerrain(pX, pY, pRot, pDef, tiles)
+function self.CarveTerrain(pX, pY, pRot, pDef)
+	local tiles = pDef.tiles
 	for i = 1, #tiles do
 		local tile = util.RotateVectorOrthagonal(tiles[i], pRot * math.pi/2)
 		local x, y = pX + tile[1], pY + tile[2]
@@ -82,6 +84,45 @@ function self.CarveLeavingTiles(pX, pY, pRot, oldX, oldY, oldRot, pDef, tiles)
 		end
 	end
 	return newTiles
+end
+
+function self.GetValidPiecePlace(pDef, pX, pY, pRot)
+	local tiles = pDef.tiles
+	local border = pDef.border
+	for i = 1, #tiles do
+		local tile = util.RotateVectorOrthagonal(tiles[i], pRot * math.pi/2)
+		local tx, ty = pX + tile[1], pY + tile[2]
+		local blockData = blockMap[tx] and blockMap[tx][ty]
+		if (not blockData) or blockData.toughness == 0 then
+			return false
+		end
+	end
+	for i = 1, #border do
+		local pos = util.RotateVectorOrthagonal(border[i], pRot * math.pi/2)
+		local tx, ty = pX + pos[1], pY + pos[2]
+		local blockData = blockMap[tx] and blockMap[tx][ty]
+		if (not blockData) or blockData.toughness == 0 then
+			return true
+		end
+	end
+	return false
+end
+
+function self.GetClosestPlacement(mX, mY, rotation, pDef)
+	local bestDistSq = false
+	local bestX = 0
+	local bestY = 0
+	for x = 1, MAP_WIDTH do
+		for y = currentMinY, currentMaxY do
+			local distSq = util.DistSq((x + pDef.offsetX)*Global.BLOCK_SIZE, (y + pDef.offsetY)*Global.BLOCK_SIZE, mX, mY)
+			if ((not bestDistSq) or distSq < bestDistSq) and self.GetValidPiecePlace(pDef, x, y, rotation) then
+				bestDistSq = distSq
+				bestX = x
+				bestY = y
+			end
+		end
+	end
+	return bestX, bestY
 end
 
 function self.Initialize()

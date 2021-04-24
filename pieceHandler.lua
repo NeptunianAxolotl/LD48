@@ -18,33 +18,19 @@ local pieceList = {
 	"r_5",
 }
 
-local dropSpeed = 0.9
 local currentPiece = false
 local currentPieceTimer = 0
 
-function MovePiece(xChange, yChange, rotChange, blockInsteadOfPlace)
-	local newX = currentPiece.x + xChange
-	local newY = currentPiece.y + yChange
-	local newRot = currentPiece.rotation + rotChange
-	
-	local piecePlacement = TerrainHandler.CheckPiecePlaceTrigger(newX, newY, newRot, currentPiece.def, currentPiece.tiles)
-	if piecePlacement then
-		if blockInsteadOfPlace then
-			return
-		end
-		
-		TerrainHandler.CarveTerrain(newX, newY, newRot, currentPiece.def, currentPiece.tiles)
-		currentPiece = false
-		return
-	end
-	
-	currentPiece.tiles = TerrainHandler.CarveLeavingTiles(newX, newY, newRot,
-		currentPiece.x, currentPiece.y, currentPiece.rotation,
-		currentPiece.def, currentPiece.tiles)
-	
-	currentPiece.x = newX
-	currentPiece.y = newY
-	currentPiece.rotation = newRot
+local function UpdatePiecePos()
+	local mX, mY = love.mouse.getX(), love.mouse.getY()
+	local px, py = TerrainHandler.GetClosestPlacement(mX, mY, currentPiece.rotation, currentPiece.def)
+	currentPiece.x = px
+	currentPiece.y = py
+end
+
+local function RotatePiece(rotChange)
+	currentPiece.rotation = currentPiece.rotation + rotChange
+	UpdatePiecePos()
 end
 
 function self.Update(dt)
@@ -56,30 +42,31 @@ function self.Update(dt)
 			x = 15,
 			y = 1,
 			rotation = 0,
-			dropTime = dropSpeed,
 		}
 	end
 	
-	currentPiece.dropTime = currentPiece.dropTime - dt
-	if currentPiece.dropTime < 0 then
-		currentPiece.dropTime = dropSpeed
-		MovePiece(0, 1, 0)
+	UpdatePiecePos()
+end
+
+function self.MousePressed(x, y, button, istouch, presses)
+	if button == 1 then
+		if currentPiece then
+			TerrainHandler.CarveTerrain(currentPiece.x, currentPiece.y, currentPiece.rotation, currentPiece.def)
+			currentPiece = false
+		end
+	else
+		if currentPiece then
+			RotatePiece(-1)
+		end
 	end
 end
 
 function self.KeyPressed(key, scancode, isRepeat)
 	if currentPiece then
-		if key == "left" then
-			MovePiece(-1, 0, 0)
-		elseif key == "right" then
-			MovePiece(1, 0, 0)
-		elseif key == "down" then
-		currentPiece.dropTime = dropSpeed
-			MovePiece(0, 1, 0)
-		elseif key == "z" then
-			MovePiece(0, 0, -1)
+		if key == "z" then
+			RotatePiece(-1)
 		elseif key == "x" then
-			MovePiece(0, 0, 1)
+			RotatePiece(1)
 		end
 	end
 end

@@ -9,7 +9,8 @@ local TerrainHandler = require("terrainHandler")
 
 local self = {}
 
-function self.MousePressed()
+function self.MousePressed(x, y, button, istouch, presses)
+	PieceHandler.MousePressed(x, y, button, istouch, presses)
 end
 
 function self.MouseReleased()
