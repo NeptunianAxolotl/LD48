@@ -43,7 +43,11 @@ function self.Initialize()
 	for x = 1, MAP_WIDTH do
 		blockMap[x] = {}
 		for y = 1, currentMaxY do
-			blockMap[x][y] = "dirt"
+			if math.random() < 0.025 then
+				blockMap[x][y] = "rock"
+			else
+				blockMap[x][y] = "dirt"
+			end
 		end
 	end
 end
