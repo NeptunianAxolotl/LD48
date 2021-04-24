@@ -69,9 +69,9 @@ function self.CarveLeavingTiles(pX, pY, pRot, oldX, oldY, oldRot, pDef, tiles)
 		elseif tiles[i].covered then
 			tile = util.RotateVectorOrthagonal(tiles[i], oldRot * math.pi/2)
 			x, y = oldX + tile[1], oldY + tile[2]
-			EffectsHandler.Spawn("piece_fade", {x * Global.BLOCK_SIZE, y * Global.BLOCK_SIZE})
 			local blockData = blockMap[x] and blockMap[x][y]
-			if blockData then
+			if blockData and (blockData.value or 0) > 0 then
+				EffectsHandler.Spawn("piece_fade", {x * Global.BLOCK_SIZE, y * Global.BLOCK_SIZE})
 				blockData.image = "empty"
 				blockData.toughness = 0
 			end
