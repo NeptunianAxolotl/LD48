@@ -18,19 +18,29 @@ local pieceList = {
 	"r_5",
 }
 
+local dropSpeed = 0.9
 local currentPiece = false
 local currentPieceTimer = 0
 
-local function UpdatePiecePos()
-	local mX, mY = love.mouse.getX(), love.mouse.getY()
-	local px, py = TerrainHandler.GetClosestPlacement(mX, mY, currentPiece.rotation, currentPiece.def)
-	currentPiece.x = px
-	currentPiece.y = py
-end
-
-local function RotatePiece(rotChange)
-	currentPiece.rotation = currentPiece.rotation + rotChange
-	UpdatePiecePos()
+function MovePiece(xChange, yChange, rotChange, blockInsteadOfPlace)
+	local newX = currentPiece.x + xChange
+	local newY = currentPiece.y + yChange
+	local newRot = currentPiece.rotation + rotChange
+	
+	local piecePlacement = TerrainHandler.CheckPiecePlaceTrigger(newX, newY, newRot, currentPiece.def)
+	if piecePlacement then
+		if blockInsteadOfPlace then
+			return
+		end
+		
+		TerrainHandler.CarveTerrain(newX, newY, newRot, currentPiece.def)
+		currentPiece = false
+		return
+	end
+	
+	currentPiece.x = newX
+	currentPiece.y = newY
+	currentPiece.rotation = newRot
 end
 
 function self.Update(dt)
@@ -38,35 +48,33 @@ function self.Update(dt)
 		local pieceDef = pieceDefNames[util.SampleList(pieceList)]
 		currentPiece = {
 			def = pieceDef,
-			tiles = util.CopyTable(pieceDef.tiles, true),
-			x = 15,
-			y = 1,
+			x = 8,
+			y = 2,
 			rotation = 0,
+			dropTime = dropSpeed,
 		}
 	end
 	
-	UpdatePiecePos()
-end
-
-function self.MousePressed(x, y, button, istouch, presses)
-	if button == 1 then
-		if currentPiece then
-			TerrainHandler.CarveTerrain(currentPiece.x, currentPiece.y, currentPiece.rotation, currentPiece.def)
-			currentPiece = false
-		end
-	else
-		if currentPiece then
-			RotatePiece(-1)
-		end
+	currentPiece.dropTime = currentPiece.dropTime - dt
+	if currentPiece.dropTime < 0 then
+		currentPiece.dropTime = dropSpeed
+		MovePiece(0, 1, 0)
 	end
 end
 
 function self.KeyPressed(key, scancode, isRepeat)
 	if currentPiece then
-		if key == "z" then
-			RotatePiece(-1)
+		if key == "left" then
+			MovePiece(-1, 0, 0)
+		elseif key == "right" then
+			MovePiece(1, 0, 0)
+		elseif key == "down" then
+		currentPiece.dropTime = dropSpeed
+			MovePiece(0, 1, 0)
+		elseif key == "z" then
+			MovePiece(0, 0, -1)
 		elseif key == "x" then
-			RotatePiece(1)
+			MovePiece(0, 0, 1)
 		end
 	end
 end
@@ -77,8 +85,9 @@ end
 
 function self.Draw(dt)
 	if currentPiece then
-		for i = 1, #currentPiece.tiles do
-			local tile = util.RotateVectorOrthagonal(currentPiece.tiles[i], currentPiece.rotation * math.pi/2)
+		local tiles = currentPiece.def.tiles
+		for i = 1, #tiles do
+			local tile = util.RotateVectorOrthagonal(tiles[i], currentPiece.rotation * math.pi/2)
 			local x, y = tile[1], tile[2]
 			Resources.DrawImage("pieceBlock", (currentPiece.x + x)*Global.BLOCK_SIZE, (currentPiece.y + y)*Global.BLOCK_SIZE)
 		end
