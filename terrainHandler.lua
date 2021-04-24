@@ -74,6 +74,8 @@ function self.CarveLeavingTiles(pX, pY, pRot, oldX, oldY, oldRot, pDef, tiles)
 				EffectsHandler.Spawn("piece_fade", {x * Global.BLOCK_SIZE, y * Global.BLOCK_SIZE})
 				blockData.image = "empty"
 				blockData.toughness = 0
+			else
+				newTiles[#newTiles + 1] = tiles[i]
 			end
 		else
 			newTiles[#newTiles + 1] = tiles[i]
