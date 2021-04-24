@@ -27,7 +27,8 @@ function MovePiece(xChange, yChange, rotChange, blockInsteadOfPlace)
 	local newY = currentPiece.y + yChange
 	local newRot = currentPiece.rotation + rotChange
 	
-	if TerrainHandler.CheckPieceFullyCovered(newX, newY, newRot, currentPiece.def) then
+	local piecePlacement = TerrainHandler.CheckPiecePlaceTrigger(newX, newY, newRot, currentPiece.def)
+	if piecePlacement then
 		if blockInsteadOfPlace then
 			return
 		end

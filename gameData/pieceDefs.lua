@@ -6,6 +6,7 @@ local pieceDefs = {
 			{0, 1},
 			{1, 0},
 		},
+		carveStrength = 1,
 	},
 	{
 		name = "l_3",
@@ -14,6 +15,7 @@ local pieceDefs = {
 			{0, 0},
 			{1, 0},
 		},
+		carveStrength = 1,
 	},
 	{
 		name = "r_5",
@@ -24,6 +26,7 @@ local pieceDefs = {
 			{0, 1},
 			{1, -1},
 		},
+		carveStrength = 1,
 	},
 }
 

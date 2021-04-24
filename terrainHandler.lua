@@ -14,27 +14,45 @@ function self.Update(dt)
 
 end
 
-function self.CheckPieceFullyCovered(pX, pY, pRot, pDef)
+function self.CheckPiecePlaceTrigger(pX, pY, pRot, pDef)
 	local tiles = pDef.tiles
+	local fullyCovered = true
 	for i = 1, #tiles do
 		local tile = util.RotateVectorOrthagonal(tiles[i], pRot * math.pi/2)
 		local x, y = pX + tile[1], pY + tile[2]
-		local blockType = blockMap[x] and blockMap[x][y]
-		if (not blockType) or (blockType == "empty") then
-			return false
+		local blockData = blockMap[x] and blockMap[x][y]
+		if blockData then
+			-- Placement is triggered if there are no empty squares
+			if blockData.toughness == 0 then
+				fullyCovered = false
+			end
+			-- Placement is triggered if the block hits something that is too tough.
+			if blockData.toughness > pDef.carveStrength then
+				return true
+			end
 		end
 	end
-	return true
+	return fullyCovered
 end
 
-function self.CarveTerrain(pX, pY, pRot, pDef)
+function self.CarveTerrain(pX, pY, pRot, pDef, pieceHitRocks)
 	local tiles = pDef.tiles
 	for i = 1, #tiles do
 		local tile = util.RotateVectorOrthagonal(tiles[i], pRot * math.pi/2)
 		local x, y = pX + tile[1], pY + tile[2]
-		local blockType = blockMap[x] and blockMap[x][y]
-		if blockType and blockType ~= "empty" then
-			blockMap[x][y] = "empty"
+		local blockData = blockMap[x] and blockMap[x][y]
+		if blockData and blockData.toughness ~= 0 then
+			if blockData.toughness > pDef.carveStrength then
+				blockData.hitPoints = blockData.hitPoints - 1
+				blockData.image = blockData.imageBase .. blockData.hitPoints
+				if blockData.hitPoints <= 0 then
+					blockData.image = "empty"
+					blockData.toughness = 0
+				end
+			else
+				blockData.image = "empty"
+				blockData.toughness = 0
+			end
 		end
 	end
 end
@@ -43,10 +61,18 @@ function self.Initialize()
 	for x = 1, MAP_WIDTH do
 		blockMap[x] = {}
 		for y = 1, currentMaxY do
-			if math.random() < 0.025 then
-				blockMap[x][y] = "rock"
+			if math.random() < 0.04 then
+				blockMap[x][y] = {
+					image = "rock",
+					imageBase = "rock_",
+					toughness = 2,
+					hitPoints = 3,
+				}
 			else
-				blockMap[x][y] = "dirt"
+				blockMap[x][y] = {
+					image = "dirt",
+					toughness = 1,
+				}
 			end
 		end
 	end
@@ -56,7 +82,7 @@ function self.Draw()
 	for x = 1, MAP_WIDTH do
 		for y = currentMinY, currentMaxY do
 			local block = blockMap[x][y]
-			Resources.DrawImage(block, x*Global.BLOCK_SIZE, y*Global.BLOCK_SIZE)
+			Resources.DrawImage(block.image, x*Global.BLOCK_SIZE, y*Global.BLOCK_SIZE)
 		end
 	end
 end
