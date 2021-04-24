@@ -50,7 +50,7 @@ local function NewEffect(self, def)
 	
 	function self.DrawInterface()
 		if def.actual_image then
-			Resources.DrawAnimation(def.actual_image, self.pos[1], self.pos[2], self.direction,
+			Resources.DrawImage(def.actual_image, self.pos[1], self.pos[2], self.direction,
 					(def.alphaScale and self.life/maxLife) or 1,
 					(self.scale or 1)*((def.lifeScale and (1 - 0.5*self.life/maxLife)) or 1),
 				def.color)

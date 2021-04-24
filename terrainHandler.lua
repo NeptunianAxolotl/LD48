@@ -1,3 +1,4 @@
+local EffectsHandler = require("effectsHandler")
 
 local util = require("include/util")
 local Resources = require("resourceHandler")
@@ -40,6 +41,7 @@ function self.CarveTerrain(pX, pY, pRot, pDef, pieceHitRocks)
 	for i = 1, #tiles do
 		local tile = util.RotateVectorOrthagonal(tiles[i], pRot * math.pi/2)
 		local x, y = pX + tile[1], pY + tile[2]
+		EffectsHandler.Spawn("piece_fade", {x * Global.BLOCK_SIZE, y * Global.BLOCK_SIZE})
 		local blockData = blockMap[x] and blockMap[x][y]
 		if blockData and blockData.toughness ~= 0 then
 			if blockData.toughness > pDef.carveStrength then
