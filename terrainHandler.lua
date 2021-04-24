@@ -11,6 +11,14 @@ local MAP_WIDTH = 16
 local currentMinY = 1
 local currentMaxY = 30
 
+function self.BlockAt(x, y)
+	return blockMap[x] and blockMap[x][y]
+end
+
+function self.Empty(x, y)
+	return blockMap[x] and blockMap[x][y] and blockMap[x][y].toughness == 0
+end
+
 function self.Update(dt)
 
 end
@@ -38,22 +46,41 @@ end
 
 function self.CarveTerrain(pX, pY, pRot, pDef, tiles)
 	local tiles = pDef.tiles
+	
 	for i = 1, #tiles do
 		local tile = util.RotateVectorOrthagonal(tiles[i], pRot * math.pi/2)
 		local x, y = pX + tile[1], pY + tile[2]
 		EffectsHandler.Spawn("piece_fade", {x * Global.BLOCK_SIZE, y * Global.BLOCK_SIZE})
-		local blockData = blockMap[x] and blockMap[x][y]
-		if blockData and blockData.toughness ~= 0 then
-			if blockData.toughness > pDef.carveStrength then
-				blockData.hitPoints = blockData.hitPoints - 1
-				blockData.image = blockData.imageBase .. blockData.hitPoints
-				if blockData.hitPoints <= 0 then
-					blockData.image = "empty"
-					blockData.toughness = 0
+	end
+	
+	-- Only affect blocks that are not behind barriers, such as rocks.
+	local reCheck = true
+	local processedBlocks = {}
+	while reCheck do
+		reCheck = false
+		for i = 1, #tiles do
+			local tile = util.RotateVectorOrthagonal(tiles[i], pRot * math.pi/2)
+			local x, y = pX + tile[1], pY + tile[2]
+			if not (processedBlocks[x] and processedBlocks[x][y]) then
+				local blockData = self.BlockAt(x, y)
+				if blockData and blockData.toughness ~= 0 and 
+						(self.Empty(x - 1, y) or self.Empty(x + 1, y) or self.Empty(x, y - 1) or self.Empty(x, y + 1)) then
+					processedBlocks[x] = processedBlocks[x] or {}
+					processedBlocks[x][y] = true
+					if blockData.toughness > pDef.carveStrength then
+						blockData.hitPoints = blockData.hitPoints - 1
+						blockData.image = blockData.imageBase .. blockData.hitPoints
+						if blockData.hitPoints <= 0 then
+							blockData.image = "empty"
+							blockData.toughness = 0
+							reCheck = true
+						end
+					else
+						blockData.image = "empty"
+						blockData.toughness = 0
+						reCheck = true
+					end
 				end
-			else
-				blockData.image = "empty"
-				blockData.toughness = 0
 			end
 		end
 	end
