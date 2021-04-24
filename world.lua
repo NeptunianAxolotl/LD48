@@ -1,8 +1,7 @@
-
-
 local EffectsHandler = require("effectsHandler")
 local SoundHandler = require("soundHandler")
 local MusicHandler = require("musicHandler")
+local ModuleTest = require("moduleTest")
 
 local PriorityQueue = require("include/PriorityQueue")
 
@@ -21,11 +20,7 @@ function self.Update(dt)
 	local cameraX, cameraY, cameraScale = 0, 0, 1
 	--self.cameraTransform:setTransformation(windowX/2, 160 + (1 - cameraScale)*60, 0, cameraScale*windowY/1080, cameraScale*windowY/1080, cameraX, cameraY)
 	
-	if math.random() < 0.03 then
-		SoundHandler.PlaySound("health_down")
-		EffectsHandler.Spawn("health_down", {0, 0})
-		EffectsHandler.Spawn("fireball_explode", {math.random()*500, math.random()*500})
-	end
+	ModuleTest.Update(dt)
 
 	EffectsHandler.Update(dt)
 	MusicHandler.Update(dt)
@@ -43,6 +38,8 @@ function self.Draw()
 	EffectsHandler.Draw(drawQueue)
 	-- Draw world
 
+	ModuleTest.Draw(dt)
+	
 	while true do
 		local d = drawQueue:pop()
 		if not d then break end
