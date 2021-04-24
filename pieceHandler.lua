@@ -18,7 +18,7 @@ local pieceList = {
 	"r_5",
 }
 
-local dropSpeed = 0.6
+local dropSpeed = 0.9
 local currentPiece = false
 local currentPieceTimer = 0
 
@@ -27,16 +27,20 @@ function MovePiece(xChange, yChange, rotChange, blockInsteadOfPlace)
 	local newY = currentPiece.y + yChange
 	local newRot = currentPiece.rotation + rotChange
 	
-	local piecePlacement = TerrainHandler.CheckPiecePlaceTrigger(newX, newY, newRot, currentPiece.def)
+	local piecePlacement = TerrainHandler.CheckPiecePlaceTrigger(newX, newY, newRot, currentPiece.def, currentPiece.tiles)
 	if piecePlacement then
 		if blockInsteadOfPlace then
 			return
 		end
 		
-		TerrainHandler.CarveTerrain(newX, newY, newRot, currentPiece.def)
+		TerrainHandler.CarveTerrain(newX, newY, newRot, currentPiece.def, currentPiece.tiles)
 		currentPiece = false
 		return
 	end
+	
+	currentPiece.tiles = TerrainHandler.CarveLeavingTiles(newX, newY, newRot,
+		currentPiece.x, currentPiece.y, currentPiece.rotation,
+		currentPiece.def, currentPiece.tiles)
 	
 	currentPiece.x = newX
 	currentPiece.y = newY
@@ -48,8 +52,9 @@ function self.Update(dt)
 		local pieceDef = pieceDefNames[util.SampleList(pieceList)]
 		currentPiece = {
 			def = pieceDef,
+			tiles = util.CopyTable(pieceDef.tiles, true),
 			x = 15,
-			y = 0,
+			y = 1,
 			rotation = 0,
 			dropTime = dropSpeed,
 		}
@@ -85,8 +90,8 @@ end
 
 function self.Draw(dt)
 	if currentPiece then
-		for i = 1, #currentPiece.def.tiles do
-			local tile = util.RotateVectorOrthagonal(currentPiece.def.tiles[i], currentPiece.rotation * math.pi/2)
+		for i = 1, #currentPiece.tiles do
+			local tile = util.RotateVectorOrthagonal(currentPiece.tiles[i], currentPiece.rotation * math.pi/2)
 			local x, y = tile[1], tile[2]
 			Resources.DrawImage("pieceBlock", (currentPiece.x + x)*Global.BLOCK_SIZE, (currentPiece.y + y)*Global.BLOCK_SIZE)
 		end
