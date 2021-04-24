@@ -317,6 +317,14 @@ function util.GenerateDistributionFromBoundedRandomWeights(bounds, rngIn)
 	return util.WeightsToDistribution(weights)
 end
 
+function util.SampleList(list)
+	if (not list) or (#list == 0) then
+		return false
+	end
+	local index = math.floor(math.random()*#list) + 1
+	return list[index] or list[1]
+end
+
 function util.SampleDistribution(distribution, rngIn)
 	local rngFunc = rngIn or math.random
 	local value = rngFunc()
