@@ -4,6 +4,9 @@ local MusicHandler = require("musicHandler")
 
 local PriorityQueue = require("include/PriorityQueue")
 
+local Camera = require("cameraUtilities")
+
+local Global = require("global")
 local PieceHandler = require("pieceHandler")
 local TerrainHandler = require("terrainHandler")
 
@@ -16,25 +19,26 @@ function self.MouseReleased()
 end
 
 function self.KeyPressed(key, scancode, isRepeat)
-	PieceHandler.KeyPressed(key, scancode, isRepeat)
+	if Camera.GetSpeed() < 0.05 then
+		PieceHandler.KeyPressed(key, scancode, isRepeat)
+	end
 end
 
 function self.Update(dt)
-	--local playerPos, playerVelocity, playerSpeed = Player.GetPhysics()
-	--local cameraX, cameraY, cameraScale = Camera.UpdateCamera(dt, playerPos, playerVelocity, playerSpeed, Player.IsDead() and 0.96 or 0.85)
 	local windowX, windowY = love.window.getMode()
-	local cameraX, cameraY, cameraScale = 0, 0, 1
-	--self.cameraTransform:setTransformation(windowX/2, 160 + (1 - cameraScale)*60, 0, cameraScale*windowY/1080, cameraScale*windowY/1080, cameraX, cameraY)
+	local cameraX, cameraY = Camera.UpdateCamera(dt, {Global.BLOCK_SIZE, TerrainHandler.GetWantedDrawY()}, {0, 0}, 0, 0.99, 0.12, 4)
+	self.cameraTransform:setTransformation(-cameraX, -cameraY, 0, 1, 1, -Global.BLOCK_SIZE, 0)
 
 	TerrainHandler.Update(dt)
-	PieceHandler.Update(dt)
+	if Camera.GetSpeed() < 0.05 then
+		PieceHandler.Update(dt)
+	end
 
 	EffectsHandler.Update(dt)
 	MusicHandler.Update(dt)
 	SoundHandler.Update(dt)
 	
 	--love.graphics.replaceTransform(self.cameraTransform)
-
 end
 
 function self.Draw()
@@ -71,6 +75,7 @@ function self.Initialize()
 	
 	TerrainHandler.Initialize()
 	PieceHandler.Initialize()
+	Camera.Initialize(Global.BLOCK_SIZE, Global.BLOCK_SIZE)
 	
 	EffectsHandler.Initialize()
 	MusicHandler.Initialize()

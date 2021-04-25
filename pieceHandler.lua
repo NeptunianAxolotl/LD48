@@ -100,13 +100,13 @@ function self.Initialize()
 
 end
 
-function self.Draw(dt)
+function self.Draw()
 	if currentPiece then
 		local tiles = currentPiece.def.tiles
 		for i = 1, #tiles do
 			local tile = util.RotateVectorOrthagonal(tiles[i], currentPiece.rotation * math.pi/2)
-			local x, y = tile[1], tile[2]
-			Resources.DrawImage("pieceBlock", (currentPiece.x + x)*Global.BLOCK_SIZE, (currentPiece.y + y)*Global.BLOCK_SIZE)
+			local dx, dy = TerrainHandler.WorldToScreen(currentPiece.x + tile[1], currentPiece.y + tile[2])
+			Resources.DrawImage("pieceBlock", dx, dy)
 		end
 	end
 end
