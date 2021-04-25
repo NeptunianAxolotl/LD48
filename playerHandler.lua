@@ -67,7 +67,7 @@ function self.CollectBlockValues(blockDestroyValues)
 	
 	self.moneyUpdateProp = 0
 	self.moneyUpdateAmount = moneyMade
-	self.moneyUpdateMultiplier = multiplier*100
+	self.moneyUpdateMultiplier = multiplier
 end
 
 function self.OnScreenScroll()
@@ -129,15 +129,15 @@ function self.DrawInterface()
 		love.graphics.print("Pieces: " .. self.piecesRemaining, offsetX, offset)
 	end
 	offset = offset + spacing
-	love.graphics.print("Dig Deeper for Bonus: " .. self.piecesPerScreen, offsetX, offset)
+	love.graphics.print("Dig Deep Bonus: " .. self.piecesPerScreen, offsetX, offset)
 	if self.bonusUpdateProp then
 		local prop = util.SmoothZeroToOne(self.bonusUpdateProp, 7)
 		love.graphics.setColor(1, 1, 1, (self.bonusUpdateProp < 0.8 and 1) or (1 - (self.bonusUpdateProp - 0.8) / 0.2))
-		love.graphics.print("-1", offsetX + 296, offset)
+		love.graphics.print("-1", offsetX + 280, offset)
 		love.graphics.setColor(1, 1, 1, 1)
 	end
 	offset = offset + spacing
-	love.graphics.print("Dig Bonus Shuffles: " .. self.shufflesUntilPiecePerScreenDown, offsetX, offset)
+	love.graphics.print("Shuffles at Current Bonus: " .. self.shufflesUntilPiecePerScreenDown, offsetX, offset)
 	offset = offset + spacing
 	
 	offset = offset + spacing*0.618
@@ -162,12 +162,12 @@ function self.DrawInterface()
 	offset = offset + spacing*0.618
 	if self.moneyUpdateProp then
 		local prop = (self.moneyUpdateProp > 0.2 and util.SmoothZeroToOne((self.moneyUpdateProp - 0.2) / 0.8, 7)) or 0
-		local newMoney = math.floor(util.AverageScalar(self.money - self.moneyUpdateAmount, self.money, prop) + 0.5)
+		local newMoney = math.floor(util.AverageScalar(self.money - self.moneyUpdateAmount*self.moneyUpdateMultiplier, self.money, prop) + 0.5)
 		local addMoney = math.floor(util.AverageScalar(self.moneyUpdateAmount, 0, prop) + 0.5)
 		love.graphics.print("Money: $" .. newMoney, offsetX, offset)
 		
 		love.graphics.setColor(1, 1, 1, (self.moneyUpdateProp < 0.95 and 1) or (1 - (self.moneyUpdateProp - 0.95) / 0.05))
-		love.graphics.print(" + $" .. addMoney .. " x " .. self.moneyUpdateMultiplier .. "%", offsetX + 180, offset)
+		love.graphics.print(" + $" .. addMoney .. " x " .. math.floor(self.moneyUpdateMultiplier*100 + 0.5) .. "%", offsetX + 180, offset)
 		love.graphics.setColor(1, 1, 1, 1)
 	else
 		love.graphics.print("Money: $" .. self.money, offsetX, offset)
