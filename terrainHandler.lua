@@ -74,6 +74,7 @@ local function DestroyBlock(x, y, valueList)
 	if valueList and blockData.value then
 		valueList[#valueList + 1] = blockData.value
 	end
+	blockData.value = false
 	
 	if y >= scrollTrigger then
 		DoScroll(x, y)
@@ -120,6 +121,8 @@ end
 function self.CheckPiecePlaceTrigger(pX, pY, pRot, pDef)
 	local tiles = pDef.tiles
 	local fullyCovered = true
+	local hitRock = false
+	local econBlockCount = 0
 	for i = 1, #tiles do
 		local tile = util.RotateVectorOrthagonal(tiles[i], pRot * math.pi/2)
 		local x, y = pX + tile[1], pY + tile[2]
@@ -129,13 +132,17 @@ function self.CheckPiecePlaceTrigger(pX, pY, pRot, pDef)
 			if blockData.toughness == 0 then
 				fullyCovered = false
 			end
+			-- Placement is triggered if the piece moves off econ blocks.
+			if blockData.value then
+				econBlockCount = econBlockCount + 1
+			end
 			-- Placement is triggered if the block hits something that is too tough.
 			if blockData.toughness > pDef.carveStrength then
-				return true
+				hitRock = true
 			end
 		end
 	end
-	return fullyCovered
+	return hitRock or fullyCovered, econBlockCount
 end
 
 ------------------------------------------------------------------------

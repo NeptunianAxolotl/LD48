@@ -33,7 +33,14 @@ function MovePiece(xChange, yChange, rotChange, blockInsteadOfPlace)
 		end
 	end
 	
-	local piecePlacement = TerrainHandler.CheckPiecePlaceTrigger(newX, newY, newRot, currentPiece.def)
+	local piecePlacement, econBlockCount = TerrainHandler.CheckPiecePlaceTrigger(newX, newY, newRot, currentPiece.def)
+	if econBlockCount and econBlockCount < currentPiece.econBlockCount then
+		TerrainHandler.CarveTerrain(currentPiece.x, currentPiece.y, currentPiece.rotation, currentPiece.def)
+		currentPiece = false
+		return
+	end
+	currentPiece.econBlockCount = (econBlockCount or 0)
+	
 	if piecePlacement then
 		if blockInsteadOfPlace then
 			return
@@ -64,6 +71,7 @@ function self.Update(dt)
 			y = spawnY,
 			rotation = 0,
 			dropTime = dropSpeed,
+			econBlockCount = 0,
 		}
 		MovePiece(0, 0, 0)
 	end
