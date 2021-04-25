@@ -177,18 +177,24 @@ function self.DrawInterface(dt)
 		love.graphics.setColor(1, 1, 1, 1)
 	end
 	
-	offset = 160
+	offset = 170
 	
 	if self.nextPiece then
-		ShopHandler.DrawCardOnInterface(768, 160, self.nextPiece)
+		ShopHandler.DrawCardOnInterface(768, offset, self.nextPiece)
 	end
-	offset = offset + spacing*4.2
 	
-	love.graphics.print("Deck: " .. #self.drawPile, offsetX, offset)
-	offset = offset + spacing
-	love.graphics.print("Discard: " .. #self.discardPile, offsetX, offset)
-	offset = offset + spacing
+	offset = 188
+	for i = 1, math.min(6, #self.drawPile) do
+		Resources.DrawImage("cardBack", offsetX + 20 + i*3, offset - i * 3)
+	end
+	love.graphics.print("Draw: " .. #self.drawPile, offsetX + 16, offset + 78)
 	
+	for i = 1, math.min(6, #self.discardPile) do
+		Resources.DrawImage("cardBack", offsetX + 330 + i*3, offset - i * 3)
+	end
+	love.graphics.print("Discard: " .. #self.discardPile, offsetX + 320, offset + 78)
+	
+
 	offset = 413
 	if self.moneyUpdateProp and not ShopHandler.IsActive() then
 		local prop = (self.moneyUpdateProp > 0.2 and util.SmoothZeroToOne((self.moneyUpdateProp - 0.1) / 0.7, 7)) or 0
