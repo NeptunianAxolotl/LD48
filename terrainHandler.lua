@@ -65,9 +65,9 @@ local function SpawnRow(row)
 	end
 end
 
-local function DestroyBlock(x, y, valueList)
+local function DestroyBlock(x, y, valueList, moneyMult)
 	local blockData = self.BlockAt(x, y)
-	if not blockData then
+	if (not blockData) or (blockData.toughness == 0) then
 		return
 	end
 	blockData.image = "empty"
@@ -75,7 +75,7 @@ local function DestroyBlock(x, y, valueList)
 	blockData.toughness = 0
 	
 	if valueList and blockData.value then
-		valueList[#valueList + 1] = blockData.value
+		valueList[#valueList + 1] = blockData.value * (moneyMult or 1)
 	end
 	blockData.value = false
 	
@@ -137,7 +137,7 @@ function self.CheckPiecePlaceTrigger(pX, pY, pRot, pDef)
 			end
 			-- Placement is triggered if the piece moves off econ blocks.
 			if blockData.value then
-				econBlockCount = econBlockCount + 1
+				econBlockCount = econBlockCount + (tiles[i].moneyMult or 1)
 			end
 			-- Placement is triggered if the block hits something that is too tough.
 			if blockData.toughness > pDef.carveStrength then
@@ -195,11 +195,11 @@ function self.CarveTerrain(pX, pY, pRot, pDef, tiles)
 						blockData.hitPoints = blockData.hitPoints - 1
 						blockData.image = blockData.imageBase .. blockData.hitPoints
 						if blockData.hitPoints <= 0 then
-							DestroyBlock(x, y, blockDestroyValues)
+							DestroyBlock(x, y, blockDestroyValues, tiles[i].moneyMult)
 							reCheck = true
 						end
 					else
-						DestroyBlock(x, y, blockDestroyValues)
+						DestroyBlock(x, y, blockDestroyValues, tiles[i].moneyMult)
 						reCheck = true
 					end
 				end

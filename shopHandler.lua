@@ -64,11 +64,11 @@ end
 
 function self.GetStartingDeck()
 	return {
-		AddSpecialToPiece(util.CopyTable(pieceDefs.names["3I"], true), "bomb"),
-		AddSpecialToPiece(util.CopyTable(pieceDefs.names["3L"], true), "bomb"),
-		AddSpecialToPiece(util.CopyTable(pieceDefs.names["4S"], true), "bomb"),
-		AddSpecialToPiece(util.CopyTable(pieceDefs.names["4Z"], true), "bomb"),
-		AddSpecialToPiece(util.CopyTable(pieceDefs.names["4O"], true), "bomb"),
+		AddSpecialToPiece(util.CopyTable(pieceDefs.names["3I"], true), "moneyMult"),
+		AddSpecialToPiece(util.CopyTable(pieceDefs.names["3L"], true), "moneyMult"),
+		AddSpecialToPiece(util.CopyTable(pieceDefs.names["4S"], true), "moneyMult"),
+		AddSpecialToPiece(util.CopyTable(pieceDefs.names["4Z"], true), "moneyMult"),
+		AddSpecialToPiece(util.CopyTable(pieceDefs.names["4O"], true), "moneyMult"),
 	}
 end
 
