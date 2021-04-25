@@ -12,7 +12,7 @@ local dropSpeed = 0.9
 local currentPiece = false
 local currentPieceTimer = 0
 
-function MovePiece(xChange, yChange, rotChange, blockInsteadOfPlace)
+function MovePiece(xChange, yChange, rotChange, econCheckCarve)
 	local newX = currentPiece.x + xChange
 	local newY = currentPiece.y + yChange
 	local newRot = currentPiece.rotation + rotChange
@@ -34,7 +34,7 @@ function MovePiece(xChange, yChange, rotChange, blockInsteadOfPlace)
 	end
 	
 	local piecePlacement, econBlockCount = TerrainHandler.CheckPiecePlaceTrigger(newX, newY, newRot, currentPiece.def)
-	if econBlockCount and econBlockCount < currentPiece.econBlockCount then
+	if econCheckCarve and econBlockCount and econBlockCount < currentPiece.econBlockCount then
 		TerrainHandler.CarveTerrain(currentPiece.x, currentPiece.y, currentPiece.rotation, currentPiece.def)
 		currentPiece = false
 		return
@@ -80,7 +80,7 @@ function self.Update(dt)
 		currentPiece.dropTime = currentPiece.dropTime - dt
 		if currentPiece.dropTime < 0 then
 			currentPiece.dropTime = dropSpeed
-			MovePiece(0, 1, 0)
+			MovePiece(0, 1, 0, true)
 		end
 	end
 end
