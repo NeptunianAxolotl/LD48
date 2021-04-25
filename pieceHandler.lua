@@ -62,23 +62,27 @@ local function PlacePiece()
 	currentPiece = false
 end
 
+local function GetNewPiece()
+	local pieceDef = PlayerHandler.UseNextPiece()
+	if pieceDef then
+		local spawnX, spawnY = TerrainHandler.GetPieceSpawnPos()
+		currentPiece = {
+			def = pieceDef,
+			x = spawnX,
+			y = spawnY,
+			rotation = 0,
+			dropTime = dropSpeed,
+			econBlockCount = 0,
+		}
+		MovePiece(0, 0, 0)
+	else
+		noPiecesLeft = true
+	end
+end
+
 function self.Update(dt)
 	if not currentPiece then
-		local pieceDef = PlayerHandler.UseNextPiece()
-		if pieceDef then
-			local spawnX, spawnY = TerrainHandler.GetPieceSpawnPos()
-			currentPiece = {
-				def = pieceDef,
-				x = spawnX,
-				y = spawnY,
-				rotation = 0,
-				dropTime = dropSpeed,
-				econBlockCount = 0,
-			}
-			MovePiece(0, 0, 0)
-		else
-			noPiecesLeft = true
-		end
+		GetNewPiece()
 	end
 	
 	if currentPiece then

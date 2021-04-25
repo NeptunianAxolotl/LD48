@@ -24,9 +24,14 @@ local itemPositions = {
 local self = {}
 
 local function AddSpecialToPiece(pieceDef, specialName)
-	local specialDefFunc = specialDefs[specialName]
+	local specialDef = specialDefs[specialName]
 	local tile, index = util.SampleList(pieceDef.tiles)
-	pieceDef.tiles[index] = specialDefFunc(tile)
+	if specialDef.tileFunc then
+		pieceDef.tiles[index] = specialDef.tileFunc(tile)
+	end
+	if specialDef.pieceFunc then
+		pieceDef.tiles[index].pieceFunc = specialDef.pieceFunc -- To be called later.
+	end
 	return pieceDef
 end
 
@@ -38,22 +43,34 @@ end
 
 local function GetRandomPieceType(distance)
 	local category = Progression.SampleWeightedDistribution(distance, "pieceType")
-	return util.SampleList(pieceCategories[category])
+	return util.SampleList(pieceCategories[category].list), pieceCategories[category]
 end
 
 local function GetNewItem()
 	local distance = TerrainHandler.GetSpawnDepth() or 0
 	local specialType = Progression.SampleWeightedDistribution(distance, "specialType")
+	local pieceName, pieceCategory = GetRandomPieceType(distance)
 	
-	local pieceDef = GetNewPieceByName(GetRandomPieceType(distance))
+	local pieceDef = GetNewPieceByName(pieceName)
+	local pieceCost = pieceCategory.cost + pieceCategory.cost*2*math.random()
 	
 	if specialType ~= "none" then
 		local specialCount = Progression.SampleWeightedDistribution(spawnDepth or 0, "specialCount")
 		for i = 1, specialCount do
 			pieceDef = AddSpecialToPiece(pieceDef, specialType)
 		end
+		pieceCost = pieceCost + pieceCategory.specialCost + pieceCategory.specialCost*2*math.random()
+		pieceCost = pieceCost + (math.min(specialCount, pieceCategory.size) - 1) * specialCount
+		
+		for i = 1, #pieceDef.tiles do
+			if pieceDef.tiles[i].pieceFunc then
+				pieceDef.tiles[i].pieceFunc(pieceDef)
+			end
+		end
 	end
-	return pieceDef
+	
+	pieceCost = math.floor((pieceCost + 12)/25)*25
+	return pieceDef, pieceCost
 end
 
 local function PurchaseCurrentItem()
@@ -70,7 +87,7 @@ local function PurchaseCurrentItem()
 	if item.isRefresh then
 		for i = 1, #self.options do
 			if self.options[i].pDef then
-				self.options[i].pDef = GetNewItem()
+				self.options[i].pDef, self.options[i].price = GetNewItem()
 			end
 		end
 		return
@@ -78,7 +95,7 @@ local function PurchaseCurrentItem()
 	
 	if item.pDef then
 		PlayerHandler.AddCard(item.pDef)
-		item.pDef = GetNewItem()
+		item.pDef, item.price = GetNewItem()
 	end
 end
 
@@ -138,12 +155,14 @@ function self.Initialize(world)
 	for i = 1, 6 do
 		self.options[i] = {
 			position = i,
-			pDef = (i ~= 3 and i ~= 6) and GetNewItem(),
 			label = (i == 3 and "Refresh") or (i == 6 and "Done"),
 			price = (i ~= 6) and 50,
 			isRefresh = (i == 3),
 			isDone = (i == 6),
 		}
+		if (i ~= 3 and i ~= 6) then
+			self.options[i].pDef, self.options[i].price = GetNewItem()
+		end
 	end
 end
 
