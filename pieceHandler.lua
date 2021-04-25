@@ -13,9 +13,9 @@ end
 local self = {}
 
 local pieceList = {
-	"r_3",
-	"l_3",
-	"r_5",
+	"3I",
+	"3L",
+	"4S",
 }
 
 local dropSpeed = 0.9
@@ -109,7 +109,7 @@ function self.Draw()
 		for i = 1, #tiles do
 			local tile = util.RotateVectorOrthagonal(tiles[i], currentPiece.rotation * math.pi/2)
 			local dx, dy = TerrainHandler.WorldToScreen(currentPiece.x + tile[1], currentPiece.y + tile[2])
-			Resources.DrawImage("pieceBlock", dx, dy)
+			Resources.DrawImage(currentPiece.def.imageFile, dx, dy)
 		end
 	end
 end

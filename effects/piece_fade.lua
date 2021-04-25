@@ -1,6 +1,6 @@
 
 return {
-	actual_image = "pieceBlock",
+	actual_image = "3I",
 	interface = false,
 	alphaScale = true,
 	duration = 0.6,
