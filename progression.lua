@@ -16,6 +16,7 @@ local distanceKeyframes = {
 			moneyMult = 1,
 			vortex = 1,
 			nuke = 1,
+			cutter = 10,
 			none = 10,
 		},
 		specialCount = {
@@ -58,6 +59,7 @@ local distanceKeyframes = {
 			moneyMult = 0,
 			vortex = 1,
 			nuke = 1,
+			cutter = 10,
 			none = 5,
 		},
 		specialCount = {

@@ -19,6 +19,11 @@ local defs = {
 		tile.vortex = true
 		return tile
 	end,
+	cutter = function (tile)
+		tile.imageFile = "diamond"
+		tile.carveStrength = 2
+		return tile
+	end,
 }
 
 return defs
