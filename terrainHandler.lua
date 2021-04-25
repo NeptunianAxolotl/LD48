@@ -224,6 +224,79 @@ function self.GetWantedDrawY()
 	return desiredTopDraw
 end
 
+local function DrawEdges(x, y)
+	local block = blockMap[y][x]
+	if block.toughness ~= 0 then
+		return
+	end
+	local dx, dy = self.WorldToScreen(x, y)
+
+	local top = not self.Empty(x, y - 1)
+	local bot = not self.Empty(x, y + 1)
+	local left = not self.Empty(x - 1, y)
+	local right = not self.Empty(x + 1, y)
+	
+	-- North West
+	if top then
+		if left then
+			Resources.DrawImage("edge_nw_inner", dx, dy)
+		else
+			Resources.DrawImage("edge_n", dx, dy)
+		end
+	else
+		if left then
+			Resources.DrawImage("edge_w", dx, dy)
+		elseif not self.Empty(x - 1, y - 1) then
+			Resources.DrawImage("edge_nw_outer", dx, dy)
+		end
+	end
+	
+	-- North East
+	if top then
+		if right then
+			Resources.DrawImage("edge_ne_inner", dx + Global.BLOCK_SIZE/2, dy)
+		else
+			Resources.DrawImage("edge_n", dx + Global.BLOCK_SIZE/2, dy)
+		end
+	else
+		if right then
+			Resources.DrawImage("edge_e", dx + Global.BLOCK_SIZE/2, dy)
+		elseif not self.Empty(x + 1, y - 1) then
+			Resources.DrawImage("edge_ne_outer", dx + Global.BLOCK_SIZE/2, dy)
+		end
+	end
+	
+	-- South West
+	if bot then
+		if left then
+			Resources.DrawImage("edge_sw_inner", dx, dy + Global.BLOCK_SIZE/2)
+		else
+			Resources.DrawImage("edge_s", dx, dy + Global.BLOCK_SIZE/2)
+		end
+	else
+		if left then
+			Resources.DrawImage("edge_w", dx, dy + Global.BLOCK_SIZE/2)
+		elseif not self.Empty(x - 1, y + 1) then
+			Resources.DrawImage("edge_sw_outer", dx, dy + Global.BLOCK_SIZE/2)
+		end
+	end
+	
+	-- South East
+	if bot then
+		if right then
+			Resources.DrawImage("edge_se_inner", dx + Global.BLOCK_SIZE/2, dy + Global.BLOCK_SIZE/2)
+		else
+			Resources.DrawImage("edge_s", dx + Global.BLOCK_SIZE/2, dy + Global.BLOCK_SIZE/2)
+		end
+	else
+		if right then
+			Resources.DrawImage("edge_e", dx + Global.BLOCK_SIZE/2, dy + Global.BLOCK_SIZE/2)
+		elseif not self.Empty(x + 1, y + 1) then
+			Resources.DrawImage("edge_se_outer", dx + Global.BLOCK_SIZE/2, dy + Global.BLOCK_SIZE/2)
+		end
+	end
+end
+
 function self.Draw(xOffset, yOffset)
 	for x = 1, Global.MAP_WIDTH do
 		for y = currentMinY, currentMaxY do
@@ -233,6 +306,12 @@ function self.Draw(xOffset, yOffset)
 				Resources.DrawImage(block.backImage, dx, dy)
 			end
 			Resources.DrawImage(block.image, dx, dy)
+		end
+	end
+	
+	for x = 1, Global.MAP_WIDTH do
+		for y = currentMinY, currentMaxY do
+			DrawEdges(x, y)
 		end
 	end
 end
