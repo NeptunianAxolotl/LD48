@@ -7,7 +7,6 @@ local Global = require("global")
 local self = {}
 
 local blockMap = {}
-local MAP_WIDTH = 16
 local currentMinY = 1
 local currentMaxY = 30
 
@@ -21,6 +20,19 @@ end
 
 function self.Update(dt)
 
+end
+
+function self.PieceInsidePlayArea(pX, pY, pRot, pDef)
+	local tiles = pDef.tiles
+	for i = 1, #tiles do
+		local tile = util.RotateVectorOrthagonal(tiles[i], pRot * math.pi/2)
+		local x, y = pX + tile[1], pY + tile[2]
+		local blockData = blockMap[x] and blockMap[x][y]
+		if not blockData then
+			return false
+		end
+	end
+	return true
 end
 
 function self.CheckPiecePlaceTrigger(pX, pY, pRot, pDef)
@@ -87,7 +99,7 @@ function self.CarveTerrain(pX, pY, pRot, pDef, tiles)
 end
 
 function self.Initialize()
-	for x = 1, MAP_WIDTH do
+	for x = 1, Global.MAP_WIDTH do
 		blockMap[x] = {}
 		for y = 1, currentMaxY do
 			if y <= 2 then
@@ -119,7 +131,7 @@ function self.Initialize()
 end
 
 function self.Draw()
-	for x = 1, MAP_WIDTH do
+	for x = 1, Global.MAP_WIDTH do
 		for y = currentMinY, currentMaxY do
 			local block = blockMap[x][y]
 			Resources.DrawImage(block.image, x*Global.BLOCK_SIZE, y*Global.BLOCK_SIZE)

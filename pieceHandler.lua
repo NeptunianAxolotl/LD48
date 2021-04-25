@@ -27,6 +27,22 @@ function MovePiece(xChange, yChange, rotChange, blockInsteadOfPlace)
 	local newY = currentPiece.y + yChange
 	local newRot = currentPiece.rotation + rotChange
 	
+	if not TerrainHandler.PieceInsidePlayArea(newX, newY, newRot, currentPiece.def) then
+		if rotChange == 0 then
+			return
+		end
+		local offset = ((newX > Global.MAP_WIDTH / 2) and -1) or 1
+		local tries = 8
+		newX = newX + offset
+		while not TerrainHandler.PieceInsidePlayArea(newX, newY, newRot, currentPiece.def) do
+			newX = newX + offset
+			tries = tries - 1
+			if tries <= 0 then
+				return
+			end
+		end
+	end
+	
 	local piecePlacement = TerrainHandler.CheckPiecePlaceTrigger(newX, newY, newRot, currentPiece.def)
 	if piecePlacement then
 		if blockInsteadOfPlace then
