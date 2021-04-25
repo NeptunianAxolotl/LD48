@@ -4,6 +4,11 @@ local defs = {
 		tile.explosionRadius = 1
 		return tile
 	end,
+	nuke = function (tile)
+		tile.imageFile = "nuke"
+		tile.explosionRadius = 2
+		return tile
+	end,
 	moneyMult = function (tile)
 		tile.imageFile = "money_mult"
 		tile.moneyMult = 2

@@ -35,7 +35,8 @@ function externalFunc.GetFont()
 	end
 end
 
-local FONT = "FreeSansBold"
+--local FONT = "FreeSansBold"
+local FONT = "alagard"
 
 function externalFunc.Load()
 	hugeFont  = love.graphics.newFont('include/fonts/' .. FONT .. '.ttf', 36)

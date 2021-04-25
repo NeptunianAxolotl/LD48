@@ -73,7 +73,7 @@ function self.GetStartingDeck()
 		AddSpecialToPiece(GetPiece("3I"), "vortex"),
 		AddSpecialToPiece(GetPiece("3L"), "bomb"),
 		AddSpecialToPiece(GetPiece("4S"), "moneyMult"),
-		AddSpecialToPiece(GetPiece("4Z"), "moneyMult"),
+		AddSpecialToPiece(GetPiece("4Z"), "nuke"),
 		AddSpecialToPiece(GetPiece("4O"), "bomb"),
 	}
 end
@@ -132,6 +132,7 @@ end
 function self.DrawCardOnInterface(cardX, cardY, pDef, label, price)
 	local centX = cardX + 2*Global.BLOCK_SIZE - Global.SHOP_BLOCK_SIZE/2
 	local centY = cardY + 2*Global.BLOCK_SIZE - Global.SHOP_BLOCK_SIZE*1.1
+	Resources.DrawImage("cardFront", cardX, cardY)
 	if pDef then
 		local tiles = pDef.tiles
 		for i = 1, #tiles do
@@ -152,13 +153,13 @@ function self.DrawCardOnInterface(cardX, cardY, pDef, label, price)
 		Font.SetSize(1)
 		love.graphics.setColor(1, 1, 1)
 		
-		love.graphics.printf(label, cardX, centY - 0.1*Global.BLOCK_SIZE, 4*Global.BLOCK_SIZE, "center")
+		love.graphics.printf(label, cardX, centY + 0.25*Global.BLOCK_SIZE, 4*Global.BLOCK_SIZE, "center")
 	end
 	if price then
 		Font.SetSize(1)
-		love.graphics.setColor(0, 0, 0)
+		love.graphics.setColor(1, 1, 1)
 		
-		love.graphics.print("$" .. price, cardX + 5, cardY + 2.8*Global.BLOCK_SIZE)
+		love.graphics.print("$" .. price, cardX + 16, cardY + 2.82*Global.BLOCK_SIZE)
 	end
 end
 

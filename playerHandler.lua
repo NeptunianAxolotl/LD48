@@ -147,7 +147,7 @@ function self.DrawInterface()
 	Font.SetSize(1)
 	love.graphics.setColor(1, 1, 1)
 	
-	local offsetX = 610
+	local offsetX = 618
 	local offset = 93
 	local spacing = 32
 	

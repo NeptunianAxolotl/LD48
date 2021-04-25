@@ -11,6 +11,9 @@ local defs = {
 	{
 		name = "blackhole",
 	},
+	{
+		name = "nuke",
+	},
 }
 
 for i = 1, #defs do
