@@ -19,7 +19,7 @@ function self.MouseReleased()
 end
 
 function self.KeyPressed(key, scancode, isRepeat)
-	if Camera.GetSpeed() < 0.05 then
+	if Camera.GetMovementDone() then
 		PieceHandler.KeyPressed(key, scancode, isRepeat)
 	end
 end
@@ -30,7 +30,7 @@ function self.Update(dt)
 	self.cameraTransform:setTransformation(-cameraX, -cameraY, 0, 1, 1, -Global.BLOCK_SIZE, 0)
 
 	TerrainHandler.Update(dt)
-	if Camera.GetSpeed() < 0.05 then
+	if Camera.GetMovementDone() then
 		PieceHandler.Update(dt)
 		TerrainHandler.UpdateAreaCulling()
 	end
