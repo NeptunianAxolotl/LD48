@@ -4,9 +4,12 @@ local Resources = require("resourceHandler")
 local Global = require("global")
 local Font = require("include/font")
 
+local Progression = require("progression")
+local TerrainHandler = require("terrainHandler")
 local PlayerHandler
 
 local pieceDefs = require("game_data/pieceDefs")
+local pieceCategories = require("game_data/pieceCategories")
 local specialDefs = require("game_data/specialDefs")
 
 local itemPositions = {
@@ -20,8 +23,37 @@ local itemPositions = {
 
 local self = {}
 
+local function AddSpecialToPiece(pieceDef, specialName)
+	local specialDefFunc = specialDefs[specialName]
+	local tile, index = util.SampleList(pieceDef.tiles)
+	pieceDef.tiles[index] = specialDefFunc(tile)
+	return pieceDef
+end
+
+local function GetNewPieceByName(defName)
+	local pieceDef = util.CopyTable(pieceDefs.names[defName], true)
+	pieceDef.uniqueID = math.random() -- Enables pieces to be found in the deck
+	return pieceDef
+end
+
+local function GetRandomPieceType(distance)
+	local category = Progression.SampleWeightedDistribution(distance, "pieceType")
+	return util.SampleList(pieceCategories[category])
+end
+
 local function GetNewItem()
-	return util.SampleList(pieceDefs)
+	local distance = TerrainHandler.GetSpawnDepth() or 0
+	local specialType = Progression.SampleWeightedDistribution(distance, "specialType")
+	
+	local pieceDef = GetNewPieceByName(GetRandomPieceType(distance))
+	
+	if specialType ~= "none" then
+		local specialCount = Progression.SampleWeightedDistribution(spawnDepth or 0, "specialCount")
+		for i = 1, specialCount do
+			pieceDef = AddSpecialToPiece(pieceDef, specialType)
+		end
+	end
+	return pieceDef
 end
 
 local function PurchaseCurrentItem()
@@ -50,31 +82,17 @@ local function PurchaseCurrentItem()
 	end
 end
 
-local function AddSpecialToPiece(pieceDef, specialName)
-	local specialDefFunc = specialDefs[specialName]
-	local tile, index = util.SampleList(pieceDef.tiles)
-	pieceDef.tiles[index] = specialDefFunc(tile)
-	
-	return pieceDef
-end
-
-local function GetPiece(defName)
-	local pieceDef = util.CopyTable(pieceDefs.names[defName], true)
-	pieceDef.uniqueID = math.random() -- Enables pieces to be found in the deck
-	return pieceDef
-end
-
 function self.IsActive()
 	return self.active
 end
 
 function self.GetStartingDeck()
 	return {
-		AddSpecialToPiece(GetPiece("3I"), "vortex"),
-		AddSpecialToPiece(GetPiece("3L"), "bomb"),
-		AddSpecialToPiece(GetPiece("4S"), "moneyMult"),
-		AddSpecialToPiece(GetPiece("4Z"), "nuke"),
-		AddSpecialToPiece(GetPiece("4O"), "bomb"),
+		GetNewPieceByName("3I"),
+		GetNewPieceByName("3L"),
+		GetNewPieceByName("4S"),
+		GetNewPieceByName("4Z"),
+		GetNewPieceByName("4O"),
 	}
 end
 

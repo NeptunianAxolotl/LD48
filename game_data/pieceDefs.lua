@@ -6,7 +6,6 @@ local pieceDefs = {
 		},
 		carveStrength = 1,
 		imageFile = "1I",
-		rarity = 1,
 	},
 	{
 		name = "2I",
@@ -16,7 +15,6 @@ local pieceDefs = {
 		},
 		carveStrength = 1,
 		imageFile = "2I",
-		rarity = 1,
 	},
 	{
 		name = "3I",
@@ -27,7 +25,6 @@ local pieceDefs = {
 		},
 		carveStrength = 1,
 		imageFile = "3I",
-		rarity = 1,
 	},
 	{
 		name = "3L",
@@ -38,7 +35,6 @@ local pieceDefs = {
 		},
 		carveStrength = 1,
 		imageFile = "3L",
-		rarity = 1,
 	},
 	{
 		name = "4I",
@@ -50,7 +46,6 @@ local pieceDefs = {
 		},
 		carveStrength = 1,
 		imageFile = "4I",
-		rarity = 1,
 	},
 	{
 		name = "4S",
@@ -62,7 +57,6 @@ local pieceDefs = {
 		},
 		carveStrength = 1,
 		imageFile = "4S",
-		rarity = 1,
 	},
 	{
 		name = "4Z",
@@ -74,7 +68,6 @@ local pieceDefs = {
 		},
 		carveStrength = 1,
 		imageFile = "4Z",
-		rarity = 1,
 	},
 	{
 		name = "4L",
@@ -86,7 +79,6 @@ local pieceDefs = {
 		},
 		carveStrength = 1,
 		imageFile = "4L",
-		rarity = 1,
 	},
 	{
 		name = "4J",
@@ -98,7 +90,6 @@ local pieceDefs = {
 		},
 		carveStrength = 1,
 		imageFile = "4J",
-		rarity = 1,
 	},
 	{
 		name = "4O",
@@ -110,7 +101,6 @@ local pieceDefs = {
 		},
 		carveStrength = 1,
 		imageFile = "4O",
-		rarity = 1,
 	},
 	{
 		name = "4T",
@@ -122,10 +112,9 @@ local pieceDefs = {
 		},
 		carveStrength = 1,
 		imageFile = "4T",
-		rarity = 1,
 	},
 	{
-		name = "5I",
+		name = "5O",
 		tiles = {
 			{-2, 0},
 			{-1, 0},
@@ -134,11 +123,22 @@ local pieceDefs = {
 			{2, 0},
 		},
 		carveStrength = 1,
-		imageFile = "5I",
-		rarity = 1,
+		imageFile = "5O",
 	},
 	{
-		name = "5P",
+		name = "5PR",
+		tiles = {
+			{-1, 0},
+			{0, 0},
+			{1, 0},
+			{0, 1},
+			{-1, 1},
+		},
+		carveStrength = 1,
+		imageFile = "5P",
+	},
+	{
+		name = "5PL",
 		tiles = {
 			{-1, 0},
 			{0, 0},
@@ -148,20 +148,6 @@ local pieceDefs = {
 		},
 		carveStrength = 1,
 		imageFile = "5P",
-		rarity = 1,
-	},
-	{
-		name = "5Q",
-		tiles = {
-			{-1, 0},
-			{0, 0},
-			{1, 0},
-			{0, 1},
-			{-1, 1},
-		},
-		carveStrength = 1,
-		imageFile = "5Q",
-		rarity = 1,
 	},
 	{
 		name = "5L",
@@ -174,33 +160,18 @@ local pieceDefs = {
 		},
 		carveStrength = 1,
 		imageFile = "5L",
-		rarity = 1,
 	},
 	{
 		name = "5J",
 		tiles = {
 			{-1, 0},
-			{0, 0},
 			{1, 0},
-			{2, 0},
-			{2, 1},
-		},
-		carveStrength = 1,
-		imageFile = "5J",
-		rarity = 1,
-	},
-	{
-		name = "5P",
-		tiles = {
-			{-1, 0},
 			{0, 0},
-			{1, 0},
-			{0, 1},
+			{-2, 0},
 			{1, 1},
 		},
 		carveStrength = 1,
-		imageFile = "5P",
-		rarity = 1,
+		imageFile = "5J",
 	},
 	{
 		name = "5RL",
@@ -213,20 +184,18 @@ local pieceDefs = {
 		},
 		carveStrength = 1,
 		imageFile = "5RL",
-		rarity = 1,
 	},
 	{
 		name = "5RR",
 		tiles = {
-			{-1, -1},
+			{1, 0},
 			{0, -1},
 			{0, 0},
-			{1, 0},
 			{0, 1},
+			{-1, -1},
 		},
 		carveStrength = 1,
 		imageFile = "5RR",
-		rarity = 1,
 	},
 	{
 		name = "5SL",
@@ -239,7 +208,6 @@ local pieceDefs = {
 		},
 		carveStrength = 1,
 		imageFile = "5SL",
-		rarity = 1,
 	},
 	{
 		name = "5SR",
@@ -252,7 +220,6 @@ local pieceDefs = {
 		},
 		carveStrength = 1,
 		imageFile = "5SR",
-		rarity = 1,
 	},
 	{
 		name = "5T",
@@ -265,7 +232,6 @@ local pieceDefs = {
 		},
 		carveStrength = 1,
 		imageFile = "5T",
-		rarity = 1,
 	},
 	{
 		name = "5U",
@@ -278,7 +244,6 @@ local pieceDefs = {
 		},
 		carveStrength = 1,
 		imageFile = "5U",
-		rarity = 1,
 	},
 	{
 		name = "5V",
@@ -291,7 +256,6 @@ local pieceDefs = {
 		},
 		carveStrength = 1,
 		imageFile = "5V",
-		rarity = 1,
 	},
 	{
 		name = "5W",
@@ -304,7 +268,6 @@ local pieceDefs = {
 		},
 		carveStrength = 1,
 		imageFile = "5W",
-		rarity = 1,
 	},
 	{
 		name = "5X",
@@ -317,7 +280,6 @@ local pieceDefs = {
 		},
 		carveStrength = 1,
 		imageFile = "5X",
-		rarity = 1,
 	},
 	{
 		name = "5YL",
@@ -330,7 +292,6 @@ local pieceDefs = {
 		},
 		carveStrength = 1,
 		imageFile = "5YL",
-		rarity = 1,
 	},
 	{
 		name = "5YR",
@@ -343,7 +304,6 @@ local pieceDefs = {
 		},
 		carveStrength = 1,
 		imageFile = "5YR",
-		rarity = 1,
 	},
 	{
 		name = "5ZL",
@@ -356,7 +316,6 @@ local pieceDefs = {
 		},
 		carveStrength = 1,
 		imageFile = "5ZL",
-		rarity = 1,
 	},
 	{
 		name = "5ZR",
@@ -369,10 +328,8 @@ local pieceDefs = {
 		},
 		carveStrength = 1,
 		imageFile = "5ZR",
-		rarity = 1,
 	},
 }
-
 
 pieceDefs.names = {}
 for i = 1, #pieceDefs do

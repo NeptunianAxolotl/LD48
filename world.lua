@@ -84,9 +84,9 @@ function self.Initialize()
 	self.interfaceTransform = love.math.newTransform()
 	self.emptyTransform = love.math.newTransform()
 	
-	ShopHandler.Initialize(self)
 	PlayerHandler.Initialize(self)
 	TerrainHandler.Initialize(self)
+	ShopHandler.Initialize(self)
 	PieceHandler.Initialize(self)
 	Camera.Initialize(Global.BLOCK_SIZE, Global.BLOCK_SIZE)
 	

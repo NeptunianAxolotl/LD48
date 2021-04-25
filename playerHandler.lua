@@ -112,9 +112,9 @@ function self.OnScreenScroll()
 end
 
 function self.Update(dt)
-	UpdateProportion(dt, "pieceUpdateProp", 0.5)
-	UpdateProportion(dt, "bonusUpdateProp", 0.8)
-	UpdateProportion(dt, "moneyUpdateProp", 0.5)
+	UpdateProportion(dt, "pieceUpdateProp", 0.25)
+	UpdateProportion(dt, "bonusUpdateProp", 0.6)
+	UpdateProportion(dt, "moneyUpdateProp", 0.25)
 end
 
 function self.KeyPressed(key, scancode, isRepeat)
@@ -197,7 +197,7 @@ function self.DrawInterface(dt)
 
 	offset = 413
 	if self.moneyUpdateProp and not ShopHandler.IsActive() then
-		local prop = (self.moneyUpdateProp > 0.2 and util.SmoothZeroToOne((self.moneyUpdateProp - 0.1) / 0.7, 7)) or 0
+		local prop = (self.moneyUpdateProp > 0.2 and math.min(1, (util.SmoothZeroToOne((self.moneyUpdateProp - 0.1) / 0.7, 7) + 0.02))) or 0
 		local newMoney = math.floor(util.AverageScalar(self.money - self.moneyUpdateAmount*self.moneyUpdateMultiplier, self.money, prop) + 0.5)
 		local addMoney = math.floor(util.AverageScalar(self.moneyUpdateAmount, 0, prop) + 0.5)
 		love.graphics.print("Treasure: $" .. newMoney, offsetX, offset)

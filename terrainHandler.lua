@@ -113,6 +113,10 @@ function self.GetPieceSpawnPos()
 	return spawnX, spawnY
 end
 
+function self.GetSpawnDepth()
+	return spawnY
+end
+
 function self.WorldToScreen(x, y)
 	return x*Global.BLOCK_SIZE, y*Global.BLOCK_SIZE
 end
