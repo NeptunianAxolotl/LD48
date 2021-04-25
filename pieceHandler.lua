@@ -62,10 +62,11 @@ end
 function self.Update(dt)
 	if not currentPiece then
 		local pieceDef = pieceDefNames[util.SampleList(pieceList)]
+		local spawnX, spawnY = TerrainHandler.GetPieceSpawnPos()
 		currentPiece = {
 			def = pieceDef,
-			x = 8,
-			y = 2,
+			x = spawnX,
+			y = spawnY,
 			rotation = 0,
 			dropTime = dropSpeed,
 		}

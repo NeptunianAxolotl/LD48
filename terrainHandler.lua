@@ -98,14 +98,23 @@ function self.CarveTerrain(pX, pY, pRot, pDef, tiles)
 	end
 end
 
+function self.GetPieceSpawnPos()
+	return 8, 2
+end
+
 function self.Initialize()
 	for x = 1, Global.MAP_WIDTH do
 		blockMap[x] = {}
 		for y = 1, currentMaxY do
 			if y <= 2 then
 				blockMap[x][y] = {
-					image = "empty",
+					image = "sky",
 					toughness = 0,
+				}
+			elseif y == 3 then
+				blockMap[x][y] = {
+					image = "dirt_grass_n",
+					toughness = 1,
 				}
 			elseif math.random() < 0.04 then
 				blockMap[x][y] = {
