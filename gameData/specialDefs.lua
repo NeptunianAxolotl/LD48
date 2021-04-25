@@ -9,6 +9,11 @@ local defs = {
 		tile.moneyMult = 2
 		return tile
 	end,
+	vortex = function (tile)
+		tile.imageFile = "blackhole"
+		tile.vortex = true
+		return tile
+	end,
 }
 
 return defs

@@ -61,6 +61,28 @@ function self.AddCard(pieceDef)
 	self.discardPile[#self.discardPile + 1] = pieceDef
 end
 
+function self.TrashPiece(uniqueID)
+	if self.nextPiece.uniqueID == uniqueID then
+		self.nextPiece = nil
+		self.nextPiece = DiscardAndDrawNextPiece()
+		return
+	end
+	for i = 1, #self.drawPile do
+		if self.drawPile[i].uniqueID == uniqueID then
+			self.drawPile[i] = self.drawPile[#self.drawPile]
+			self.drawPile[#self.drawPile] = nil
+			return
+		end
+	end
+	for i = 1, #self.discardPile do
+		if self.discardPile[i].uniqueID == uniqueID then
+			self.discardPile[i] = self.discardPile[#self.discardPile]
+			self.discardPile[#self.discardPile] = nil
+			return
+		end
+	end
+end
+
 function self.CollectBlockValues(blockDestroyValues)
 	if #blockDestroyValues == 0 then
 		return

@@ -58,17 +58,23 @@ local function AddSpecialToPiece(pieceDef, specialName)
 	return pieceDef
 end
 
+local function GetPiece(defName)
+	local pieceDef = util.CopyTable(pieceDefs.names[defName], true)
+	pieceDef.uniqueID = math.random() -- Enables pieces to be found in the deck
+	return pieceDef
+end
+
 function self.IsActive()
 	return self.active
 end
 
 function self.GetStartingDeck()
 	return {
-		AddSpecialToPiece(util.CopyTable(pieceDefs.names["3I"], true), "moneyMult"),
-		AddSpecialToPiece(util.CopyTable(pieceDefs.names["3L"], true), "moneyMult"),
-		AddSpecialToPiece(util.CopyTable(pieceDefs.names["4S"], true), "moneyMult"),
-		AddSpecialToPiece(util.CopyTable(pieceDefs.names["4Z"], true), "moneyMult"),
-		AddSpecialToPiece(util.CopyTable(pieceDefs.names["4O"], true), "moneyMult"),
+		AddSpecialToPiece(GetPiece("3I"), "vortex"),
+		AddSpecialToPiece(GetPiece("3L"), "vortex"),
+		AddSpecialToPiece(GetPiece("4S"), "moneyMult"),
+		AddSpecialToPiece(GetPiece("4Z"), "moneyMult"),
+		AddSpecialToPiece(GetPiece("4O"), "moneyMult"),
 	}
 end
 

@@ -72,6 +72,7 @@ local function DestroyBlock(x, y, valueList, moneyMult)
 	end
 	blockData.image = "empty"
 	blockData.backImage = false
+	blockData.vortex = false
 	blockData.toughness = 0
 	
 	if valueList and blockData.value then
@@ -82,6 +83,17 @@ local function DestroyBlock(x, y, valueList, moneyMult)
 	if y >= scrollTrigger then
 		DoScroll(x, y)
 	end
+end
+
+local function CreateVortex(x, y)
+	DestroyBlock(x, y)
+	local blockData = self.BlockAt(x, y)
+	if not blockData then
+		return
+	end
+	blockData.vortex = true
+	blockData.toughness = 1
+	blockData.image = "blackhole"
 end
 
 ------------------------------------------------------------------------
@@ -135,12 +147,16 @@ function self.CheckPiecePlaceTrigger(pX, pY, pRot, pDef)
 			if blockData.toughness == 0 then
 				fullyCovered = false
 			end
+			-- Always get sucked into vortex
+			if blockData.vortex then
+				hitRock = true
+			end
 			-- Placement is triggered if the piece moves off econ blocks.
 			if blockData.value then
 				econBlockCount = econBlockCount + (tiles[i].moneyMult or 1)
 			end
 			-- Placement is triggered if the block hits something that is too tough.
-			if blockData.toughness > pDef.carveStrength then
+			if blockData.toughness > (tiles[i].carveStrength or pDef.carveStrength) then
 				hitRock = true
 			end
 		end
@@ -172,12 +188,21 @@ function self.CarveTerrain(pX, pY, pRot, pDef, tiles)
 						DestroyBlock(tileX + x, tileY + y)
 					end
 				end
+			elseif tiles[i].explosionRadius == 2 then
+				for x = -2, 2 do
+					for y = -2, 2 do
+						if math.abs(x) + math.abs(y) < 4 then
+							DestroyBlock(tileX + x, tileY + y)
+						end
+					end
+				end
 			end
 		end
 	end
 	
 	-- Only affect blocks that are not behind barriers, such as rocks.
 	local reCheck = true
+	local trashPiece = false
 	local processedBlocks = {}
 	local blockDestroyValues = {}
 	while reCheck do
@@ -187,20 +212,31 @@ function self.CarveTerrain(pX, pY, pRot, pDef, tiles)
 			local x, y = pX + tilePos[1], pY + tilePos[2]
 			if not (processedBlocks[x] and processedBlocks[x][y]) then
 				local blockData = self.BlockAt(x, y)
-				if blockData and blockData.toughness ~= 0 and 
-						(self.Empty(x - 1, y) or self.Empty(x + 1, y) or self.Empty(x, y - 1) or self.Empty(x, y + 1)) then
-					processedBlocks[x] = processedBlocks[x] or {}
-					processedBlocks[x][y] = true
-					if blockData.toughness > pDef.carveStrength then
-						blockData.hitPoints = blockData.hitPoints - 1
-						blockData.image = blockData.imageBase .. blockData.hitPoints
-						if blockData.hitPoints <= 0 then
-							DestroyBlock(x, y, blockDestroyValues, tiles[i].moneyMult)
-							reCheck = true
-						end
+				if blockData then
+					if tiles[i].vortex then
+						processedBlocks[x] = processedBlocks[x] or {}
+						processedBlocks[x][y] = true
+						CreateVortex(x, y)
+						trashPiece = true
 					else
-						DestroyBlock(x, y, blockDestroyValues, tiles[i].moneyMult)
-						reCheck = true
+						if blockData.toughness ~= 0 and (self.Empty(x - 1, y) or self.Empty(x + 1, y) or self.Empty(x, y - 1) or self.Empty(x, y + 1)) then
+							processedBlocks[x] = processedBlocks[x] or {}
+							processedBlocks[x][y] = true
+							if blockData.vortex then
+								trashPiece = true
+							end
+							if blockData.toughness > (tiles[i].carveStrength or pDef.carveStrength) then
+								blockData.hitPoints = blockData.hitPoints - 1
+								blockData.image = blockData.imageBase .. blockData.hitPoints
+								if blockData.hitPoints <= 0 then
+									DestroyBlock(x, y, blockDestroyValues, tiles[i].moneyMult)
+									reCheck = true
+								end
+							else
+								DestroyBlock(x, y, blockDestroyValues, tiles[i].moneyMult)
+								reCheck = true
+							end
+						end
 					end
 				end
 			end
@@ -208,6 +244,9 @@ function self.CarveTerrain(pX, pY, pRot, pDef, tiles)
 	end
 	
 	PlayerHandler.CollectBlockValues(blockDestroyValues)
+	if trashPiece then
+		PlayerHandler.TrashPiece(pDef.uniqueID)
+	end
 end
 
 ------------------------------------------------------------------------
