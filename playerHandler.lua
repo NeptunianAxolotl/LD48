@@ -148,11 +148,11 @@ function self.DrawInterface()
 		local tiles = pieceDef.tiles
 		for i = 1, #tiles do
 			local tile = tiles[i]
-			local dx, dy = offsetX + 70 + tile[1]*Global.BLOCK_SIZE, offset + 40 + tile[2]*Global.BLOCK_SIZE
+			local dx, dy = offsetX + 70 + tile[1]*Global.BLOCK_SIZE, offset + 42 + tile[2]*Global.BLOCK_SIZE
 			Resources.DrawImage(pieceDef.imageFile, dx, dy)
 		end
 	end
-	offset = offset + spacing*4
+	offset = offset + spacing*4.2
 	
 	love.graphics.print("Deck: " .. #self.drawPile, offsetX, offset)
 	offset = offset + spacing

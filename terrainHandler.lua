@@ -40,7 +40,7 @@ local function SpawnRow(row)
 				image = "dirt_grass_n",
 				toughness = 1,
 			}
-		elseif math.random() < 0.04 then
+		elseif math.random() < 0.05 then
 			blockMap[row][x] = {
 				image = "rock",
 				imageBase = "rock_",
@@ -48,11 +48,11 @@ local function SpawnRow(row)
 				toughness = 2,
 				hitPoints = 3,
 			}
-		elseif math.random() < 0.04 then
+		elseif math.random() < 0.1 then
 			blockMap[row][x] = {
 				image = "gold",
 				toughness = 1,
-				value = 10,
+				value = 50,
 			}
 		else
 			blockMap[row][x] = {
