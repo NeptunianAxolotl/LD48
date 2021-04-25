@@ -7,6 +7,7 @@ local Font = require("include/font")
 local PlayerHandler
 
 local pieceDefs = require("gameData/pieceDefs")
+local specialDefs = require("gameData/specialDefs")
 
 local itemPositions = {
 	{19 * 32, 14.25 * 32},
@@ -49,17 +50,25 @@ local function PurchaseCurrentItem()
 	end
 end
 
+local function AddSpecialToPiece(pieceDef, specialName)
+	local specialDefFunc = specialDefs[specialName]
+	local tile, index = util.SampleList(pieceDef.tiles)
+	pieceDef.tiles[index] = specialDefFunc(tile)
+	
+	return pieceDef
+end
+
 function self.IsActive()
 	return self.active
 end
 
 function self.GetStartingDeck()
 	return {
-		util.CopyTable(pieceDefs.names["3I"], true),
-		util.CopyTable(pieceDefs.names["3L"], true),
-		util.CopyTable(pieceDefs.names["4S"], true),
-		util.CopyTable(pieceDefs.names["4Z"], true),
-		util.CopyTable(pieceDefs.names["4O"], true),
+		AddSpecialToPiece(util.CopyTable(pieceDefs.names["3I"], true), "bomb"),
+		AddSpecialToPiece(util.CopyTable(pieceDefs.names["3L"], true), "bomb"),
+		AddSpecialToPiece(util.CopyTable(pieceDefs.names["4S"], true), "bomb"),
+		AddSpecialToPiece(util.CopyTable(pieceDefs.names["4Z"], true), "bomb"),
+		AddSpecialToPiece(util.CopyTable(pieceDefs.names["4O"], true), "bomb"),
 	}
 end
 
@@ -123,6 +132,14 @@ function self.DrawCardOnInterface(cardX, cardY, pDef, label, price)
 			local tile = tiles[i]
 			local dx, dy = centX + tile[1]*Global.SHOP_BLOCK_SIZE, centY + tile[2]*Global.SHOP_BLOCK_SIZE
 			Resources.DrawImage(pDef.imageFile, dx, dy, 0, 1, Global.SHOP_BLOCK_SIZE/Global.BLOCK_SIZE)
+		end
+		local tiles = pDef.tiles
+		for i = 1, #tiles do
+			local tile = tiles[i]
+			local dx, dy = centX + tile[1]*Global.SHOP_BLOCK_SIZE, centY + tile[2]*Global.SHOP_BLOCK_SIZE
+			if tile.imageFile then
+				Resources.DrawImage(tile.imageFile, dx, dy, 0, 1, Global.SHOP_BLOCK_SIZE/Global.BLOCK_SIZE)
+			end
 		end
 	end
 	if label then

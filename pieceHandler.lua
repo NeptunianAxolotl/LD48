@@ -116,6 +116,13 @@ function self.Draw()
 			local dx, dy = TerrainHandler.WorldToScreen(currentPiece.x + tile[1], currentPiece.y + tile[2])
 			Resources.DrawImage(currentPiece.def.imageFile, dx, dy)
 		end
+		for i = 1, #tiles do
+			local tile = util.RotateVectorOrthagonal(tiles[i], currentPiece.rotation * math.pi/2)
+			local dx, dy = TerrainHandler.WorldToScreen(currentPiece.x + tile[1], currentPiece.y + tile[2])
+			if tiles[i].imageFile then
+				Resources.DrawImage(tiles[i].imageFile, dx, dy)
+			end
+		end
 	end
 end
 

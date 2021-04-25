@@ -67,6 +67,9 @@ end
 
 local function DestroyBlock(x, y, valueList)
 	local blockData = self.BlockAt(x, y)
+	if not blockData then
+		return
+	end
 	blockData.image = "empty"
 	blockData.backImage = false
 	blockData.toughness = 0
@@ -108,8 +111,8 @@ end
 function self.PieceInsidePlayArea(pX, pY, pRot, pDef)
 	local tiles = pDef.tiles
 	for i = 1, #tiles do
-		local tile = util.RotateVectorOrthagonal(tiles[i], pRot * math.pi/2)
-		local x, y = pX + tile[1], pY + tile[2]
+		local tilePos = util.RotateVectorOrthagonal(tiles[i], pRot * math.pi/2)
+		local x, y = pX + tilePos[1], pY + tilePos[2]
 		local blockData = blockMap[y] and blockMap[y][x]
 		if not blockData then
 			return false
@@ -124,8 +127,8 @@ function self.CheckPiecePlaceTrigger(pX, pY, pRot, pDef)
 	local hitRock = false
 	local econBlockCount = 0
 	for i = 1, #tiles do
-		local tile = util.RotateVectorOrthagonal(tiles[i], pRot * math.pi/2)
-		local x, y = pX + tile[1], pY + tile[2]
+		local tilePos = util.RotateVectorOrthagonal(tiles[i], pRot * math.pi/2)
+		local x, y = pX + tilePos[1], pY + tilePos[2]
 		local blockData = blockMap[y] and blockMap[y][x]
 		if blockData then
 			-- Placement is triggered if there are no empty squares
@@ -153,9 +156,24 @@ function self.CarveTerrain(pX, pY, pRot, pDef, tiles)
 	local tiles = pDef.tiles
 	
 	for i = 1, #tiles do
-		local tile = util.RotateVectorOrthagonal(tiles[i], pRot * math.pi/2)
-		local x, y = self.WorldToScreen(pX + tile[1], pY + tile[2])
+		local tilePos = util.RotateVectorOrthagonal(tiles[i], pRot * math.pi/2)
+		local x, y = self.WorldToScreen(pX + tilePos[1], pY + tilePos[2])
 		EffectsHandler.Spawn("piece_fade", {x, y})
+	end
+	
+	-- Explode bombs
+	for i = 1, #tiles do
+		if tiles[i].explosionRadius then
+			local tilePos = util.RotateVectorOrthagonal(tiles[i], pRot * math.pi/2)
+			local tileX, tileY = pX + tilePos[1], pY + tilePos[2]
+			if tiles[i].explosionRadius == 1 then
+				for x = -1, 1 do
+					for y = -1, 1 do
+						DestroyBlock(tileX + x, tileY + y)
+					end
+				end
+			end
+		end
 	end
 	
 	-- Only affect blocks that are not behind barriers, such as rocks.
@@ -165,8 +183,8 @@ function self.CarveTerrain(pX, pY, pRot, pDef, tiles)
 	while reCheck do
 		reCheck = false
 		for i = 1, #tiles do
-			local tile = util.RotateVectorOrthagonal(tiles[i], pRot * math.pi/2)
-			local x, y = pX + tile[1], pY + tile[2]
+			local tilePos = util.RotateVectorOrthagonal(tiles[i], pRot * math.pi/2)
+			local x, y = pX + tilePos[1], pY + tilePos[2]
 			if not (processedBlocks[x] and processedBlocks[x][y]) then
 				local blockData = self.BlockAt(x, y)
 				if blockData and blockData.toughness ~= 0 and 
