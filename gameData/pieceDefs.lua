@@ -131,7 +131,7 @@ local pieceDefs = {
 			{-1, 0},
 			{0, 0},
 			{1, 0},
-			(2, 0),
+			{2, 0},
 		},
 		carveStrength = 1,
 		imageFile = "5I",
