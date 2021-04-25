@@ -6,4 +6,5 @@ return {
 	WORLD_Y = 0,
 	TRIGGER_OFFSET = 21,
 	BLOCK_SPAWN_SPAN = 45,
+	WORLD_SCREEN_X = 32,
 }

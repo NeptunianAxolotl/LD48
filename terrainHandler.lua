@@ -11,6 +11,8 @@ local blockMap = {} -- Note that this is blockMap[y][x] for easy cleanup.
 local spawnX = 8
 local spawnY = 2
 
+local cullWait = 0
+
 local currentMinY = spawnY - 1
 local currentMaxY = currentMinY + Global.BLOCK_SPAWN_SPAN
 
@@ -25,6 +27,7 @@ local function DoScroll(triggerX, triggerY)
 	spawnX, spawnY = triggerX, triggerY
 	desiredTopDraw = (spawnY - 1) * Global.BLOCK_SIZE
 	scrollTrigger = scrollTrigger + Global.TRIGGER_OFFSET
+	cullWait = 3
 end
 
 local function SpawnRow(row)
@@ -44,6 +47,7 @@ local function SpawnRow(row)
 			blockMap[row][x] = {
 				image = "rock",
 				imageBase = "rock_",
+				backImage = "dirt",
 				toughness = 2,
 				hitPoints = 3,
 			}
@@ -59,6 +63,16 @@ local function SpawnRow(row)
 				toughness = 1,
 			}
 		end
+	end
+end
+
+local function DestroyBlock(x, y)
+	local blockData = self.BlockAt(x, y)
+	blockData.image = "empty"
+	blockData.backImage = false
+	blockData.toughness = 0
+	if y >= scrollTrigger then
+		DoScroll(x, y)
 	end
 end
 
@@ -151,20 +165,12 @@ function self.CarveTerrain(pX, pY, pRot, pDef, tiles)
 						blockData.hitPoints = blockData.hitPoints - 1
 						blockData.image = blockData.imageBase .. blockData.hitPoints
 						if blockData.hitPoints <= 0 then
-							blockData.image = "empty"
-							blockData.toughness = 0
+							DestroyBlock(x, y)
 							reCheck = true
-							if y >= scrollTrigger then
-								DoScroll(x, y)
-							end
 						end
 					else
-						blockData.image = "empty"
-						blockData.toughness = 0
+						DestroyBlock(x, y)
 						reCheck = true
-						if y >= scrollTrigger then
-							DoScroll(x, y)
-						end
 					end
 				end
 			end
@@ -176,16 +182,23 @@ end
 ------------------------------------------------------------------------
 -- Callins
 
-function self.UpdateAreaCulling()
-	if spawnY <= currentMinY + 1 then
+function self.UpdateAreaCulling(dt)
+	if spawnY <= currentMinY + 4 then
 		return
 	end
 	
+	if cullWait then
+		cullWait = cullWait - dt
+		if cullWait < 0 then
+			cullWait = false
+		end
+	end
+	
 	-- Delete old blocks
-	for y = currentMinY, spawnY - 4 do
+	for y = currentMinY, spawnY - 5 do
 		blockMap[y] = nil
 	end
-	currentMinY = spawnY - 1
+	currentMinY = spawnY - 4
 	
 	-- Add new blocks
 	for y = currentMaxY + 1, spawnY + Global.BLOCK_SPAWN_SPAN do
@@ -195,7 +208,6 @@ function self.UpdateAreaCulling()
 end
 
 function self.Update(dt)
-	
 end
 
 function self.Initialize()
@@ -217,6 +229,9 @@ function self.Draw(xOffset, yOffset)
 		for y = currentMinY, currentMaxY do
 			local block = blockMap[y][x]
 			local dx, dy = self.WorldToScreen(x, y)
+			if block.backImage then
+				Resources.DrawImage(block.backImage, dx, dy)
+			end
 			Resources.DrawImage(block.image, dx, dy)
 		end
 	end

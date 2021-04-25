@@ -47,6 +47,8 @@ function love.load(arg)
 	local major, minor, revision, codename = love.getVersion()
 	print(string.format("Version %d.%d.%d - %s", major, minor, revision, codename))
 
+	love.graphics.setBackgroundColor(0.6, 0.6, 0.6, 1)
+
 	love.keyboard.setKeyRepeat(true)
 	math.randomseed(os.clock())
 	Resources.LoadResources()

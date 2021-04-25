@@ -91,7 +91,7 @@ function self.KeyPressed(key, scancode, isRepeat)
 		elseif key == "down" then
 			currentPiece.dropTime = dropSpeed
 			MovePiece(0, 1, 0)
-		elseif key == "z" then
+		elseif key == "z" or key == "up" then
 			MovePiece(0, 0, -1)
 		elseif key == "x" then
 			MovePiece(0, 0, 1)
