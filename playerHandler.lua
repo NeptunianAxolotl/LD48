@@ -13,6 +13,15 @@ local PIECE_DOWN_REDUCE = 1
 
 local self = {}
 
+local function UpdateProportion(dt, name, speed)
+	if self[name] then
+		self[name] = self[name] + speed*dt
+		if self[name] > 1 then
+			self[name] = false
+		end
+	end
+end
+
 local function DiscardAndDrawNextPiece()
 	if self.nextPiece then
 		self.discardPile[#self.discardPile + 1] = self.nextPiece
@@ -24,6 +33,7 @@ local function DiscardAndDrawNextPiece()
 		if self.shufflesUntilPiecePerScreenDown <= 0 then
 			self.shufflesUntilPiecePerScreenDown = SUFFLE_PER_PIECE_DOWN
 			self.piecesPerScreen = self.piecesPerScreen - PIECE_DOWN_REDUCE
+			self.bonusUpdateProp = 0
 		end
 	end
 	local pieceName, index = util.SampleList(self.drawPile)
@@ -44,9 +54,20 @@ function self.CollectBlockValues(blockDestroyValues)
 		return
 	end
 	local multiplier = 1 + (#blockDestroyValues - 1) / 2
+	local moneyMade = 0
 	for i = 1, #blockDestroyValues do
-		self.money = self.money + math.floor(multiplier * blockDestroyValues[i] + 0.5)
+		moneyMade = moneyMade + math.floor(multiplier * blockDestroyValues[i] + 0.5)
 	end
+	
+	if moneyMade <= 0 then
+		return
+	end
+	
+	self.money = self.money + moneyMade
+	
+	self.moneyUpdateProp = 0
+	self.moneyUpdateAmount = moneyMade
+	self.moneyUpdateMultiplier = multiplier*100
 end
 
 function self.OnScreenScroll()
@@ -56,12 +77,9 @@ function self.OnScreenScroll()
 end
 
 function self.Update(dt)
-	if self.pieceUpdateProp then
-		self.pieceUpdateProp = self.pieceUpdateProp + 0.4*dt
-		if self.pieceUpdateProp > 1 then
-			self.pieceUpdateProp = false
-		end
-	end
+	UpdateProportion(dt, "pieceUpdateProp", 0.4)
+	UpdateProportion(dt, "bonusUpdateProp", 0.8)
+	UpdateProportion(dt, "moneyUpdateProp", 0.6)
 end
 
 function self.KeyPressed(key, scancode, isRepeat)
@@ -81,8 +99,14 @@ function self.Initialize()
 
 	self.nextPiece = DiscardAndDrawNextPiece()
 	
+	self.bonusUpdateProp = false
+	
 	self.pieceUpdateProp = false
 	self.pieceUpdateOld = false
+	
+	self.moneyUpdateProp = false
+	self.moneyUpdateAmount = false
+	self.moneyUpdateMultiplier = false
 end
 
 function self.DrawInterface()
@@ -106,6 +130,12 @@ function self.DrawInterface()
 	end
 	offset = offset + spacing
 	love.graphics.print("Dig Deeper for Bonus: " .. self.piecesPerScreen, offsetX, offset)
+	if self.bonusUpdateProp then
+		local prop = util.SmoothZeroToOne(self.bonusUpdateProp, 7)
+		love.graphics.setColor(1, 1, 1, (self.bonusUpdateProp < 0.8 and 1) or (1 - (self.bonusUpdateProp - 0.8) / 0.2))
+		love.graphics.print("-1", offsetX + 296, offset)
+		love.graphics.setColor(1, 1, 1, 1)
+	end
 	offset = offset + spacing
 	love.graphics.print("Dig Bonus Shuffles: " .. self.shufflesUntilPiecePerScreenDown, offsetX, offset)
 	offset = offset + spacing
@@ -130,7 +160,18 @@ function self.DrawInterface()
 	offset = offset + spacing
 	
 	offset = offset + spacing*0.618
-	love.graphics.print("Money: $" .. self.money, offsetX, offset)
+	if self.moneyUpdateProp then
+		local prop = (self.moneyUpdateProp > 0.2 and util.SmoothZeroToOne((self.moneyUpdateProp - 0.2) / 0.8, 7)) or 0
+		local newMoney = math.floor(util.AverageScalar(self.money - self.moneyUpdateAmount, self.money, prop) + 0.5)
+		local addMoney = math.floor(util.AverageScalar(self.moneyUpdateAmount, 0, prop) + 0.5)
+		love.graphics.print("Money: $" .. newMoney, offsetX, offset)
+		
+		love.graphics.setColor(1, 1, 1, (self.moneyUpdateProp < 0.9 and 1) or (1 - (self.moneyUpdateProp - 0.9) / 0.1))
+		love.graphics.print(" + " .. addMoney .. " x " .. self.moneyUpdateMultiplier .. "%", offsetX + 180, offset)
+		love.graphics.setColor(1, 1, 1, 1)
+	else
+		love.graphics.print("Money: $" .. self.money, offsetX, offset)
+	end
 	offset = offset + spacing
 end
 
