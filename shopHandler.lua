@@ -44,13 +44,23 @@ local function PurchaseCurrentItem()
 	end
 	
 	if item.pDef then
-		PlayerHandler.AddCard(item.pDef.name)
+		PlayerHandler.AddCard(item.pDef)
 		item.pDef = GetNewItem()
 	end
 end
 
 function self.IsActive()
 	return self.active
+end
+
+function self.GetStartingDeck()
+	return {
+		util.CopyTable(pieceDefs.names["3I"], true),
+		util.CopyTable(pieceDefs.names["3L"], true),
+		util.CopyTable(pieceDefs.names["4S"], true),
+		util.CopyTable(pieceDefs.names["4Z"], true),
+		util.CopyTable(pieceDefs.names["4O"], true),
+	}
 end
 
 function self.Update(dt)

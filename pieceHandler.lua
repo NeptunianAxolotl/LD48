@@ -6,8 +6,6 @@ local Global = require("global")
 
 local PlayerHandler
 
-local pieceDefs = require("gameData/pieceDefs")
-
 local self = {}
 
 local dropSpeed = 0.9
@@ -51,10 +49,14 @@ function MovePiece(xChange, yChange, rotChange, blockInsteadOfPlace)
 	currentPiece.rotation = newRot
 end
 
+local function PlacePiece()
+	TerrainHandler.CarveTerrain(currentPiece.x, currentPiece.y, currentPiece.rotation, currentPiece.def)
+	currentPiece = false
+end
+
 function self.Update(dt)
 	if not currentPiece then
-		local pieceName = PlayerHandler.UseNextPiece()
-		local pieceDef = pieceDefs.names[pieceName]
+		local pieceDef = PlayerHandler.UseNextPiece()
 		local spawnX, spawnY = TerrainHandler.GetPieceSpawnPos()
 		currentPiece = {
 			def = pieceDef,
@@ -88,6 +90,8 @@ function self.KeyPressed(key, scancode, isRepeat)
 			MovePiece(0, 0, -1)
 		elseif key == "x" then
 			MovePiece(0, 0, 1)
+		elseif key == "return" or key == "kpenter" then
+			--PlacePiece()
 		end
 	end
 end

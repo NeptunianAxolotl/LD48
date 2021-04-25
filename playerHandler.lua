@@ -7,8 +7,6 @@ local Font = require("include/font")
 
 local ShopHandler
 
-local pieceDefs = require("gameData/pieceDefs")
-
 local PIECE_CARRYOVER = 0.8
 local SUFFLE_PER_PIECE_DOWN = 5
 local PIECE_DOWN_REDUCE = 1
@@ -38,10 +36,10 @@ local function DiscardAndDrawNextPiece()
 			self.bonusUpdateProp = 0
 		end
 	end
-	local pieceName, index = util.SampleList(self.drawPile)
+	local pieceDef, index = util.SampleList(self.drawPile)
 	self.drawPile[index] = self.drawPile[#self.drawPile]
 	self.drawPile[#self.drawPile] = nil
-	return pieceName
+	return pieceDef
 end
 
 function self.UseNextPiece()
@@ -59,8 +57,8 @@ function self.SpendMoney(amount)
 	return true
 end
 
-function self.AddCard(cardName)
-	self.discardPile[#self.discardPile + 1] = cardName
+function self.AddCard(pieceDef)
+	self.discardPile[#self.discardPile + 1] = pieceDef
 end
 
 function self.CollectBlockValues(blockDestroyValues)
@@ -103,15 +101,11 @@ function self.Initialize(world)
 	self.money = 0
 	self.piecesRemaining = 46
 	self.piecesPerScreen = 20
-	self.drawPile = {
-		"3I",
-		"3L",
-		"4S",
-	}
 	self.discardPile = {}
 	self.shufflesUntilPiecePerScreenDown = SUFFLE_PER_PIECE_DOWN
 
 	ShopHandler = world.GetShopHandler()
+	self.drawPile = ShopHandler.GetStartingDeck()
 
 	self.nextPiece = DiscardAndDrawNextPiece()
 	
@@ -158,7 +152,7 @@ function self.DrawInterface()
 	offset = 160
 	
 	if self.nextPiece then
-		ShopHandler.DrawCardOnInterface(768, 160, pieceDefs.names[self.nextPiece])
+		ShopHandler.DrawCardOnInterface(768, 160, self.nextPiece)
 	end
 	offset = offset + spacing*4.2
 	
