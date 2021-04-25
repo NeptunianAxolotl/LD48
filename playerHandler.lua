@@ -5,6 +5,8 @@ local TerrainHandler = require("terrainHandler")
 local Global = require("global")
 local Font = require("include/font")
 
+local ShopHandler
+
 local pieceDefs = require("gameData/pieceDefs")
 
 local PIECE_CARRYOVER = 0.8
@@ -97,7 +99,7 @@ end
 function self.KeyPressed(key, scancode, isRepeat)
 end
 
-function self.Initialize()
+function self.Initialize(world)
 	self.money = 0
 	self.piecesRemaining = 46
 	self.piecesPerScreen = 20
@@ -108,6 +110,8 @@ function self.Initialize()
 	}
 	self.discardPile = {}
 	self.shufflesUntilPiecePerScreenDown = SUFFLE_PER_PIECE_DOWN
+
+	ShopHandler = world.GetShopHandler()
 
 	self.nextPiece = DiscardAndDrawNextPiece()
 	
@@ -128,42 +132,33 @@ function self.DrawInterface()
 	love.graphics.setColor(1, 1, 1)
 	
 	local offsetX = 610
-	local offset = 30
-	local spacing = 30
+	local offset = 93
+	local spacing = 32
 	
 	if self.pieceUpdateProp then
 		local prop = (self.pieceUpdateProp > 0.25 and util.SmoothZeroToOne((self.pieceUpdateProp - 0.25) / 0.75, 7)) or 0
-		love.graphics.print("Piece Budget: " .. math.floor(util.AverageScalar(self.pieceUpdateOld, self.piecesRemaining, prop) + 0.5), offsetX, offset)
+		love.graphics.print("Turns remaining: " .. math.floor(util.AverageScalar(self.pieceUpdateOld, self.piecesRemaining, prop) + 0.5), offsetX, offset)
 		local oldBracket = math.floor(util.AverageScalar(self.pieceUpdateOld, 0, prop) + 0.5)
 		local oldBonus = math.floor(util.AverageScalar(self.piecesPerScreen, 0, prop) + 0.5)
 		love.graphics.setColor(1, 1, 1, (self.pieceUpdateProp < 0.9 and 1) or (1 - (self.pieceUpdateProp - 0.9) / 0.1))
-		love.graphics.print("(" .. oldBracket .. " x 80% + " .. oldBonus .. " Bonus)", offsetX + 220, offset)
+		love.graphics.print(" + " .. oldBonus, offsetX + 230, offset)
 		love.graphics.setColor(1, 1, 1, 1)
 	else
-		love.graphics.print("Piece Budget: " .. self.piecesRemaining, offsetX, offset)
+		love.graphics.print("Turns remaining: " .. self.piecesRemaining, offsetX, offset)
 	end
 	offset = offset + spacing
-	love.graphics.print("Dig Deep Bonus: " .. self.piecesPerScreen, offsetX, offset)
+	love.graphics.print("Extra turns per level: " .. self.piecesPerScreen, offsetX, offset)
 	if self.bonusUpdateProp then
 		local prop = util.SmoothZeroToOne(self.bonusUpdateProp, 7)
 		love.graphics.setColor(1, 1, 1, (self.bonusUpdateProp < 0.8 and 1) or (1 - (self.bonusUpdateProp - 0.8) / 0.2))
-		love.graphics.print("-1", offsetX + 280, offset)
+		love.graphics.print("- 1", offsetX + 280, offset)
 		love.graphics.setColor(1, 1, 1, 1)
 	end
-	offset = offset + spacing
-	love.graphics.print("Shuffles at Current Bonus: " .. self.shufflesUntilPiecePerScreenDown, offsetX, offset)
-	offset = offset + spacing
 	
-	offset = offset + spacing*0.618
-	offset = offset + spacing
+	offset = 160
+	
 	if self.nextPiece then
-		local pieceDef = pieceDefs.names[self.nextPiece]
-		local tiles = pieceDef.tiles
-		for i = 1, #tiles do
-			local tile = tiles[i]
-			local dx, dy = offsetX + 70 + tile[1]*Global.BLOCK_SIZE, offset + 42 + tile[2]*Global.BLOCK_SIZE
-			Resources.DrawImage(pieceDef.imageFile, dx, dy)
-		end
+		ShopHandler.DrawCardOnInterface(768, 160, pieceDefs.names[self.nextPiece])
 	end
 	offset = offset + spacing*4.2
 	

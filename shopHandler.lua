@@ -104,30 +104,34 @@ function self.Initialize(world)
 	end
 end
 
-local function DrawItem(opt)
-	local cardX, cardY = itemPositions[opt.position][1], itemPositions[opt.position][2]
+function self.DrawCardOnInterface(cardX, cardY, pDef, label, price)
 	local centX = cardX + 2*Global.BLOCK_SIZE - Global.SHOP_BLOCK_SIZE/2
 	local centY = cardY + 2*Global.BLOCK_SIZE - Global.SHOP_BLOCK_SIZE*1.1
-	if opt.pDef then
-		local tiles = opt.pDef.tiles
+	if pDef then
+		local tiles = pDef.tiles
 		for i = 1, #tiles do
 			local tile = tiles[i]
 			local dx, dy = centX + tile[1]*Global.SHOP_BLOCK_SIZE, centY + tile[2]*Global.SHOP_BLOCK_SIZE
-			Resources.DrawImage(opt.pDef.imageFile, dx, dy, 0, 1, Global.SHOP_BLOCK_SIZE/Global.BLOCK_SIZE)
+			Resources.DrawImage(pDef.imageFile, dx, dy, 0, 1, Global.SHOP_BLOCK_SIZE/Global.BLOCK_SIZE)
 		end
 	end
-	if opt.label then
+	if label then
 		Font.SetSize(1)
 		love.graphics.setColor(1, 1, 1)
 		
-		love.graphics.printf(opt.label, cardX, centY - 0.1*Global.BLOCK_SIZE, 4*Global.BLOCK_SIZE, "center")
+		love.graphics.printf(label, cardX, centY - 0.1*Global.BLOCK_SIZE, 4*Global.BLOCK_SIZE, "center")
 	end
-	if opt.price then
+	if price then
 		Font.SetSize(1)
 		love.graphics.setColor(0, 0, 0)
 		
-		love.graphics.print("$" .. opt.price, cardX + 5, cardY + 2.8*Global.BLOCK_SIZE)
+		love.graphics.print("$" .. price, cardX + 5, cardY + 2.8*Global.BLOCK_SIZE)
 	end
+end
+
+local function DrawItem(opt)
+	local cardX, cardY = itemPositions[opt.position][1], itemPositions[opt.position][2]
+	self.DrawCardOnInterface(cardX, cardY, opt.pDef, opt.label, opt.price)
 end
 
 function self.DrawInterface()
