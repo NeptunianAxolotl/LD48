@@ -1,9 +1,15 @@
 local defs = {
 	{
-		name = "3L",
+		name = "1I",
+	},
+	{
+		name = "2I",
 	},
 	{
 		name = "3I",
+	},
+	{
+		name = "3L",
 	},
 	{
 		name = "4I",
@@ -15,7 +21,70 @@ local defs = {
 		name = "4Z",
 	},
 	{
-		name = "5R",
+		name = "4L",
+	},
+	{
+		name = "4J",
+	},
+	{
+		name = "4O",
+	},
+	{
+		name = "4T",
+	},
+	{
+		name = "5I",
+	},
+	{
+		name = "5P",
+	},
+	{
+		name = "5Q",
+	},
+	{
+		name = "5L",
+	},
+	{
+		name = "5J",
+	},
+	{
+		name = "5RL",
+	},
+	{
+		name = "5RR",
+	},
+	{
+		name = "5SL",
+	},
+	{
+		name = "5SR",
+	},
+	{
+		name = "5T",
+	},
+	{
+		name = "5U",
+	},
+	{
+		name = "5V",
+	},
+	{
+		name = "5W",
+	},
+	{
+		name = "5X",
+	},
+	{
+		name = "5YL",
+	},
+	{
+		name = "5YR",
+	},
+	{
+		name = "5ZL",
+	},
+	{
+		name = "5ZR",
 	},
 }
 
