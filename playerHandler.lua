@@ -50,10 +50,18 @@ function self.CollectBlockValues(blockDestroyValues)
 end
 
 function self.OnScreenScroll()
+	self.pieceUpdateProp = 0
+	self.pieceUpdateOld = self.piecesRemaining
 	self.piecesRemaining = math.floor(self.piecesRemaining * PIECE_CARRYOVER) + self.piecesPerScreen
 end
 
 function self.Update(dt)
+	if self.pieceUpdateProp then
+		self.pieceUpdateProp = self.pieceUpdateProp + 0.4*dt
+		if self.pieceUpdateProp > 1 then
+			self.pieceUpdateProp = false
+		end
+	end
 end
 
 function self.KeyPressed(key, scancode, isRepeat)
@@ -72,6 +80,9 @@ function self.Initialize()
 	self.shufflesUntilPiecePerScreenDown = SUFFLE_PER_PIECE_DOWN
 
 	self.nextPiece = DiscardAndDrawNextPiece()
+	
+	self.pieceUpdateProp = false
+	self.pieceUpdateOld = false
 end
 
 function self.DrawInterface()
@@ -82,7 +93,17 @@ function self.DrawInterface()
 	local offset = 30
 	local spacing = 30
 	
-	love.graphics.print("Pieces: 34  (" .. self.piecesRemaining .. " x 80% + " .. self.piecesPerScreen .. " Bonus)", offsetX, offset)
+	if self.pieceUpdateProp then
+		local prop = (self.pieceUpdateProp > 0.25 and util.SmoothZeroToOne((self.pieceUpdateProp - 0.25) / 0.75, 7)) or 0
+		love.graphics.print("Pieces: " .. math.floor(util.AverageScalar(self.pieceUpdateOld, self.piecesRemaining, prop) + 0.5), offsetX, offset)
+		local oldBracket = math.floor(util.AverageScalar(self.pieceUpdateOld, 0, prop) + 0.5)
+		local oldBonus = math.floor(util.AverageScalar(self.piecesPerScreen, 0, prop) + 0.5)
+		love.graphics.setColor(1, 1, 1, (self.pieceUpdateProp < 0.9 and 1) or (1 - (self.pieceUpdateProp - 0.9) / 0.1))
+		love.graphics.print("(" .. oldBracket .. " x 80% + " .. oldBonus .. " Bonus)", offsetX + 140, offset)
+		love.graphics.setColor(1, 1, 1, 1)
+	else
+		love.graphics.print("Pieces: " .. self.piecesRemaining, offsetX, offset)
+	end
 	offset = offset + spacing
 	love.graphics.print("Dig Deeper for Bonus: " .. self.piecesPerScreen, offsetX, offset)
 	offset = offset + spacing

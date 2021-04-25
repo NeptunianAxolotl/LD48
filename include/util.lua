@@ -129,6 +129,11 @@ function util.Average(u, v, uFactor)
 	return util.Add(util.Mult(uFactor, util.Subtract(v, u)), u)
 end
 
+function util.AverageScalar(u, v, uFactor)
+	uFactor = uFactor or 0.5
+	return u*(1 - uFactor) + v * uFactor
+end
+
 function util.AngleSubtractShortest(angleA, angleB)
 	local dist = angleA - angleB
 	if dist > 0 then
@@ -385,6 +390,14 @@ function util.Permute(list)
 		local j = math.random(i)
 		list[i], list[j] = list[j], list[i]
 	end
+end
+
+--------------------------------------------------
+--------------------------------------------------
+-- Nice Functions
+
+function util.SmoothZeroToOne(value, factor)
+	return 1 / (1 + math.exp( - factor * (value - 0.5)))
 end
 
 --------------------------------------------------
