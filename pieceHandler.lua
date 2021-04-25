@@ -11,6 +11,7 @@ local self = {}
 local dropSpeed = 0.9
 local currentPiece = false
 local currentPieceTimer = 0
+local noPiecesLeft = false
 
 function MovePiece(xChange, yChange, rotChange, econCheckCarve)
 	local newX = currentPiece.x + xChange
@@ -64,16 +65,20 @@ end
 function self.Update(dt)
 	if not currentPiece then
 		local pieceDef = PlayerHandler.UseNextPiece()
-		local spawnX, spawnY = TerrainHandler.GetPieceSpawnPos()
-		currentPiece = {
-			def = pieceDef,
-			x = spawnX,
-			y = spawnY,
-			rotation = 0,
-			dropTime = dropSpeed,
-			econBlockCount = 0,
-		}
-		MovePiece(0, 0, 0)
+		if pieceDef then
+			local spawnX, spawnY = TerrainHandler.GetPieceSpawnPos()
+			currentPiece = {
+				def = pieceDef,
+				x = spawnX,
+				y = spawnY,
+				rotation = 0,
+				dropTime = dropSpeed,
+				econBlockCount = 0,
+			}
+			MovePiece(0, 0, 0)
+		else
+			noPiecesLeft = true
+		end
 	end
 	
 	if currentPiece then
@@ -105,6 +110,10 @@ function self.KeyPressed(key, scancode, isRepeat)
 end
 
 function self.Initialize(world)
+	currentPiece = false
+	currentPieceTimer = 0
+	noPiecesLeft = false
+	
 	PlayerHandler = world.GetPlayerHandler()
 end
 

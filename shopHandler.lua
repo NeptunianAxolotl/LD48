@@ -74,7 +74,7 @@ function self.GetStartingDeck()
 		AddSpecialToPiece(GetPiece("3L"), "vortex"),
 		AddSpecialToPiece(GetPiece("4S"), "moneyMult"),
 		AddSpecialToPiece(GetPiece("4Z"), "moneyMult"),
-		AddSpecialToPiece(GetPiece("4O"), "moneyMult"),
+		AddSpecialToPiece(GetPiece("4O"), "vortex"),
 	}
 end
 
