@@ -10,12 +10,12 @@ local pieceDefs = require("game_data/pieceDefs")
 local specialDefs = require("game_data/specialDefs")
 
 local itemPositions = {
-	{19 * 32, 14.25 * 32},
-	{24 * 32, 14.25 * 32},
-	{29 * 32, 14.25 * 32},
-	{19 * 32, 19 * 32},
-	{24 * 32, 19 * 32},
-	{29 * 32, 19 * 32},
+	{19 * 32, 14.25 * 32 - 8},
+	{24 * 32, 14.25 * 32 - 8},
+	{29 * 32, 14.25 * 32 - 8},
+	{19 * 32, 19 * 32 - 8},
+	{24 * 32, 19 * 32 - 8},
+	{29 * 32, 19 * 32 - 8},
 }
 
 local self = {}

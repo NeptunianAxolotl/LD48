@@ -8,9 +8,10 @@ local Font = require("include/font")
 local ShopHandler
 
 local PIECE_CARRYOVER = 0.8
-local SUFFLE_PER_PIECE_DOWN = 5
+local SUFFLE_PER_PIECE_DOWN = 2
 local PIECE_DOWN_REDUCE = 1
 
+local seconds = 0
 local self = {}
 
 local function UpdateProportion(dt, name, speed)
@@ -30,10 +31,10 @@ local function DiscardAndDrawNextPiece()
 		self.drawPile = self.discardPile
 		self.discardPile = {}
 		self.shufflesUntilPiecePerScreenDown = self.shufflesUntilPiecePerScreenDown - 1
+		self.bonusUpdateProp = 0
 		if self.shufflesUntilPiecePerScreenDown <= 0 then
 			self.shufflesUntilPiecePerScreenDown = SUFFLE_PER_PIECE_DOWN
 			self.piecesPerScreen = self.piecesPerScreen - PIECE_DOWN_REDUCE
-			self.bonusUpdateProp = 0
 		end
 	end
 	local pieceDef, index = util.SampleList(self.drawPile)
@@ -111,9 +112,9 @@ function self.OnScreenScroll()
 end
 
 function self.Update(dt)
-	UpdateProportion(dt, "pieceUpdateProp", 0.4)
+	UpdateProportion(dt, "pieceUpdateProp", 0.5)
 	UpdateProportion(dt, "bonusUpdateProp", 0.8)
-	UpdateProportion(dt, "moneyUpdateProp", 0.6)
+	UpdateProportion(dt, "moneyUpdateProp", 0.5)
 end
 
 function self.KeyPressed(key, scancode, isRepeat)
@@ -141,33 +142,38 @@ function self.Initialize(world)
 	self.moneyUpdateMultiplier = false
 end
 
-function self.DrawInterface()
+function self.DrawInterface(dt)
 	Resources.DrawImage("interface", 0, 0)
 
-	Font.SetSize(1)
+	Font.SetSize(0)
 	love.graphics.setColor(1, 1, 1)
+	
+	love.graphics.print("Deck", 795, 36)
+	love.graphics.print("Shop", 795, 355)
+	
+	Font.SetSize(1)
 	
 	local offsetX = 618
 	local offset = 93
 	local spacing = 32
 	
 	if self.pieceUpdateProp then
-		local prop = (self.pieceUpdateProp > 0.25 and util.SmoothZeroToOne((self.pieceUpdateProp - 0.25) / 0.75, 7)) or 0
-		love.graphics.print("Turns remaining: " .. math.floor(util.AverageScalar(self.pieceUpdateOld, self.piecesRemaining, prop) + 0.5), offsetX, offset)
+		local prop = (self.pieceUpdateProp > 0.2 and util.SmoothZeroToOne((self.pieceUpdateProp - 0.1) / 0.7, 7)) or 0
+		love.graphics.print("Pieces remaining: " .. math.floor(util.AverageScalar(self.pieceUpdateOld, self.piecesRemaining, prop) + 0.5), offsetX, offset)
 		local oldBracket = math.floor(util.AverageScalar(self.pieceUpdateOld, 0, prop) + 0.5)
 		local oldBonus = math.floor(util.AverageScalar(self.piecesPerScreen, 0, prop) + 0.5)
-		love.graphics.setColor(1, 1, 1, (self.pieceUpdateProp < 0.9 and 1) or (1 - (self.pieceUpdateProp - 0.9) / 0.1))
-		love.graphics.print(" + " .. oldBonus, offsetX + 230, offset)
+		love.graphics.setColor(1, 1, 1, (self.pieceUpdateProp < 0.95 and 1) or (1 - (self.pieceUpdateProp - 0.95) / 0.05))
+		love.graphics.print(" + " .. oldBonus, offsetX + 248, offset)
 		love.graphics.setColor(1, 1, 1, 1)
 	else
-		love.graphics.print("Turns remaining: " .. self.piecesRemaining, offsetX, offset)
+		love.graphics.print("Pieces remaining: " .. self.piecesRemaining, offsetX, offset)
 	end
 	offset = offset + spacing
-	love.graphics.print("Extra turns per level: " .. self.piecesPerScreen, offsetX, offset)
+	love.graphics.print("Extra pieces per level: " .. self.piecesPerScreen, offsetX, offset)
 	if self.bonusUpdateProp then
 		local prop = util.SmoothZeroToOne(self.bonusUpdateProp, 7)
 		love.graphics.setColor(1, 1, 1, (self.bonusUpdateProp < 0.8 and 1) or (1 - (self.bonusUpdateProp - 0.8) / 0.2))
-		love.graphics.print("- 1", offsetX + 280, offset)
+		love.graphics.print(" - " .. (PIECE_DOWN_REDUCE / SUFFLE_PER_PIECE_DOWN), offsetX + 292, offset)
 		love.graphics.setColor(1, 1, 1, 1)
 	end
 	
@@ -183,20 +189,29 @@ function self.DrawInterface()
 	love.graphics.print("Discard: " .. #self.discardPile, offsetX, offset)
 	offset = offset + spacing
 	
-	offset = 415
-	if self.moneyUpdateProp then
-		local prop = (self.moneyUpdateProp > 0.2 and util.SmoothZeroToOne((self.moneyUpdateProp - 0.2) / 0.8, 7)) or 0
+	offset = 413
+	if self.moneyUpdateProp and not ShopHandler.IsActive() then
+		local prop = (self.moneyUpdateProp > 0.2 and util.SmoothZeroToOne((self.moneyUpdateProp - 0.1) / 0.7, 7)) or 0
 		local newMoney = math.floor(util.AverageScalar(self.money - self.moneyUpdateAmount*self.moneyUpdateMultiplier, self.money, prop) + 0.5)
 		local addMoney = math.floor(util.AverageScalar(self.moneyUpdateAmount, 0, prop) + 0.5)
-		love.graphics.print("Money: $" .. newMoney, offsetX, offset)
+		love.graphics.print("Treasure: $" .. newMoney, offsetX, offset)
 		
 		love.graphics.setColor(1, 1, 1, (self.moneyUpdateProp < 0.95 and 1) or (1 - (self.moneyUpdateProp - 0.95) / 0.05))
 		love.graphics.print(" + $" .. addMoney .. " x " .. math.floor(self.moneyUpdateMultiplier*100 + 0.5) .. "%", offsetX + 180, offset)
 		love.graphics.setColor(1, 1, 1, 1)
 	else
-		love.graphics.print("Money: $" .. self.money, offsetX, offset)
+		love.graphics.print("Treasure: $" .. self.money, offsetX, offset)
 	end
-	offset = offset + spacing
+	
+	if ShopHandler.IsActive() then
+		seconds = seconds + dt
+		love.graphics.setColor(1, 1, 1, 0.58 + 0.36*math.sin(seconds*4))
+		love.graphics.print("Enter to Select", offsetX + 282, offset)
+		love.graphics.setColor(1, 1, 1, 1)
+		
+		offset = 740
+		love.graphics.printf("This is a spicy piece. One of the spiciest. If only the pieceDefs could say.", offsetX, offset, 455)
+	end
 end
 
 return self

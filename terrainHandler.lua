@@ -66,9 +66,12 @@ local function SpawnRow(row)
 	end
 end
 
-local function DestroyBlock(x, y, valueList, moneyMult)
+local function DestroyBlock(x, y, valueList, moneyMult, ignoreVortex)
 	local blockData = self.BlockAt(x, y)
 	if (not blockData) or (blockData.toughness == 0) then
+		return
+	end
+	if ignoreVortex and blockData.vortex then
 		return
 	end
 	blockData.image = "empty"
@@ -191,14 +194,14 @@ function self.CarveTerrain(pX, pY, pRot, pDef, tiles)
 			if tiles[i].explosionRadius == 1 then
 				for x = -1, 1 do
 					for y = -1, 1 do
-						DestroyBlock(tileX + x, tileY + y)
+						DestroyBlock(tileX + x, tileY + y, false, false, true)
 					end
 				end
 			elseif tiles[i].explosionRadius == 2 then
 				for x = -2, 2 do
 					for y = -2, 2 do
 						if math.abs(x) + math.abs(y) < 4 then
-							DestroyBlock(tileX + x, tileY + y)
+							DestroyBlock(tileX + x, tileY + y, false, false, true)
 						end
 					end
 				end

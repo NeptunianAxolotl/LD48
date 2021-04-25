@@ -73,7 +73,7 @@ function self.Draw()
 	
 	-- Draw interface
 	EffectsHandler.DrawInterface()
-	PlayerHandler.DrawInterface()
+	PlayerHandler.DrawInterface(lastDt)
 	ShopHandler.DrawInterface()
 	
 	love.graphics.replaceTransform(self.emptyTransform)
