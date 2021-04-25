@@ -127,7 +127,7 @@ function self.DrawInterface()
 	Font.SetSize(1)
 	love.graphics.setColor(1, 1, 1)
 	
-	local offsetX = 620
+	local offsetX = 610
 	local offset = 30
 	local spacing = 30
 	
@@ -155,7 +155,6 @@ function self.DrawInterface()
 	offset = offset + spacing
 	
 	offset = offset + spacing*0.618
-	love.graphics.print("Next Piece:", offsetX, offset)
 	offset = offset + spacing
 	if self.nextPiece then
 		local pieceDef = pieceDefs.names[self.nextPiece]
@@ -173,7 +172,7 @@ function self.DrawInterface()
 	love.graphics.print("Discard: " .. #self.discardPile, offsetX, offset)
 	offset = offset + spacing
 	
-	offset = offset + spacing*0.618
+	offset = 415
 	if self.moneyUpdateProp then
 		local prop = (self.moneyUpdateProp > 0.2 and util.SmoothZeroToOne((self.moneyUpdateProp - 0.2) / 0.8, 7)) or 0
 		local newMoney = math.floor(util.AverageScalar(self.money - self.moneyUpdateAmount*self.moneyUpdateMultiplier, self.money, prop) + 0.5)

@@ -9,12 +9,12 @@ local PlayerHandler
 local pieceDefs = require("gameData/pieceDefs")
 
 local itemPositions = {
-	{19 * 32, 13 * 32},
-	{24 * 32, 13 * 32},
-	{29 * 32, 13 * 32},
-	{19 * 32, 18 * 32},
-	{24 * 32, 18 * 32},
-	{29 * 32, 18 * 32},
+	{19 * 32, 14.25 * 32},
+	{24 * 32, 14.25 * 32},
+	{29 * 32, 14.25 * 32},
+	{19 * 32, 19 * 32},
+	{24 * 32, 19 * 32},
+	{29 * 32, 19 * 32},
 }
 
 local self = {}
@@ -107,7 +107,7 @@ end
 local function DrawItem(opt)
 	local cardX, cardY = itemPositions[opt.position][1], itemPositions[opt.position][2]
 	local centX = cardX + 2*Global.BLOCK_SIZE - Global.SHOP_BLOCK_SIZE/2
-	local centY = cardY + 2*Global.BLOCK_SIZE - Global.SHOP_BLOCK_SIZE/2
+	local centY = cardY + 2*Global.BLOCK_SIZE - Global.SHOP_BLOCK_SIZE*1.1
 	if opt.pDef then
 		local tiles = opt.pDef.tiles
 		for i = 1, #tiles do
@@ -120,13 +120,13 @@ local function DrawItem(opt)
 		Font.SetSize(1)
 		love.graphics.setColor(1, 1, 1)
 		
-		love.graphics.printf(opt.label, cardX, centY - 0.15*Global.BLOCK_SIZE, 4*Global.BLOCK_SIZE, "center")
+		love.graphics.printf(opt.label, cardX, centY - 0.1*Global.BLOCK_SIZE, 4*Global.BLOCK_SIZE, "center")
 	end
 	if opt.price then
 		Font.SetSize(1)
 		love.graphics.setColor(0, 0, 0)
 		
-		love.graphics.print("$" .. opt.price, cardX + 5, cardY + 3*Global.BLOCK_SIZE)
+		love.graphics.print("$" .. opt.price, cardX + 5, cardY + 2.8*Global.BLOCK_SIZE)
 	end
 end
 
