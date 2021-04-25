@@ -36,6 +36,7 @@ local function SpawnRow(row)
 			blockMap[row][x] = {
 				image = "sky",
 				toughness = 0,
+				emptyForEdge = true,
 			}
 		elseif row == 4 then
 			blockMap[row][x] = {
@@ -74,6 +75,8 @@ local function DestroyBlock(x, y, valueList, moneyMult)
 	blockData.backImage = false
 	blockData.vortex = false
 	blockData.toughness = 0
+	blockData.emptyForEdge = true
+	blockData.animateImage = false
 	
 	if valueList and blockData.value then
 		valueList[#valueList + 1] = blockData.value * (moneyMult or 1)
@@ -92,8 +95,11 @@ local function CreateVortex(x, y)
 		return
 	end
 	blockData.vortex = true
+	blockData.emptyForEdge = true
 	blockData.toughness = 1
-	blockData.image = "blackhole"
+	blockData.image = "empty"
+	blockData.animateImage = "vortex"
+	blockData.animateRot = math.random()*2*math.pi
 end
 
 ------------------------------------------------------------------------
@@ -113,7 +119,7 @@ function self.BlockAt(x, y)
 end
 
 function self.Empty(x, y)
-	return blockMap[y] and blockMap[y][x] and blockMap[y][x].toughness == 0
+	return blockMap[y] and blockMap[y][x] and blockMap[y][x].emptyForEdge
 end
 
 ------------------------------------------------------------------------
@@ -382,7 +388,7 @@ local function DrawEdges(x, y)
 	end
 end
 
-function self.Draw(xOffset, yOffset)
+function self.Draw(dt)
 	for x = 1, Global.MAP_WIDTH do
 		for y = currentMinY, currentMaxY do
 			local block = blockMap[y][x]
@@ -391,6 +397,17 @@ function self.Draw(xOffset, yOffset)
 				Resources.DrawImage(block.backImage, dx, dy)
 			end
 			Resources.DrawImage(block.image, dx, dy)
+		end
+	end
+	
+	for x = 1, Global.MAP_WIDTH do
+		for y = currentMinY, currentMaxY do
+			local block = blockMap[y][x]
+			local dx, dy = self.WorldToScreen(x + 0.5, y + 0.5)
+			if block.animateImage then
+				block.animateRot = (block.animateRot + dt)%(2*math.pi)
+				Resources.DrawImage(block.animateImage, dx, dy, block.animateRot)
+			end
 		end
 	end
 	

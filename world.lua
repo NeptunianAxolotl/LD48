@@ -12,6 +12,8 @@ local TerrainHandler = require("terrainHandler")
 local PlayerHandler = require("playerHandler")
 local ShopHandler = require("shopHandler")
 
+local lastDt = 0
+
 local self = {}
 
 function self.MousePressed()
@@ -45,6 +47,7 @@ function self.Update(dt)
 	SoundHandler.Update(dt)
 	
 	--love.graphics.replaceTransform(self.cameraTransform)
+	lastDt = dt
 end
 
 function self.Draw()
@@ -55,7 +58,7 @@ function self.Draw()
 	EffectsHandler.Draw(drawQueue)
 	-- Draw world
 	
-	TerrainHandler.Draw()
+	TerrainHandler.Draw(lastDt)
 	PieceHandler.Draw()
 	
 	while true do
