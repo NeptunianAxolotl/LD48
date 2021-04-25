@@ -10,6 +10,7 @@ local Global = require("global")
 local PieceHandler = require("pieceHandler")
 local TerrainHandler = require("terrainHandler")
 local PlayerHandler = require("playerHandler")
+local ShopHandler = require("shopHandler")
 
 local self = {}
 
@@ -36,6 +37,7 @@ function self.Update(dt)
 	end
 	TerrainHandler.Update(dt)
 	PlayerHandler.Update(dt)
+	ShopHandler.Update(dt)
 
 	EffectsHandler.Update(dt)
 	MusicHandler.Update(dt)
@@ -68,6 +70,7 @@ function self.Draw()
 	-- Draw interface
 	EffectsHandler.DrawInterface()
 	PlayerHandler.DrawInterface()
+	ShopHandler.DrawInterface()
 	
 	love.graphics.replaceTransform(self.emptyTransform)
 end
@@ -77,6 +80,7 @@ function self.Initialize()
 	self.interfaceTransform = love.math.newTransform()
 	self.emptyTransform = love.math.newTransform()
 	
+	ShopHandler.Initialize(self)
 	PlayerHandler.Initialize(self)
 	TerrainHandler.Initialize(self)
 	PieceHandler.Initialize(self)
@@ -89,6 +93,10 @@ end
 
 function self.GetPlayerHandler()
 	return PlayerHandler
+end
+
+function self.GetShopHandler()
+	return ShopHandler
 end
 
 return self

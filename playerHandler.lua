@@ -56,14 +56,14 @@ function self.CollectBlockValues(blockDestroyValues)
 	local multiplier = 1 + (#blockDestroyValues - 1) / 2
 	local moneyMade = 0
 	for i = 1, #blockDestroyValues do
-		moneyMade = moneyMade + math.floor(multiplier * blockDestroyValues[i] + 0.5)
+		moneyMade = moneyMade + blockDestroyValues[i]
 	end
 	
 	if moneyMade <= 0 then
 		return
 	end
 	
-	self.money = self.money + moneyMade
+	self.money = self.money + math.floor(moneyMade * multiplier + 0.5)
 	
 	self.moneyUpdateProp = 0
 	self.moneyUpdateAmount = moneyMade
@@ -166,8 +166,8 @@ function self.DrawInterface()
 		local addMoney = math.floor(util.AverageScalar(self.moneyUpdateAmount, 0, prop) + 0.5)
 		love.graphics.print("Money: $" .. newMoney, offsetX, offset)
 		
-		love.graphics.setColor(1, 1, 1, (self.moneyUpdateProp < 0.9 and 1) or (1 - (self.moneyUpdateProp - 0.9) / 0.1))
-		love.graphics.print(" + " .. addMoney .. " x " .. self.moneyUpdateMultiplier .. "%", offsetX + 180, offset)
+		love.graphics.setColor(1, 1, 1, (self.moneyUpdateProp < 0.95 and 1) or (1 - (self.moneyUpdateProp - 0.95) / 0.05))
+		love.graphics.print(" + $" .. addMoney .. " x " .. self.moneyUpdateMultiplier .. "%", offsetX + 180, offset)
 		love.graphics.setColor(1, 1, 1, 1)
 	else
 		love.graphics.print("Money: $" .. self.money, offsetX, offset)
