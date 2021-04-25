@@ -4,8 +4,11 @@ local util = require("include/util")
 local Resources = require("resourceHandler")
 local Global = require("global")
 
+local Progression = require("progression")
 local PlayerHandler
 local ShopHandler
+
+local terrainDefs = require("game_data/terrainDefs")
 
 local self = {}
 
@@ -43,25 +46,30 @@ local function SpawnRow(row)
 				image = "dirt_grass_n",
 				toughness = 1,
 			}
-		elseif math.random() < 0.05 then
-			blockMap[row][x] = {
-				image = "rock",
-				imageBase = "rock_",
-				backImage = "dirt",
-				toughness = 2,
-				hitPoints = 3,
-			}
-		elseif math.random() < 0.1 then
-			blockMap[row][x] = {
-				image = "gold",
-				toughness = 1,
-				value = 50,
-			}
 		else
-			blockMap[row][x] = {
-				image = "dirt",
-				toughness = 1,
-			}
+			local blockType = Progression.SampleWeightedDistribution(row, "blockType")
+			blockMap[row][x] = util.CopyTable(terrainDefs[blockType])
+		end
+	end
+end
+
+local function SpawnArea(minY, maxY)
+	for y = minY, maxY do
+		SpawnRow(y)
+	end
+	for y = minY, maxY do
+		for x = 1, Global.MAP_WIDTH do
+			local blockData = blockMap[y][x]
+			if blockData.canVein then
+				local dir = util.GetRandomCardinalDirection()
+				local ox, oy = x + dir[1], y + dir[2]
+				local otherBlockData = self.BlockAt(ox, oy)
+				if otherBlockData and not otherBlockData.canVein then
+					if math.random() < Progression.GetRandomValue(y, blockData.name, "veinChance") then
+						blockMap[oy][ox] = util.CopyTable(blockData)
+					end
+				end
+			end
 		end
 	end
 end
@@ -285,9 +293,7 @@ function self.UpdateAreaCulling(dt)
 	currentMinY = spawnY - 4
 	
 	-- Add new blocks
-	for y = currentMaxY + 1, spawnY + Global.BLOCK_SPAWN_SPAN do
-		SpawnRow(y)
-	end
+	SpawnArea(currentMaxY + 1, spawnY + Global.BLOCK_SPAWN_SPAN)
 	currentMaxY = spawnY + Global.BLOCK_SPAWN_SPAN
 end
 
@@ -309,9 +315,7 @@ function self.Initialize(world)
 	scrollTrigger = spawnY + Global.TRIGGER_OFFSET
 	desiredTopDraw = (spawnY - 1) * Global.BLOCK_SIZE
 	
-	for y = 1, currentMaxY do
-		SpawnRow(y)
-	end
+	SpawnArea(1, currentMaxY)
 end
 
 ------------------------------------------------------------------------

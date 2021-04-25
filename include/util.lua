@@ -381,6 +381,22 @@ function util.RandomPointInEllipse(width, height, startAngle, endAngle)
 	return pos
 end
 
+function util.GetRandomCardinalDirection()
+	if math.random() < 0.5 then
+		if math.random() < 0.5 then
+			return {1, 0}
+		else
+			return {-1, 0}
+		end
+	else
+		if math.random() < 0.5 then
+			return {0, 1}
+		else
+			return {0, -1}
+		end
+	end
+end
+
 --------------------------------------------------
 --------------------------------------------------
 -- Group Utilities

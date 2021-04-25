@@ -35,9 +35,22 @@ local distanceKeyframes = {
 			bigFive    = 1,
 			longFive   = 0,
 		},
+		blockType = {
+			dirt    = 20,
+			rock    = 1,
+			coal    = 10,
+			gold    = 1,
+			diamond = 1,
+		},
+		veinChance = {
+			rock    = 0,
+			coal    = 0.1,
+			gold    = 0.05,
+			diamond = 0.02,
+		},
 	},
 	{
-		dist          = 5,
+		dist          = 20,
 		lushFactor    = 0,
 		
 		specialType   = {
@@ -63,6 +76,19 @@ local distanceKeyframes = {
 			mediumFive = 1,
 			bigFive    = 1,
 			longFive   = 0,
+		},
+		blockType = {
+			dirt    = 15,
+			rock    = 1,
+			coal    = 1,
+			gold    = 1,
+			diamond = 1,
+		},
+		veinChance = {
+			rock    = 0,
+			coal    = 0.1,
+			gold    = 0.05,
+			diamond = 0.02,
 		},
 	},
 }
@@ -133,9 +159,13 @@ function self.SampleWeightedDistribution(distance, tableName)
 	return keyList[resultIndex]
 end
 
-function self.GetRandomInt(distance, name)
-	local first, second, factor = Interpolate(distance*DISTANCE_MULT)
-	return math.floor(IntAndRand(factor, first, second, name))
+function self.GetRandomValue(distance, name, tableName)
+	local first, second, factor = Interpolate(distance*DISTANCE_MULT, tableName)
+	return IntAndRand(factor, first, second, name)
+end
+
+function self.GetRandomInt(distance, name, tableName)
+	return math.floor(self.GetRandomValue(distance, name, tableName))
 end
 
 ------------------------------------------------------------------

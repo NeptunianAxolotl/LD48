@@ -203,7 +203,7 @@ function self.DrawInterface(dt)
 		love.graphics.print("Treasure: $" .. newMoney, offsetX, offset)
 		
 		love.graphics.setColor(1, 1, 1, (self.moneyUpdateProp < 0.95 and 1) or (1 - (self.moneyUpdateProp - 0.95) / 0.05))
-		love.graphics.print(" + $" .. addMoney .. " x " .. math.floor(self.moneyUpdateMultiplier*100 + 0.5) .. "%", offsetX + 180, offset)
+		love.graphics.print(" + $" .. addMoney .. " x " .. math.floor(self.moneyUpdateMultiplier*100 + 0.5) .. "%", offsetX + 220, offset)
 		love.graphics.setColor(1, 1, 1, 1)
 	else
 		love.graphics.print("Treasure: $" .. self.money, offsetX, offset)
