@@ -5,6 +5,7 @@ local Resources = require("resourceHandler")
 local Global = require("global")
 
 local PlayerHandler
+local ShopHandler
 
 local self = {}
 
@@ -25,6 +26,7 @@ local function DoScroll(triggerX, triggerY)
 	scrollTrigger = scrollTrigger + Global.TRIGGER_OFFSET
 	cullWait = 3
 	PlayerHandler.OnScreenScroll()
+	ShopHandler.OnScreenScroll()
 end
 
 local function SpawnRow(row)
@@ -219,6 +221,7 @@ function self.Initialize(world)
 	blockMap = {}
 
 	PlayerHandler = world.GetPlayerHandler()
+	ShopHandler = world.GetShopHandler()
 
 	spawnX = 8
 	spawnY = 2

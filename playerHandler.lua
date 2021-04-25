@@ -49,6 +49,18 @@ function self.UseNextPiece()
 	return nextPiece
 end
 
+function self.SpendMoney(amount)
+	if self.money < amount then
+		return false
+	end
+	self.money = self.money - amount
+	return true
+end
+
+function self.AddCard(cardName)
+	self.discardPile[#self.discardPile + 1] = cardName
+end
+
 function self.CollectBlockValues(blockDestroyValues)
 	if #blockDestroyValues == 0 then
 		return
@@ -110,23 +122,25 @@ function self.Initialize()
 end
 
 function self.DrawInterface()
+	Resources.DrawImage("interface", 0, 0)
+
 	Font.SetSize(1)
 	love.graphics.setColor(1, 1, 1)
 	
-	local offsetX = 580
+	local offsetX = 620
 	local offset = 30
 	local spacing = 30
 	
 	if self.pieceUpdateProp then
 		local prop = (self.pieceUpdateProp > 0.25 and util.SmoothZeroToOne((self.pieceUpdateProp - 0.25) / 0.75, 7)) or 0
-		love.graphics.print("Pieces: " .. math.floor(util.AverageScalar(self.pieceUpdateOld, self.piecesRemaining, prop) + 0.5), offsetX, offset)
+		love.graphics.print("Piece Budget: " .. math.floor(util.AverageScalar(self.pieceUpdateOld, self.piecesRemaining, prop) + 0.5), offsetX, offset)
 		local oldBracket = math.floor(util.AverageScalar(self.pieceUpdateOld, 0, prop) + 0.5)
 		local oldBonus = math.floor(util.AverageScalar(self.piecesPerScreen, 0, prop) + 0.5)
 		love.graphics.setColor(1, 1, 1, (self.pieceUpdateProp < 0.9 and 1) or (1 - (self.pieceUpdateProp - 0.9) / 0.1))
-		love.graphics.print("(" .. oldBracket .. " x 80% + " .. oldBonus .. " Bonus)", offsetX + 140, offset)
+		love.graphics.print("(" .. oldBracket .. " x 80% + " .. oldBonus .. " Bonus)", offsetX + 220, offset)
 		love.graphics.setColor(1, 1, 1, 1)
 	else
-		love.graphics.print("Pieces: " .. self.piecesRemaining, offsetX, offset)
+		love.graphics.print("Piece Budget: " .. self.piecesRemaining, offsetX, offset)
 	end
 	offset = offset + spacing
 	love.graphics.print("Dig Deep Bonus: " .. self.piecesPerScreen, offsetX, offset)
