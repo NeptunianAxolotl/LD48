@@ -4,19 +4,11 @@ local Resources = require("resourceHandler")
 local TerrainHandler = require("terrainHandler")
 local Global = require("global")
 
+local PlayerHandler
+
 local pieceDefs = require("gameData/pieceDefs")
-local pieceDefNames = {}
-for i = 1, #pieceDefs do
-	pieceDefNames[pieceDefs[i].name] = pieceDefs[i]
-end
 
 local self = {}
-
-local pieceList = {
-	"3I",
-	"3L",
-	"4S",
-}
 
 local dropSpeed = 0.9
 local currentPiece = false
@@ -61,7 +53,8 @@ end
 
 function self.Update(dt)
 	if not currentPiece then
-		local pieceDef = pieceDefNames[util.SampleList(pieceList)]
+		local pieceName = PlayerHandler.UseNextPiece()
+		local pieceDef = pieceDefs.names[pieceName]
 		local spawnX, spawnY = TerrainHandler.GetPieceSpawnPos()
 		currentPiece = {
 			def = pieceDef,
@@ -99,8 +92,8 @@ function self.KeyPressed(key, scancode, isRepeat)
 	end
 end
 
-function self.Initialize()
-
+function self.Initialize(world)
+	PlayerHandler = world.GetPlayerHandler()
 end
 
 function self.Draw()

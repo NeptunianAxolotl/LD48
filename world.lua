@@ -9,6 +9,7 @@ local Camera = require("cameraUtilities")
 local Global = require("global")
 local PieceHandler = require("pieceHandler")
 local TerrainHandler = require("terrainHandler")
+local PlayerHandler = require("playerHandler")
 
 local self = {}
 
@@ -34,6 +35,7 @@ function self.Update(dt)
 		PieceHandler.Update(dt)
 	end
 	TerrainHandler.Update(dt)
+	PlayerHandler.Update(dt)
 
 	EffectsHandler.Update(dt)
 	MusicHandler.Update(dt)
@@ -60,11 +62,12 @@ function self.Draw()
 	end
 	
 	local windowX, windowY = love.window.getMode()
-	self.interfaceTransform:setTransformation(0, 0, 0, windowX/1920, windowX/1920, 0, 0)
+	self.interfaceTransform:setTransformation(0, 0, 0, 1, 1, 0, 0)
 	love.graphics.replaceTransform(self.interfaceTransform)
 	
 	-- Draw interface
 	EffectsHandler.DrawInterface()
+	PlayerHandler.DrawInterface()
 	
 	love.graphics.replaceTransform(self.emptyTransform)
 end
@@ -74,13 +77,18 @@ function self.Initialize()
 	self.interfaceTransform = love.math.newTransform()
 	self.emptyTransform = love.math.newTransform()
 	
-	TerrainHandler.Initialize()
-	PieceHandler.Initialize()
+	PlayerHandler.Initialize(self)
+	TerrainHandler.Initialize(self)
+	PieceHandler.Initialize(self)
 	Camera.Initialize(Global.BLOCK_SIZE, Global.BLOCK_SIZE)
 	
 	EffectsHandler.Initialize()
 	MusicHandler.Initialize()
 	SoundHandler.Initialize()
+end
+
+function self.GetPlayerHandler()
+	return PlayerHandler
 end
 
 return self

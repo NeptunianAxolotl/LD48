@@ -373,4 +373,10 @@ local pieceDefs = {
 	},
 }
 
+
+pieceDefs.names = {}
+for i = 1, #pieceDefs do
+	pieceDefs.names[pieceDefs[i].name] = pieceDefs[i]
+end
+
 return pieceDefs

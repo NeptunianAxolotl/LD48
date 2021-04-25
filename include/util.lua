@@ -327,10 +327,10 @@ end
 
 function util.SampleList(list)
 	if (not list) or (#list == 0) then
-		return false
+		return false, false
 	end
 	local index = math.floor(math.random()*#list) + 1
-	return list[index] or list[1]
+	return list[index], index
 end
 
 function util.SampleDistribution(distribution, rngIn)

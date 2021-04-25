@@ -4,20 +4,16 @@ local util = require("include/util")
 local Resources = require("resourceHandler")
 local Global = require("global")
 
+local PlayerHandler
+
 local self = {}
 
-local blockMap = {} -- Note that this is blockMap[y][x] for easy cleanup.
+local blockMap -- Note that this is blockMap[y][x] for easy cleanup.
 
-local spawnX = 8
-local spawnY = 2
+local spawnX, spawnY
+local cullWait
 
-local cullWait = 0
-
-local currentMinY = spawnY - 1
-local currentMaxY = currentMinY + Global.BLOCK_SPAWN_SPAN
-
-local scrollTrigger = spawnY + Global.TRIGGER_OFFSET
-local desiredTopDraw = (spawnY - 1) * Global.BLOCK_SIZE
+local currentMinY, currentMaxY, scrollTrigger, desiredTopDraw
 
 ------------------------------------------------------------------------
 ------------------------------------------------------------------------
@@ -28,6 +24,7 @@ local function DoScroll(triggerX, triggerY)
 	desiredTopDraw = (spawnY - 1) * Global.BLOCK_SIZE
 	scrollTrigger = scrollTrigger + Global.TRIGGER_OFFSET
 	cullWait = 3
+	PlayerHandler.OnScreenScroll()
 end
 
 local function SpawnRow(row)
@@ -66,11 +63,16 @@ local function SpawnRow(row)
 	end
 end
 
-local function DestroyBlock(x, y)
+local function DestroyBlock(x, y, valueList)
 	local blockData = self.BlockAt(x, y)
 	blockData.image = "empty"
 	blockData.backImage = false
 	blockData.toughness = 0
+	
+	if valueList and blockData.value then
+		valueList[#valueList + 1] = blockData.value
+	end
+	
 	if y >= scrollTrigger then
 		DoScroll(x, y)
 	end
@@ -150,6 +152,7 @@ function self.CarveTerrain(pX, pY, pRot, pDef, tiles)
 	-- Only affect blocks that are not behind barriers, such as rocks.
 	local reCheck = true
 	local processedBlocks = {}
+	local blockDestroyValues = {}
 	while reCheck do
 		reCheck = false
 		for i = 1, #tiles do
@@ -165,17 +168,19 @@ function self.CarveTerrain(pX, pY, pRot, pDef, tiles)
 						blockData.hitPoints = blockData.hitPoints - 1
 						blockData.image = blockData.imageBase .. blockData.hitPoints
 						if blockData.hitPoints <= 0 then
-							DestroyBlock(x, y)
+							DestroyBlock(x, y, blockDestroyValues)
 							reCheck = true
 						end
 					else
-						DestroyBlock(x, y)
+						DestroyBlock(x, y, blockDestroyValues)
 						reCheck = true
 					end
 				end
 			end
 		end
 	end
+	
+	PlayerHandler.CollectBlockValues(blockDestroyValues)
 end
 
 ------------------------------------------------------------------------
@@ -210,7 +215,20 @@ end
 function self.Update(dt)
 end
 
-function self.Initialize()
+function self.Initialize(world)
+	blockMap = {}
+
+	PlayerHandler = world.GetPlayerHandler()
+
+	spawnX = 8
+	spawnY = 2
+	cullWait = 0
+	currentMinY = spawnY - 1
+	currentMaxY = currentMinY + Global.BLOCK_SPAWN_SPAN
+
+	scrollTrigger = spawnY + Global.TRIGGER_OFFSET
+	desiredTopDraw = (spawnY - 1) * Global.BLOCK_SIZE
+	
 	for y = 1, currentMaxY do
 		SpawnRow(y)
 	end
