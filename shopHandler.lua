@@ -6,8 +6,8 @@ local Font = require("include/font")
 
 local PlayerHandler
 
-local pieceDefs = require("gameData/pieceDefs")
-local specialDefs = require("gameData/specialDefs")
+local pieceDefs = require("game_data/pieceDefs")
+local specialDefs = require("game_data/specialDefs")
 
 local itemPositions = {
 	{19 * 32, 14.25 * 32},
@@ -71,10 +71,10 @@ end
 function self.GetStartingDeck()
 	return {
 		AddSpecialToPiece(GetPiece("3I"), "vortex"),
-		AddSpecialToPiece(GetPiece("3L"), "vortex"),
+		AddSpecialToPiece(GetPiece("3L"), "bomb"),
 		AddSpecialToPiece(GetPiece("4S"), "moneyMult"),
 		AddSpecialToPiece(GetPiece("4Z"), "moneyMult"),
-		AddSpecialToPiece(GetPiece("4O"), "vortex"),
+		AddSpecialToPiece(GetPiece("4O"), "bomb"),
 	}
 end
 
