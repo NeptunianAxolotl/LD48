@@ -5,9 +5,17 @@ local self = {}
 local api = {}
 
 function api.UpdateCamera(dt, playerPos, playerVelocity, playerSpeed, smoothness, attraction, slowdown)
-	self.cameraVelocity = util.Average(self.cameraVelocity, util.Subtract(util.Mult(attraction, util.Subtract(playerPos, self.cameraPos)), util.Mult(slowdown, self.cameraVelocity)), 2*(1 - smoothness))
-	self.cameraPos = util.Add(util.Mult(dt*60, self.cameraVelocity), self.cameraPos)
+	local moveVector = util.Subtract(playerPos, self.cameraPos)
+	local moveDist = util.AbsVal(moveVector)
+	self.cameraVelocity = util.Average(self.cameraVelocity, util.Subtract(util.Mult(attraction * (1 - 0.7 * moveDist / (moveDist + 40)), moveVector), util.Mult(slowdown, self.cameraVelocity)), 2*(1 - smoothness))
+	
 	self.cameraSpeed = util.AbsVal(self.cameraVelocity)
+	local stepDisplacement = dt*60*self.cameraSpeed
+	if stepDisplacement > moveDist then
+		self.cameraPos = playerPos
+	else
+		self.cameraPos = util.Add(util.Mult(dt*60, self.cameraVelocity), self.cameraPos)
+	end
 	
 	local wantedScale = math.min(0.93, math.max(0.5, 12/(12 + playerSpeed)))
 	self.cameraScale = self.cameraScale*smoothness + wantedScale*(1 - smoothness)

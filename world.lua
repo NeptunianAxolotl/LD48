@@ -26,7 +26,7 @@ end
 
 function self.Update(dt)
 	local windowX, windowY = love.window.getMode()
-	local cameraX, cameraY = Camera.UpdateCamera(dt, {Global.BLOCK_SIZE, TerrainHandler.GetWantedDrawY()}, {0, 0}, 0, 0.99, 0.12, 4)
+	local cameraX, cameraY = Camera.UpdateCamera(dt, {Global.BLOCK_SIZE, TerrainHandler.GetWantedDrawY()}, {0, 0}, 0, 0.99, 0.3, 4)
 	self.cameraTransform:setTransformation(-cameraX, -cameraY, 0, 1, 1, -Global.BLOCK_SIZE, 0)
 
 	TerrainHandler.Update(dt)
