@@ -32,6 +32,7 @@ function self.Update(dt)
 	TerrainHandler.Update(dt)
 	if Camera.GetSpeed() < 0.05 then
 		PieceHandler.Update(dt)
+		TerrainHandler.UpdateAreaCulling()
 	end
 
 	EffectsHandler.Update(dt)

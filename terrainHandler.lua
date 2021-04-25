@@ -6,35 +6,60 @@ local Global = require("global")
 
 local self = {}
 
-local blockMap = {}
-local currentMinY = 1
-local currentMaxY = 50
+local blockMap = {} -- Note that this is blockMap[y][x] for easy cleanup.
 
 local spawnX = 8
 local spawnY = 2
 
-local scrollTrigger = spawnY + Global.TRIGGER_OFFSET
+local currentMinY = spawnY - 1
+local currentMaxY = currentMinY + Global.BLOCK_SPAWN_SPAN
 
-local drawMinY = 1
-local desiredTopDraw = 1 * Global.BLOCK_SIZE
-local drawMaxY = 50
+local scrollTrigger = spawnY + Global.TRIGGER_OFFSET
+local desiredTopDraw = (spawnY - 1) * Global.BLOCK_SIZE
 
 ------------------------------------------------------------------------
 ------------------------------------------------------------------------
 -- Local Utilities
 
 local function DoScroll(triggerX, triggerY)
-	-- Clean up old areas.
-	drawMinY = spawnY - 5
-	for y = currentMinY, drawMinY - 1 do
-		blockMap[y] = nil
-	end
-	currentMinY = drawMinY
-	
 	spawnX, spawnY = triggerX, triggerY
-	print(spawnX, spawnY)
 	desiredTopDraw = (spawnY - 1) * Global.BLOCK_SIZE
 	scrollTrigger = scrollTrigger + Global.TRIGGER_OFFSET
+end
+
+local function SpawnRow(row)
+	blockMap[row] = {}
+	for x = 1, Global.MAP_WIDTH do
+		if row <= 3 then
+			blockMap[row][x] = {
+				image = "sky",
+				toughness = 0,
+			}
+		elseif row == 4 then
+			blockMap[row][x] = {
+				image = "dirt_grass_n",
+				toughness = 1,
+			}
+		elseif math.random() < 0.04 then
+			blockMap[row][x] = {
+				image = "rock",
+				imageBase = "rock_",
+				toughness = 2,
+				hitPoints = 3,
+			}
+		elseif math.random() < 0.04 then
+			blockMap[row][x] = {
+				image = "gold",
+				toughness = 1,
+				value = 10,
+			}
+		else
+			blockMap[row][x] = {
+				image = "dirt",
+				toughness = 1,
+			}
+		end
+	end
 end
 
 ------------------------------------------------------------------------
@@ -151,44 +176,31 @@ end
 ------------------------------------------------------------------------
 -- Callins
 
+function self.UpdateAreaCulling()
+	if spawnY <= currentMinY + 1 then
+		return
+	end
+	
+	-- Delete old blocks
+	for y = currentMinY, spawnY - 4 do
+		blockMap[y] = nil
+	end
+	currentMinY = spawnY - 1
+	
+	-- Add new blocks
+	for y = currentMaxY + 1, spawnY + Global.BLOCK_SPAWN_SPAN do
+		SpawnRow(y)
+	end
+	currentMaxY = spawnY + Global.BLOCK_SPAWN_SPAN
+end
+
 function self.Update(dt)
 	
 end
 
 function self.Initialize()
 	for y = 1, currentMaxY do
-		blockMap[y] = {}
-		for x = 1, Global.MAP_WIDTH do
-			if y <= 3 then
-				blockMap[y][x] = {
-					image = "sky",
-					toughness = 0,
-				}
-			elseif y == 4 then
-				blockMap[y][x] = {
-					image = "dirt_grass_n",
-					toughness = 1,
-				}
-			elseif math.random() < 0.04 then
-				blockMap[y][x] = {
-					image = "rock",
-					imageBase = "rock_",
-					toughness = 2,
-					hitPoints = 3,
-				}
-			elseif math.random() < 0.04 then
-				blockMap[y][x] = {
-					image = "gold",
-					toughness = 1,
-					value = 10,
-				}
-			else
-				blockMap[y][x] = {
-					image = "dirt",
-					toughness = 1,
-				}
-			end
-		end
+		SpawnRow(y)
 	end
 end
 
@@ -202,7 +214,7 @@ end
 
 function self.Draw(xOffset, yOffset)
 	for x = 1, Global.MAP_WIDTH do
-		for y = drawMinY, drawMaxY do
+		for y = currentMinY, currentMaxY do
 			local block = blockMap[y][x]
 			local dx, dy = self.WorldToScreen(x, y)
 			Resources.DrawImage(block.image, dx, dy)

@@ -70,12 +70,15 @@ function self.Update(dt)
 			rotation = 0,
 			dropTime = dropSpeed,
 		}
+		MovePiece(0, 0, 0)
 	end
 	
-	currentPiece.dropTime = currentPiece.dropTime - dt
-	if currentPiece.dropTime < 0 then
-		currentPiece.dropTime = dropSpeed
-		MovePiece(0, 1, 0)
+	if currentPiece then
+		currentPiece.dropTime = currentPiece.dropTime - dt
+		if currentPiece.dropTime < 0 then
+			currentPiece.dropTime = dropSpeed
+			MovePiece(0, 1, 0)
+		end
 	end
 end
 
@@ -86,7 +89,7 @@ function self.KeyPressed(key, scancode, isRepeat)
 		elseif key == "right" then
 			MovePiece(1, 0, 0)
 		elseif key == "down" then
-		currentPiece.dropTime = dropSpeed
+			currentPiece.dropTime = dropSpeed
 			MovePiece(0, 1, 0)
 		elseif key == "z" then
 			MovePiece(0, 0, -1)
