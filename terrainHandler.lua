@@ -178,7 +178,7 @@ function self.CheckPiecePlaceTrigger(pX, pY, pRot, pDef)
 				econBlockCount = econBlockCount + (tiles[i].moneyMult or 1)
 			end
 			-- Placement is triggered if the block hits something that is too tough.
-			if blockData.toughness > (tiles[i].carveStrength or pDef.carveStrength) then
+			if blockData.toughness > pDef.carveStrength then
 				hitRock = true
 			end
 		end
@@ -247,8 +247,8 @@ function self.CarveTerrain(pX, pY, pRot, pDef, tiles)
 							if blockData.vortex then
 								trashPiece = true
 							end
-							if blockData.toughness > (tiles[i].carveStrength or pDef.carveStrength) then
-								blockData.hitPoints = blockData.hitPoints - 1
+							if blockData.toughness > pDef.carveStrength then
+								blockData.hitPoints = blockData.hitPoints - pDef.carveStrength
 								blockData.image = blockData.imageBase .. blockData.hitPoints
 								if blockData.hitPoints <= 0 then
 									DestroyBlock(x, y, blockDestroyValues, tiles[i].moneyMult)

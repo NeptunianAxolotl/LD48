@@ -33,7 +33,7 @@ local defs = {
 			return tile
 		end,
 		pieceFunc = function (piece)
-			piece.carveStrength = 2
+			piece.carveStrength = piece.carveStrength + 1
 			return piece
 		end,
 	},

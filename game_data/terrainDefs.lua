@@ -9,6 +9,16 @@ local defs = {
 		canVein = true,
 		wantDirt = true,
 	},
+	hard_rock = {
+		image = "hard_rock",
+		name = "hard_rock",
+		imageBase = "hard_rock_",
+		backImage = "dirt",
+		toughness = 3,
+		hitPoints = 6,
+		canVein = true,
+		wantDirt = true,
+	},
 	coal = {
 		image = "coal",
 		name = "coal",
