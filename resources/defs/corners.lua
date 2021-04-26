@@ -33,6 +33,18 @@ local defs = {
 		name = "dirt_outer_e",
 	},
 	{
+		name = "dirt_outer_e_1",
+	},
+	{
+		name = "dirt_outer_e_2",
+	},
+	{
+		name = "dirt_outer_e_3",
+	},
+	{
+		name = "dirt_outer_e_4",
+	},
+	{
 		name = "dirt_outer_s",
 	},
 	{
