@@ -45,7 +45,7 @@ local cats = {
 		cost = 140,
 		specialCost = 160,
 		specialExtraCost = 25,
-		desc = "Perfect for those looking for some length on a tight budget.",
+		desc = "Dececent reach for a low price, and not too hard to position.",
 	},
 	stumpyFive = {
 		list = {
@@ -98,7 +98,7 @@ local cats = {
 		cost = 220,
 		specialCost = 150,
 		specialExtraCost = 35,
-		desc = "Extremely long, and useful, if you can handle it.",
+		desc = "Extremely long, but tends to get caught on rocks.",
 	},
 }
 

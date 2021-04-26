@@ -5,6 +5,7 @@ local MusicHandler = require("musicHandler")
 local PriorityQueue = require("include/PriorityQueue")
 
 local Camera = require("cameraUtilities")
+local PopupHandler = require("PopupHandler")
 
 local Global = require("global")
 local PieceHandler = require("pieceHandler")
@@ -16,6 +17,10 @@ local lastDt = 0
 
 local self = {}
 
+function self.GetPaused()
+	return self.paused
+end
+
 function self.MousePressed()
 end
 
@@ -23,6 +28,12 @@ function self.MouseReleased()
 end
 
 function self.KeyPressed(key, scancode, isRepeat)
+	if key == "space" or key == "escape" then
+		self.paused = not self.paused
+	end
+	if self.GetPaused() then
+		return
+	end
 	if Camera.GetMovementDone() then
 		PieceHandler.KeyPressed(key, scancode, isRepeat)
 	end
@@ -34,15 +45,17 @@ function self.Update(dt)
 	local cameraX, cameraY = Camera.UpdateCamera(dt, {Global.BLOCK_SIZE, TerrainHandler.GetWantedDrawY()}, {0, 0}, 0, 0.99, 0.3, 4)
 	self.cameraTransform:setTransformation(-cameraX, -cameraY, 0, 1, 1, -Global.WORLD_SCREEN_X, -Global.WORLD_Y)
 
-	if Camera.GetMovementDone() and not ShopHandler.IsActive() then
-		TerrainHandler.UpdateAreaCulling(dt)
-		PieceHandler.Update(dt)
-	end
-	TerrainHandler.Update(dt)
-	PlayerHandler.Update(dt)
-	ShopHandler.Update(dt)
+	if not self.GetPaused() then
+		if Camera.GetMovementDone() and not ShopHandler.IsActive() then
+			TerrainHandler.UpdateAreaCulling(dt)
+			PieceHandler.Update(dt)
+		end
+		TerrainHandler.Update(dt)
+		PlayerHandler.Update(dt)
+		ShopHandler.Update(dt)
 
-	EffectsHandler.Update(dt)
+		EffectsHandler.Update(dt)
+	end
 	MusicHandler.Update(dt)
 	SoundHandler.Update(dt)
 	
@@ -75,11 +88,14 @@ function self.Draw()
 	EffectsHandler.DrawInterface()
 	PlayerHandler.DrawInterface(lastDt)
 	ShopHandler.DrawInterface()
+	PopupHandler.DrawInterface(lastDt)
 	
 	love.graphics.replaceTransform(self.emptyTransform)
 end
 
 function self.Initialize()
+	self.paused = true
+	
 	self.cameraTransform = love.math.newTransform()
 	self.interfaceTransform = love.math.newTransform()
 	self.emptyTransform = love.math.newTransform()
@@ -88,6 +104,8 @@ function self.Initialize()
 	TerrainHandler.Initialize(self)
 	ShopHandler.Initialize(self)
 	PieceHandler.Initialize(self)
+	PopupHandler.Initialize(self)
+	
 	Camera.Initialize(Global.BLOCK_SIZE, Global.BLOCK_SIZE)
 	
 	EffectsHandler.Initialize()
