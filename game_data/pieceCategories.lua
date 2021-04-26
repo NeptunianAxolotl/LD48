@@ -70,7 +70,6 @@ local cats = {
 		list = {
 			"5RL",
 			"5RR",
-			"5W",
 			"5V",
 		},
 		size = 5,
@@ -85,6 +84,7 @@ local cats = {
 			"5SR",
 			"5ZL",
 			"5ZR",
+			"5W",
 		},
 		size = 5,
 		cost = 200 * COST_MULT,

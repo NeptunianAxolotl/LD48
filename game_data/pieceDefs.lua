@@ -6,6 +6,7 @@ local pieceDefs = {
 		},
 		carveStrength = 1,
 		imageFile = "1I",
+		desc = "Is this even worth it?",
 	},
 	{
 		name = "2I",
@@ -15,6 +16,7 @@ local pieceDefs = {
 		},
 		carveStrength = 1,
 		imageFile = "2I",
+		desc = "At least it's not a single tile.",
 	},
 	{
 		name = "3I",
@@ -25,6 +27,7 @@ local pieceDefs = {
 		},
 		carveStrength = 1,
 		imageFile = "3I",
+		desc = "A bit of reach, but not much.",
 	},
 	{
 		name = "3L",
@@ -35,6 +38,7 @@ local pieceDefs = {
 		},
 		carveStrength = 1,
 		imageFile = "3L",
+		desc = "An elbow.  A shape more suited to pasta than mining.",
 	},
 	{
 		name = "4I",
@@ -46,6 +50,7 @@ local pieceDefs = {
 		},
 		carveStrength = 1,
 		imageFile = "4I",
+		desc = "A long piece for a deep mine",
 	},
 	{
 		name = "4S",
@@ -57,6 +62,7 @@ local pieceDefs = {
 		},
 		carveStrength = 1,
 		imageFile = "4S",
+		desc = "An S shaped piece.  Not to be confused with the Z piece.",
 	},
 	{
 		name = "4Z",
@@ -68,6 +74,7 @@ local pieceDefs = {
 		},
 		carveStrength = 1,
 		imageFile = "4Z",
+		desc = "A Z shaped piece.  Not to be confused with the S piece.",
 	},
 	{
 		name = "4L",
@@ -79,6 +86,7 @@ local pieceDefs = {
 		},
 		carveStrength = 1,
 		imageFile = "4L",
+		desc = "A stick with a handle on it.",
 	},
 	{
 		name = "4J",
@@ -90,6 +98,7 @@ local pieceDefs = {
 		},
 		carveStrength = 1,
 		imageFile = "4J",
+		desc = "To reach out and hook that bit of gold.",
 	},
 	{
 		name = "4O",
@@ -101,6 +110,7 @@ local pieceDefs = {
 		},
 		carveStrength = 1,
 		imageFile = "4O",
+		desc = "A bit of a dumpling, but at least it tessellates well.",
 	},
 	{
 		name = "4T",
@@ -112,6 +122,7 @@ local pieceDefs = {
 		},
 		carveStrength = 1,
 		imageFile = "4T",
+		desc = "Such T.  Many Symmetry.  Wow.",
 	},
 	{
 		name = "5O",
@@ -245,6 +256,7 @@ local pieceDefs = {
 		},
 		carveStrength = 1,
 		imageFile = "5U",
+		desc = "Gets a lot of tiles, but leaves a gap in the middle.",
 	},
 	{
 		name = "5V",
