@@ -213,6 +213,8 @@ local function DoExplosion(tileX, tileY, radius)
 		ExplodeBlock(tileX - 1, tileY + 2, 1, 2)
 		ExplodeBlock(tileX - 1, tileY - 2, 1, 2)
 		
+		local x, y = self.WorldToScreen(tileX + 0.5, tileY + 0.5)
+		EffectsHandler.SpawnEffect("nuke_explode", {x, y})
 		SoundHandler.PlaySound("nuke")
 	end
 end
