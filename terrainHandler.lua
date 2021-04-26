@@ -1,7 +1,7 @@
-local EffectsHandler = require("effectsHandler")
 
 local util = require("include/util")
 local Resources = require("resourceHandler")
+local EffectsHandler = require("effectsHandler")
 local Global = require("global")
 
 local Progression = require("progression")
@@ -74,7 +74,7 @@ local function SpawnArea(minY, maxY)
 				local dir = util.GetRandomCardinalDirection()
 				local ox, oy = x + dir[1], y + dir[2]
 				local otherBlockData = self.BlockAt(ox, oy)
-				if otherBlockData and not otherBlockData.canVein then
+				if otherBlockData and not otherBlockData.canVein and not otherBlockData.isGrass then
 					if math.random() < Progression.GetRandomValue(y, blockData.name, "veinChance") then
 						blockMap[oy][ox] = RandomiseHealth(y, util.CopyTable(blockData))
 					end
@@ -101,6 +101,8 @@ local function DestroyBlock(x, y, valueList, moneyMult, ignoreVortex)
 	
 	if valueList and blockData.value then
 		valueList[#valueList + 1] = blockData.value * (moneyMult or 1)
+		local eX, eY = self.WorldToScreen(x + 0.5, y + 0.5)
+		EffectsHandler.SpawnEffect("money_popup", {eX, eY}, {velocity = {0, -0.55 - math.random()*0.2}, text = "$" .. math.floor(blockData.value * (moneyMult or 1) + 0.5)})
 	end
 	blockData.value = false
 	
@@ -253,7 +255,7 @@ function self.CarveTerrain(pX, pY, pRot, pDef, tiles)
 	for i = 1, #tiles do
 		local tilePos = util.RotateVectorOrthagonal(tiles[i], pRot * math.pi/2)
 		local x, y = self.WorldToScreen(pX + tilePos[1], pY + tilePos[2])
-		EffectsHandler.SpawnEffect("piece_fade", {x, y}, nil, nil, pDef.imageFile)
+		EffectsHandler.SpawnEffect("piece_fade", {x, y}, {actualImageOverride = pDef.imageFile})
 	end
 	
 	-- Explode bombs
@@ -308,7 +310,7 @@ function self.CarveTerrain(pX, pY, pRot, pDef, tiles)
 		end
 	end
 	
-	PlayerHandler.CollectBlockValues(blockDestroyValues)
+	PlayerHandler.CollectBlockValues(pX, pY, blockDestroyValues)
 	if trashPiece then
 		PlayerHandler.TrashPiece(pDef.uniqueID)
 	end

@@ -1,6 +1,7 @@
 
 local util = require("include/util")
 local Resources = require("resourceHandler")
+local EffectsHandler = require("effectsHandler")
 local TerrainHandler = require("terrainHandler")
 local Global = require("global")
 local Font = require("include/font")
@@ -84,7 +85,7 @@ function self.TrashPiece(uniqueID)
 	end
 end
 
-function self.CollectBlockValues(blockDestroyValues)
+function self.CollectBlockValues(pX, pY, blockDestroyValues)
 	if #blockDestroyValues == 0 then
 		return
 	end
@@ -96,6 +97,11 @@ function self.CollectBlockValues(blockDestroyValues)
 	
 	if moneyMade <= 0 then
 		return
+	end
+	
+	if multiplier > 1 then
+		local eX, eY = TerrainHandler.WorldToScreen(pX + 0.5, pY + 0.5)
+		EffectsHandler.SpawnEffect("mult_popup", {eX + 10, eY - 40}, {velocity = {1.3, 0}, text = "x" .. math.floor(multiplier*100 + 0.5) .. "%"})
 	end
 	
 	self.money = self.money + math.floor(moneyMade * multiplier + 0.5)
