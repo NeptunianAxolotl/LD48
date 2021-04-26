@@ -63,7 +63,7 @@ local defs = {
 			return piece
 		end,
 		specialCostMult = 1.1,
-		atLeastTwoSpecialCostBoost = 400,
+		atLeastTwoSpecialCostBoost = 450,
 	},
 }
 
