@@ -413,18 +413,18 @@ local function DrawDirt(x, y)
 	if top then
 		if left then
 			if self.Empty(x - 1, y - 1) then
-				Resources.DrawImage("dirt_inner_nw", dx, dy)
+				Resources.DrawImage("dirt_inner_nw_" .. block.dirtStyle[1], dx, dy)
 			else
 				Resources.DrawImage("dirt_" .. block.dirtStyle[1], dx, dy)
 			end
 		else
-			Resources.DrawImage("dirt_outer_w", dx, dy)
+			Resources.DrawImage("dirt_outer_w_" .. block.dirtStyle[1], dx, dy)
 		end
 	else
 		if left then
-			Resources.DrawImage("dirt_outer_n", dx, dy)
+			Resources.DrawImage("dirt_outer_n_" .. block.dirtStyle[1], dx, dy)
 		else
-			Resources.DrawImage("dirt_outer_nw", dx, dy)
+			Resources.DrawImage("dirt_outer_nw_" .. block.dirtStyle[1], dx, dy)
 		end
 	end
 	
@@ -432,7 +432,7 @@ local function DrawDirt(x, y)
 	if top then
 		if right then
 			if self.Empty(x + 1, y - 1) then
-				Resources.DrawImage("dirt_inner_ne", dx + Global.BLOCK_SIZE/2, dy)
+				Resources.DrawImage("dirt_inner_ne_" .. block.dirtStyle[2], dx + Global.BLOCK_SIZE/2, dy)
 			else
 				Resources.DrawImage("dirt_" .. block.dirtStyle[2], dx + Global.BLOCK_SIZE/2, dy)
 			end
@@ -441,9 +441,9 @@ local function DrawDirt(x, y)
 		end
 	else
 		if right then
-			Resources.DrawImage("dirt_outer_n", dx + Global.BLOCK_SIZE/2, dy)
+			Resources.DrawImage("dirt_outer_n_" .. block.dirtStyle[2], dx + Global.BLOCK_SIZE/2, dy)
 		else
-			Resources.DrawImage("dirt_outer_ne", dx + Global.BLOCK_SIZE/2, dy)
+			Resources.DrawImage("dirt_outer_ne_" .. block.dirtStyle[2], dx + Global.BLOCK_SIZE/2, dy)
 		end
 	end
 	
@@ -451,18 +451,18 @@ local function DrawDirt(x, y)
 	if bot then
 		if left then
 			if self.Empty(x - 1, y + 1) then
-				Resources.DrawImage("dirt_inner_sw", dx, dy + Global.BLOCK_SIZE/2)
+				Resources.DrawImage("dirt_inner_sw_" .. block.dirtStyle[3], dx, dy + Global.BLOCK_SIZE/2)
 			else
 				Resources.DrawImage("dirt_" .. block.dirtStyle[3], dx, dy + Global.BLOCK_SIZE/2)
 			end
 		else
-			Resources.DrawImage("dirt_outer_w", dx, dy + Global.BLOCK_SIZE/2)
+			Resources.DrawImage("dirt_outer_w_" .. block.dirtStyle[3], dx, dy + Global.BLOCK_SIZE/2)
 		end
 	else
 		if left then
-			Resources.DrawImage("dirt_outer_s", dx, dy + Global.BLOCK_SIZE/2)
+			Resources.DrawImage("dirt_outer_s_" .. block.dirtStyle[3], dx, dy + Global.BLOCK_SIZE/2)
 		else
-			Resources.DrawImage("dirt_outer_sw", dx, dy + Global.BLOCK_SIZE/2)
+			Resources.DrawImage("dirt_outer_sw_" .. block.dirtStyle[3], dx, dy + Global.BLOCK_SIZE/2)
 		end
 	end
 	
@@ -470,18 +470,18 @@ local function DrawDirt(x, y)
 	if bot then
 		if right then
 			if self.Empty(x + 1, y + 1) then
-				Resources.DrawImage("dirt_inner_se", dx + Global.BLOCK_SIZE/2, dy + Global.BLOCK_SIZE/2)
+				Resources.DrawImage("dirt_inner_se_" .. block.dirtStyle[4], dx + Global.BLOCK_SIZE/2, dy + Global.BLOCK_SIZE/2)
 			else
 				Resources.DrawImage("dirt_" .. block.dirtStyle[4], dx + Global.BLOCK_SIZE/2, dy + Global.BLOCK_SIZE/2)
 			end
 		else
-			Resources.DrawImage("dirt_outer_e", dx + Global.BLOCK_SIZE/2, dy + Global.BLOCK_SIZE/2)
+			Resources.DrawImage("dirt_outer_e_" .. block.dirtStyle[4], dx + Global.BLOCK_SIZE/2, dy + Global.BLOCK_SIZE/2)
 		end
 	else
 		if right then
-			Resources.DrawImage("dirt_outer_s", dx + Global.BLOCK_SIZE/2, dy + Global.BLOCK_SIZE/2)
+			Resources.DrawImage("dirt_outer_s_" .. block.dirtStyle[4], dx + Global.BLOCK_SIZE/2, dy + Global.BLOCK_SIZE/2)
 		else
-			Resources.DrawImage("dirt_outer_se", dx + Global.BLOCK_SIZE/2, dy + Global.BLOCK_SIZE/2)
+			Resources.DrawImage("dirt_outer_se_" .. block.dirtStyle[4], dx + Global.BLOCK_SIZE/2, dy + Global.BLOCK_SIZE/2)
 		end
 	end
 end
