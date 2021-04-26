@@ -5,7 +5,7 @@ local util = require("include/util")
 local api = {}
 local sounds = IterableMap.New()
 
-local GLOBAL_VOL_MULT = 0.6
+local GLOBAL_VOL_MULT = 0.5
 
 local volMult = {
 }

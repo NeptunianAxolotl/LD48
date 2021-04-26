@@ -9,7 +9,7 @@ local defs = {
 			piece.desc = "Contains explosives that destroy dirt, rocks and, unfortunately, resources."
 			return piece
 		end,
-		specialCostMult = 1.2,
+		specialCostMult = 1.3,
 	},
 	nuke = {
 		tileFunc = function (tile)
@@ -46,8 +46,8 @@ local defs = {
 			piece.desc = "Opens a vortex that annihilates both this piece and the next to touch it."
 			return piece
 		end,
-		specialCostMult = 0.65,
-		baseCostMult = 0.65,
+		specialCostMult = 0.6,
+		baseCostMult = 0.8,
 	},
 	cutter = {
 		tileFunc = function (tile)
@@ -64,7 +64,7 @@ local defs = {
 			return piece
 		end,
 		specialCostMult = 1.1,
-		atLeastTwoSpecialCostBoost = 500,
+		atLeastTwoSpecialCostBoost = 600,
 	},
 }
 

@@ -1,4 +1,4 @@
 return {
-	file = "sounds/files/music_faster.wav",
-	volMult = 0.25
+	file = "sounds/files/music_faster_2.wav",
+	volMult = 0.6
 }
