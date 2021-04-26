@@ -111,6 +111,10 @@ function self.IsActive()
 	return self.active
 end
 
+function self.GetInteractedWithShop()
+	return self.interactedWithShop
+end
+
 function self.GetStartingDeck()
 	return {
 		GetNewPieceByName("3I"),
@@ -283,6 +287,9 @@ local function DrawItem(opt)
 end
 
 function self.DrawInterface()
+	if (not self.active) and (not self.interactedWithShop) then
+		return
+	end
 	for i = 1, #self.options do
 		DrawItem(self.options[i])
 	end

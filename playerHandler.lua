@@ -173,6 +173,7 @@ function self.DrawInterface(dt)
 	local offsetX = 618
 	local offset = 93
 	local spacing = 32
+	local textWidth = 440
 	
 	if self.pieceUpdateProp then
 		local prop = (self.pieceUpdateProp > 0.2 and util.SmoothZeroToOne((self.pieceUpdateProp - 0.1) / 0.7, 7)) or 0
@@ -217,13 +218,13 @@ function self.DrawInterface(dt)
 		local prop = (self.moneyUpdateProp > 0.2 and math.min(1, (util.SmoothZeroToOne((self.moneyUpdateProp - 0.1) / 0.7, 7) + 0.02))) or 0
 		local newMoney = math.floor(util.AverageScalar(self.money - self.moneyUpdateAmount*self.moneyUpdateMultiplier, self.money, prop) + 0.5)
 		local addMoney = math.floor(util.AverageScalar(self.moneyUpdateAmount, 0, prop) + 0.5)
-		love.graphics.print("Treasure: $" .. newMoney, offsetX, offset)
+		love.graphics.print("Money: $" .. newMoney, offsetX, offset)
 		
 		love.graphics.setColor(1, 1, 1, (self.moneyUpdateProp < 0.95 and 1) or (1 - (self.moneyUpdateProp - 0.95) / 0.05))
-		love.graphics.print(" + $" .. addMoney .. " x " .. math.floor(self.moneyUpdateMultiplier*100 + 0.5) .. "%", offsetX + 220, offset)
+		love.graphics.print(" + $" .. addMoney .. " x " .. math.floor(self.moneyUpdateMultiplier*100 + 0.5) .. "%", offsetX + 190, offset)
 		love.graphics.setColor(1, 1, 1, 1)
 	else
-		love.graphics.print("Treasure: $" .. self.money, offsetX, offset)
+		love.graphics.print("Money: $" .. self.money, offsetX, offset)
 	end
 	
 	if ShopHandler.IsActive() then
@@ -233,9 +234,29 @@ function self.DrawInterface(dt)
 		love.graphics.setColor(1, 1, 1, 1)
 		
 		offset = 740
-		love.graphics.printf(ShopHandler.GetPieceDesc(), offsetX, offset, 440)
+		love.graphics.printf(ShopHandler.GetPieceDesc(), offsetX, offset, textWidth)
 	else
-		offset = 740
+		if not ShopHandler.GetInteractedWithShop() then
+			spacing = 28
+			offset = offset + 50
+			
+			love.graphics.printf("These are the weiredest 'pieces' of mining equipment you've ever seen!", offsetX, offset, textWidth)
+			offset = offset + spacing*2
+			love.graphics.printf(" - Arrow Keys to Move.", offsetX, offset, textWidth)
+			offset = offset + spacing
+			love.graphics.printf(" - Z/X/Up to Rotate.", offsetX, offset, textWidth)
+			offset = offset + spacing
+			love.graphics.printf(" - Bury pieces to dig.", offsetX, offset, textWidth)
+			offset = offset + spacing
+			love.graphics.printf(" - Free falling pieces dig resources.", offsetX, offset, textWidth)
+			offset = offset + spacing
+			love.graphics.printf(" - Chain resources to multiply profits.", offsetX, offset, textWidth)
+			offset = offset + spacing
+			love.graphics.printf(" - Dig deep, there is little profit near the surface!", offsetX, offset, textWidth)
+			offset = offset + spacing
+		
+		end
+		offset = 750
 		if self.depthUpdateProp then
 			local prop = util.SmoothZeroToOne(self.depthUpdateProp, 3)
 			local newDepth = math.floor(util.AverageScalar(self.greatestDepth - self.depthUpdateAmount, self.greatestDepth, prop) + 0.5)
@@ -248,6 +269,7 @@ function self.DrawInterface(dt)
 		else
 			love.graphics.print("Depth: " .. self.greatestDepth .. "m", offsetX, offset)
 		end
+		
 	end
 end
 
