@@ -71,6 +71,17 @@ local function SpawnRow(row)
 	end
 end
 
+local function TryBlockConversion(x, y, blockData)
+	local dir = util.GetRandomKingDirection()
+	local ox, oy = x + dir[1], y + dir[2]
+	local otherBlockData = self.BlockAt(ox, oy)
+	if otherBlockData and not otherBlockData.canVein and not otherBlockData.isGrass then
+		blockMap[oy][ox] = RandomiseHealth(y, util.CopyTable(blockData))
+		return true
+	end
+	return false
+end
+
 local function SpawnArea(minY, maxY)
 	for y = minY, maxY do
 		SpawnRow(y)
@@ -78,13 +89,11 @@ local function SpawnArea(minY, maxY)
 	for y = minY, maxY do
 		for x = 1, Global.MAP_WIDTH do
 			local blockData = blockMap[y][x]
-			if blockData.canVein then
-				local dir = util.GetRandomCardinalDirection()
-				local ox, oy = x + dir[1], y + dir[2]
-				local otherBlockData = self.BlockAt(ox, oy)
-				if otherBlockData and not otherBlockData.canVein and not otherBlockData.isGrass then
-					if math.random() < Progression.GetRandomValue(y, blockData.name, "veinChance") then
-						blockMap[oy][ox] = RandomiseHealth(y, util.CopyTable(blockData))
+			if blockData.canVein and math.random() < Progression.GetRandomValue(y, blockData.name, "veinChance") then
+				-- Try three times
+				if not TryBlockConversion(x, y, blockData) then
+					if not TryBlockConversion(x, y, blockData) then
+						TryBlockConversion(x, y, blockData)
 					end
 				end
 			end

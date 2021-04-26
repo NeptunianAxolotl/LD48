@@ -397,6 +397,26 @@ function util.GetRandomCardinalDirection()
 	end
 end
 
+function util.GetRandomKingDirection()
+	if math.random() < 0.5 then
+		return util.GetRandomCardinalDirection()
+	else
+		if math.random() < 0.5 then
+			if math.random() < 0.5 then
+				return {1, 1}
+			else
+				return {1, -1}
+			end
+		else
+			if math.random() < 0.5 then
+				return {-1, 1}
+			else
+				return {-1, -1}
+			end
+		end
+	end
+end
+
 --------------------------------------------------
 --------------------------------------------------
 -- Group Utilities
