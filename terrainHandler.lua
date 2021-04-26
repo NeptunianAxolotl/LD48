@@ -255,6 +255,9 @@ function self.CheckPiecePlaceTrigger(pX, pY, pRot, pDef)
 	local tiles = pDef.tiles
 	local fullyCovered = true
 	local hitRock = false
+	local spaceFound = false
+	local nonSpaceEmptyHere = false
+	local somethingHere = false
 	local moneyToMake = 0
 	for i = 1, #tiles do
 		local tilePos = util.RotateVectorOrthagonal(tiles[i], pRot * math.pi/2)
@@ -264,6 +267,14 @@ function self.CheckPiecePlaceTrigger(pX, pY, pRot, pDef)
 			-- Placement is triggered if there are no empty squares
 			if blockData.toughness == 0 then
 				fullyCovered = false
+			end
+			-- Detect space
+			if blockData.isSpace then
+				spaceFound = true
+			elseif blockData.toughness == 0 then
+				nonSpaceEmptyHere = true
+			else
+				somethingHere = true
 			end
 			-- Always get sucked into vortex
 			if blockData.vortex then
@@ -279,7 +290,7 @@ function self.CheckPiecePlaceTrigger(pX, pY, pRot, pDef)
 			end
 		end
 	end
-	return hitRock or fullyCovered, moneyToMake
+	return (hitRock or fullyCovered) or (spaceFound and (not nonSpaceEmptyHere) and somethingHere), moneyToMake
 end
 
 ------------------------------------------------------------------------

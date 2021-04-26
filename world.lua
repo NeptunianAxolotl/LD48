@@ -164,7 +164,7 @@ function self.Initialize(difficulty)
 	self.overType = false
 	self.difficulty = difficulty or 1
 	
-	--self.SetGameOver(true, overType)
+	--self.SetGameOver(true, "empty_deck")
 	
 	self.cameraTransform = love.math.newTransform()
 	self.interfaceTransform = love.math.newTransform()

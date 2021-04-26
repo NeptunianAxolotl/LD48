@@ -88,6 +88,45 @@ local function GetNewItem()
 	return pieceDef, pieceCost
 end
 
+local function GetBigDiamond()
+	local distance = TerrainHandler.GetSpawnDepth() or 0
+	local pieceName, pieceCategory = GetRandomPieceType(distance)
+	
+	local pieceDef = GetNewPieceByName("5W")
+	pieceDef.category = pieceCategory
+	local pieceCost = pieceCategory.cost + pieceCategory.cost*1.5*math.random()
+	
+	local specialType = "cutter"
+	
+	if specialType ~= "none" then
+		local specialDef = specialDefs[specialType]
+		local specialCount = 7
+		for i = 1, specialCount do
+			pieceDef = AddSpecialToPiece(pieceDef, specialType)
+		end
+		local maxCount = math.min(specialCount, pieceCategory.size)
+		
+		pieceCost = pieceCost + (pieceCategory.specialCost + 0.5 * pieceCategory.specialCost*math.random()) * specialDef.specialCostMult
+		pieceCost = pieceCost + (maxCount - 1) * pieceCategory.specialExtraCost * (0.5 + 0.5*math.random())
+		
+		if specialDef.specialCostBoost then
+			pieceCost = pieceCost + specialDef.specialCostBoost
+		end
+		if maxCount > 1 and specialDef.atLeastTwoSpecialCostBoost then
+			pieceCost = pieceCost + specialDef.atLeastTwoSpecialCostBoost
+		end
+		
+		for i = 1, #pieceDef.tiles do
+			if pieceDef.tiles[i].pieceFunc then
+				pieceDef.tiles[i].pieceFunc(pieceDef)
+			end
+		end
+	end
+	
+	pieceCost = math.floor((pieceCost + 25)/50)*50
+	return pieceDef
+end
+
 local function PurchaseCurrentItem()
 	local item = self.options[self.selectedItem]
 	if item.price and not PlayerHandler.SpendMoney(item.price) then
@@ -145,13 +184,19 @@ function self.GetStartingDeck()
 		--AddSpecialToPiece(GetNewPieceByName("3I"), "nuke"),
 		--AddSpecialToPiece(GetNewPieceByName("3I"), "nuke"),
 		--AddSpecialToPiece(GetNewPieceByName("3I"), "nuke"),
-		--AddSpecialToPiece(GetNewPieceByName("3I"), "nuke"),
-		GetNewPieceByName("3I"),
-		GetNewPieceByName("3L"),
-		GetNewPieceByName("4S"),
-		GetNewPieceByName("4Z"),
-		GetNewPieceByName("4O"),
-		GetNewPieceByName("4T"),
+		GetBigDiamond(),
+		GetBigDiamond(),
+		GetBigDiamond(),
+		GetBigDiamond(),
+		GetBigDiamond(),
+		GetBigDiamond(),
+		GetBigDiamond(),
+		--GetNewPieceByName("3I"),
+		--GetNewPieceByName("3L"),
+		--GetNewPieceByName("4S"),
+		--GetNewPieceByName("4Z"),
+		--GetNewPieceByName("4O"),
+		--GetNewPieceByName("4T"),
 	}
 end
 

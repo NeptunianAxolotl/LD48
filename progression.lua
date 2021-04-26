@@ -401,7 +401,7 @@ local distanceKeyframes = {
 		},
 	},
 	{
-		dist          = 192,
+		dist          = 190,
 		lushFactor    = 0,
 		
 		specialType   = {
@@ -457,7 +457,7 @@ local distanceKeyframes = {
 		},
 	},
 	{
-		dist          = 196,
+		dist          = 194,
 		lushFactor    = 0,
 		
 		specialType   = {
@@ -513,7 +513,7 @@ local distanceKeyframes = {
 		},
 	},
 	{
-		dist          = 203,
+		dist          = 201,
 		lushFactor    = 0,
 		
 		specialType   = {
@@ -569,7 +569,7 @@ local distanceKeyframes = {
 		},
 	},
 	{
-		dist          = 208,
+		dist          = 206,
 		lushFactor    = 0,
 		
 		specialType   = {
@@ -648,7 +648,7 @@ local function ApplyHardModeToNumber(number, key, difficulty)
 end
 
 function self.GetWinDistance()
-	return MAX_DISTANCE*GetDistanceMult() + 8
+	return MAX_DISTANCE*GetDistanceMult() + 6
 end
 
 ------------------------------------------------------------------

@@ -58,6 +58,7 @@ local defs = {
 		name = "space",
 		toughness = 0,
 		noBackground = true,
+		isSpace = true
 	},
 }
 
