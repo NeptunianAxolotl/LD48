@@ -21,13 +21,43 @@ local function DrawGameWon()
 	love.graphics.printf("You Win", offsetX, offsetY + spacing, popupWidth, "center")
 	Font.SetSize(1)
 	love.graphics.printf("You dug the deepest. There is nothing left to dig.", offsetX + spacingX, offsetY + spacing*3, popupWidth - spacingX*2)
+
+	love.graphics.printf("Money Earned: $" .. self.world.GetPlayerHandler().GetTotalMoney() .. "\nPieces Used: " .. self.world.GetPlayerHandler().GetTotalPiecesUsed(),
+			offsetX + spacingX, offsetY + spacing*6, popupWidth - spacingX*2, "center")
 	
-	love.graphics.printf("Money Earned: $" .. self.world.GetPlayerHandler().GetTotalMoney(), offsetX + spacingX, offsetY + spacing*6, popupWidth - spacingX*2, "center")
-	
-	love.graphics.printf("Press R to restart", offsetX + spacingX, offsetY + spacing*8, popupWidth - spacingX*2, "center")
+	love.graphics.printf("Press R to restart", offsetX + spacingX, offsetY + spacing*9, popupWidth - spacingX*2, "center")
 end
 
 local function DrawGameLost(lossType)
+	local spacing = 23
+	local spacingX = 40
+	local offsetX = 86
+	local offsetY = 260
+	local popupWidth = 420
+
+	if lossType == "out_of_pieces" then
+		Resources.DrawImage("popup_menu_big", offsetX, offsetY, 0 , 0.8)
+		Font.SetSize(0)
+		love.graphics.printf("Out of Pieces!", offsetX, offsetY + spacing, popupWidth, "center")
+		Font.SetSize(1)
+		love.graphics.printf("Make a large deck and clear screens to get extra pieces.", offsetX + spacingX, offsetY + spacing*3, popupWidth - spacingX*2)
+		
+		love.graphics.printf("Money Earned: $" .. self.world.GetPlayerHandler().GetTotalMoney() .. "\nPieces Used: " .. self.world.GetPlayerHandler().GetTotalPiecesUsed(),
+				offsetX + spacingX, offsetY + spacing*6, popupWidth - spacingX*2, "center")
+		
+		love.graphics.printf("Press R to restart", offsetX + spacingX, offsetY + spacing*9, popupWidth - spacingX*2, "center")
+	elseif lossType == "empty_deck" then
+		Resources.DrawImage("popup_menu_big", offsetX, offsetY, 0 , 0.8)
+		Font.SetSize(0)
+		love.graphics.printf("No Deck!", offsetX, offsetY + spacing, popupWidth, "center")
+		Font.SetSize(1)
+		love.graphics.printf("The vortex is hungry. Do not overfeed the vortex.", offsetX + spacingX, offsetY + spacing*3, popupWidth - spacingX*2)
+		
+		love.graphics.printf("Money Earned: $" .. self.world.GetPlayerHandler().GetTotalMoney() .. "\nPieces Used: " .. self.world.GetPlayerHandler().GetTotalPiecesUsed(),
+				offsetX + spacingX, offsetY + spacing*6, popupWidth - spacingX*2, "center")
+		
+		love.graphics.printf("Press R to restart", offsetX + spacingX, offsetY + spacing*9, popupWidth - spacingX*2, "center")
+	end
 end
 
 local function DrawGamePaused()

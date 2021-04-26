@@ -60,12 +60,22 @@ local function GetNewItem()
 	end
 	
 	if specialType ~= "none" then
+		local specialDef = specialDefs[specialType]
 		local specialCount = Progression.SampleWeightedDistribution(distance, "specialCount")
 		for i = 1, specialCount do
 			pieceDef = AddSpecialToPiece(pieceDef, specialType)
 		end
-		pieceCost = pieceCost + (pieceCategory.specialCost + 0.5 * pieceCategory.specialCost*math.random()) * specialDefs[specialType].specialCostMult
-		pieceCost = pieceCost + (math.min(specialCount, pieceCategory.size) - 1) * pieceCategory.specialExtraCost * (0.5 + 0.5*math.random())
+		local maxCount = math.min(specialCount, pieceCategory.size)
+		
+		pieceCost = pieceCost + (pieceCategory.specialCost + 0.5 * pieceCategory.specialCost*math.random()) * specialDef.specialCostMult
+		pieceCost = pieceCost + (maxCount - 1) * pieceCategory.specialExtraCost * (0.5 + 0.5*math.random())
+		
+		if specialDef.specialCostBoost then
+			pieceCost = pieceCost + specialDef.specialCostBoost
+		end
+		if maxCount > 1 and specialDef.atLeastTwoSpecialCostBoost then
+			pieceCost = pieceCost + specialDef.atLeastTwoSpecialCostBoost
+		end
 		
 		for i = 1, #pieceDef.tiles do
 			if pieceDef.tiles[i].pieceFunc then
@@ -126,6 +136,10 @@ end
 function self.GetStartingDeck()
 	return {
 		-- For testing
+		--AddSpecialToPiece(GetNewPieceByName("3I"), "vortex"),
+		--AddSpecialToPiece(GetNewPieceByName("3I"), "vortex"),
+		--AddSpecialToPiece(GetNewPieceByName("3I"), "vortex"),
+		--AddSpecialToPiece(GetNewPieceByName("3I"), "vortex"),
 		--AddSpecialToPiece(GetNewPieceByName("3I"), "nuke"),
 		--AddSpecialToPiece(GetNewPieceByName("3I"), "nuke"),
 		--AddSpecialToPiece(GetNewPieceByName("3I"), "nuke"),

@@ -48,7 +48,10 @@ function self.UseNextPiece()
 	self.piecesRemaining = self.piecesRemaining - 1
 	if self.piecesRemaining < 0 then
 		self.world.SetGameOver(false, "out_of_pieces")
+		self.piecesRemaining = 0
+		return false
 	end
+	self.totalPiecesUsed = self.totalPiecesUsed + 1
 	return nextPiece
 end
 
@@ -66,6 +69,10 @@ end
 
 function self.GetTotalMoney()
 	return self.totalMoney
+end
+
+function self.GetTotalPiecesUsed()
+	return self.totalPiecesUsed
 end
 
 function self.AddCard(pieceDef)
@@ -152,6 +159,7 @@ end
 function self.Initialize(world)
 	self.money = 0
 	self.totalMoney = 0
+	self.totalPiecesUsed = 0
 	self.piecesRemaining = INITIAL_PIECES
 	self.piecesPerScreen = PIECES_PER_SCREEN
 	self.discardPile = {}

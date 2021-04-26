@@ -29,15 +29,14 @@ function self.GetGameOver()
 end
 
 function self.SetGameOver(hasWon, overType)
+	if self.gameWon or self.gameLost then
+		return
+	end
 	if hasWon then
-		if not self.gameLost then
-			self.gameWon = true
-		end
+		self.gameWon = true
 	else
-		if not self.gameWon then
-			self.gameLost = true
-			self.overType = overType
-		end
+		self.gameLost = true
+		self.overType = overType
 	end
 end
 
@@ -54,7 +53,7 @@ function self.KeyPressed(key, scancode, isRepeat)
 		end
 		self.paused = not self.paused
 	end
-	if key == "r" and self.GetPaused() then
+	if key == "r" and (self.GetPaused() or self.GetGameOver()) then
 		self.Initialize()
 	end
 	if self.GetPaused() then

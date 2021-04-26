@@ -22,6 +22,7 @@ local defs = {
 			return piece
 		end,
 		specialCostMult = 2.7,
+		specialCostBoost = 250,
 	},
 	moneyMult = {
 		tileFunc = function (tile)
@@ -61,7 +62,8 @@ local defs = {
 			end
 			return piece
 		end,
-		specialCostMult = 0.8,
+		specialCostMult = 1.1,
+		atLeastTwoSpecialCostBoost = 400,
 	},
 }
 
