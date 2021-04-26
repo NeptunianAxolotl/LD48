@@ -8,12 +8,13 @@ local NewEffect = require("objects/effect")
 local self = {}
 local api = {}
 
-function api.Spawn(name, pos, scale, velocity)
+function api.SpawnEffect(name, pos, scale, velocity, actualImageOverride)
 	local def = EffectDefs[name]
 	local data = {
 		pos = pos,
 		scale = scale, -- optional
 		velocity = velocity, -- optional
+		actualImageOverride = actualImageOverride,
 	}
 	if def.interface then
 		IterableMap.Add(self.interfaceEffects, NewEffect(data, def))

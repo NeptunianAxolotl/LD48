@@ -190,7 +190,7 @@ function self.DrawInterface(dt)
 	for i = 1, math.min(6, #self.drawPile) do
 		Resources.DrawImage("cardBack", offsetX + 20 + i*3, offset - i * 3)
 	end
-	love.graphics.print("Draw: " .. #self.drawPile, offsetX + 16, offset + 78)
+	love.graphics.print("Draw: " .. #self.drawPile, offsetX + 18, offset + 78)
 	
 	for i = 1, math.min(6, #self.discardPile) do
 		Resources.DrawImage("cardBack", offsetX + 330 + i*3, offset - i * 3)

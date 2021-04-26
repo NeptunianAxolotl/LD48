@@ -31,8 +31,8 @@ local function NewEffect(self, def)
 	
 	function self.Draw(drawQueue)
 		drawQueue:push({y=self.pos[2] + self.inFront; f=function()
-			if def.actual_image then
-				Resources.DrawImage(def.actual_image, self.pos[1], self.pos[2], self.direction,
+			if self.actualImageOverride or def.actual_image then
+				Resources.DrawImage(self.actualImageOverride or def.actual_image, self.pos[1], self.pos[2], self.direction,
 					(def.alphaScale and self.life/maxLife) or 1,
 					(self.scale or 1)*((def.lifeScale and (1 - 0.5*self.life/maxLife)) or 1),
 				def.color)
@@ -49,8 +49,8 @@ local function NewEffect(self, def)
 	end
 	
 	function self.DrawInterface()
-		if def.actual_image then
-			Resources.DrawImage(def.actual_image, self.pos[1], self.pos[2], self.direction,
+		if self.actualImageOverride or def.actual_image then
+			Resources.DrawImage(self.actualImageOverride or def.actual_image, self.pos[1], self.pos[2], self.direction,
 					(def.alphaScale and self.life/maxLife) or 1,
 					(self.scale or 1)*((def.lifeScale and (1 - 0.5*self.life/maxLife)) or 1),
 				def.color)

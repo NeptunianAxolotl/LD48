@@ -253,7 +253,7 @@ function self.CarveTerrain(pX, pY, pRot, pDef, tiles)
 	for i = 1, #tiles do
 		local tilePos = util.RotateVectorOrthagonal(tiles[i], pRot * math.pi/2)
 		local x, y = self.WorldToScreen(pX + tilePos[1], pY + tilePos[2])
-		EffectsHandler.Spawn("piece_fade", {x, y})
+		EffectsHandler.SpawnEffect("piece_fade", {x, y}, nil, nil, pDef.imageFile)
 	end
 	
 	-- Explode bombs

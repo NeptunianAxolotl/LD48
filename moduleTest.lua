@@ -10,8 +10,8 @@ function self.Update(dt)
 	animDt = Resources.UpdateAnimation("test_anim", animDt, dt/5)
 	if math.random() < 0.03 then
 		SoundHandler.PlaySound("health_down")
-		EffectsHandler.Spawn("health_down", {0, 0})
-		EffectsHandler.Spawn("fireball_explode", {math.random()*500, math.random()*500})
+		EffectsHandler.SpawnEffect("health_down", {0, 0})
+		EffectsHandler.SpawnEffect("fireball_explode", {math.random()*500, math.random()*500})
 	end
 end
 
