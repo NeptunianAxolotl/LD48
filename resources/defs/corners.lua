@@ -53,8 +53,8 @@ for i = 1, #defs do
 	defs[i].form = "image" -- image, sound or animation
 	defs[i].xScale = 32/400
 	defs[i].yScale = 32/400
-	defs[i].xOffset = 0
-	defs[i].yOffset = 0
+	defs[i].xOffset = defs[i].xOffset or 0
+	defs[i].yOffset = defs[i].yOffset or 0
 	defs[i].file = "resources/images/corners/" .. defs[i].name .. ".png"
 end
 

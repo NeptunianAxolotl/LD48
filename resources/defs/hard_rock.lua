@@ -20,7 +20,7 @@ return {
 	{
 		name = "hard_rock_2",
 		form = "image", -- image, sound or animation
-		file = "resources/images/hard_rock_1.png",
+		file = "resources/images/hard_rock_2.png",
 		xScale = 32/400,
 		yScale = 32/400,
 		xOffset = 0,
@@ -29,7 +29,7 @@ return {
 	{
 		name = "hard_rock_3",
 		form = "image", -- image, sound or animation
-		file = "resources/images/hard_rock_2.png",
+		file = "resources/images/hard_rock_3.png",
 		xScale = 32/400,
 		yScale = 32/400,
 		xOffset = 0,
@@ -38,7 +38,7 @@ return {
 	{
 		name = "hard_rock_4",
 		form = "image", -- image, sound or animation
-		file = "resources/images/hard_rock_2.png",
+		file = "resources/images/hard_rock_4.png",
 		xScale = 32/400,
 		yScale = 32/400,
 		xOffset = 0,
@@ -47,7 +47,7 @@ return {
 	{
 		name = "hard_rock_5",
 		form = "image", -- image, sound or animation
-		file = "resources/images/hard_rock_single.png",
+		file = "resources/images/hard_rock_5.png",
 		xScale = 32/400,
 		yScale = 32/400,
 		xOffset = 0,
