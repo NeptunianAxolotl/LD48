@@ -116,11 +116,13 @@ local function ExplodeBlock(x, y, strength)
 	if not blockData then
 		return true
 	end
-	if blockData.toughness <= strength or blockData.hitPoints <= 3 then
+	if blockData.toughness <= strength or (blockData.hitPoints and blockData.hitPoints <= 3) then
 		DestroyBlock(x, y, false, false, true)
 		return true
 	end
-	blockData.hitPoints = blockData.hitPoints - 3
+	if blockData.hitPoints then
+		blockData.hitPoints = blockData.hitPoints - 3
+	end
 	return false
 end
 
@@ -141,10 +143,10 @@ end
 local function DoExplosion(tileX, tileY, radius)
 	if radius == 1 then
 		if ExplodeBlock(tileX, tileY, 1) then
-			local left = ExplodeBlock(tileX - 1, tileY, 1)
-			local right = ExplodeBlock(tileX - 1, tileY, 1)
-			local top = ExplodeBlock(tileX - 1, tileY, 1)
-			local bottom = ExplodeBlock(tileX - 1, tileY, 1)
+			local left   = ExplodeBlock(tileX - 1, tileY, 1)
+			local right  = ExplodeBlock(tileX + 1, tileY, 1)
+			local top    = ExplodeBlock(tileX, tileY - 1, 1)
+			local bottom = ExplodeBlock(tileX, tileY + 1, 1)
 			if left or top then
 				ExplodeBlock(tileX - 1, tileY - 1, 1)
 			end
