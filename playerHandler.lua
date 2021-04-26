@@ -117,7 +117,7 @@ function self.CollectBlockValues(pX, pY, blockDestroyValues, valueMinY)
 	
 	if multiplier > 1 then
 		local eX, eY = TerrainHandler.WorldToScreen(pX + 0.5, valueMinY + 0.5)
-		EffectsHandler.SpawnEffect("mult_popup", {eX + 10, eY - 40}, {velocity = {1.3, 0}, text = "x" .. math.floor(multiplier*100 + 0.5) .. "%"})
+		EffectsHandler.SpawnEffect("mult_popup", {eX + 2, eY - 48}, {velocity = {1.32, 0}, text = "x" .. math.floor(multiplier*100 + 0.5) .. "%"})
 	end
 	
 	local moneyGained = math.floor(moneyMade * multiplier + 0.5)

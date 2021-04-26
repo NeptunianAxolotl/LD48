@@ -118,8 +118,9 @@ local function DestroyBlock(x, y, valueList, moneyMult, ignoreVortex, valueMinY)
 	
 	if valueList and blockData.value then
 		valueList[#valueList + 1] = blockData.value * (moneyMult or 1)
+		local moneyValue = math.floor(blockData.value * (moneyMult or 1) + 0.5)
 		local eX, eY = self.WorldToScreen(x + 0.5, y + 0.5)
-		EffectsHandler.SpawnEffect("money_popup", {eX, eY}, {velocity = {0, -0.55 - math.random()*0.2}, text = "$" .. math.floor(blockData.value * (moneyMult or 1) + 0.5)})
+		EffectsHandler.SpawnEffect("money_popup", {eX, eY}, {velocity = {0, (-0.55 - math.random()*0.2) * (0.4 + 0.6*(50 / math.max(50, moneyValue)))}, text = "$" .. moneyValue})
 		if (not valueMinY) or (y < valueMinY) then
 			valueMinY = y
 		end
@@ -184,6 +185,9 @@ local function DoExplosion(tileX, tileY, radius)
 		if left or bottom then
 			ExplodeBlock(tileX - 1, tileY + 1, 1, 2)
 		end
+		
+		local x, y = self.WorldToScreen(tileX + 0.5, tileY + 0.5)
+		EffectsHandler.SpawnEffect("bomb_explode", {x, y})
 	elseif radius == 2 then
 		-- Do it like this for scroll ordering.
 		ExplodeBlock(tileX, tileY, 3)
