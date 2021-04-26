@@ -9,6 +9,7 @@ local defs = {
 			piece.desc = "Contains explosives that destroy dirt, rocks and, unfortunately, resources."
 			return piece
 		end,
+		specialCostMult = 1,
 	},
 	nuke = {
 		tileFunc = function (tile)
@@ -20,6 +21,7 @@ local defs = {
 			piece.desc = "The war on rocks just went nuclear. Point away from gold and/or face."
 			return piece
 		end,
+		specialCostMult = 3,
 	},
 	moneyMult = {
 		tileFunc = function (tile)
@@ -31,6 +33,7 @@ local defs = {
 			piece.desc = "Double the money gained for resources mined by golden tiles."
 			return piece
 		end,
+		specialCostMult = 1,
 	},
 	vortex = {
 		tileFunc = function (tile)
@@ -42,6 +45,7 @@ local defs = {
 			piece.desc = "Opens a vortex that annihilates both this piece and the next to touch it."
 			return piece
 		end,
+		specialCostMult = 0.8,
 	},
 	cutter = {
 		tileFunc = function (tile)
@@ -51,12 +55,13 @@ local defs = {
 		pieceFunc = function (piece)
 			piece.carveStrength = piece.carveStrength + 1
 			if piece.carveStrength > 2 then
-				piece.desc = "Cut through everything with more than one Diamond Drills!"
+				piece.desc = "With Diamond Drills you can cut through anything!"
 			else
 				piece.desc = "Rocks, what rocks? The Diamond Drill cuts through (most) rocks like butter!"
 			end
 			return piece
 		end,
+		specialCostMult = 0.8,
 	},
 }
 

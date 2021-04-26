@@ -64,8 +64,8 @@ local function GetNewItem()
 		for i = 1, specialCount do
 			pieceDef = AddSpecialToPiece(pieceDef, specialType)
 		end
-		pieceCost = pieceCost + pieceCategory.specialCost + pieceCategory.specialCost*2*math.random()
-		pieceCost = pieceCost + (math.min(specialCount, pieceCategory.size) - 1) * specialCount
+		pieceCost = pieceCost + (pieceCategory.specialCost + 0.5 * pieceCategory.specialCost*math.random()) * specialDefs[specialType].specialCostMult
+		pieceCost = pieceCost + (math.min(specialCount, pieceCategory.size) - 1) * pieceCategory.specialExtraCost * (0.5 + 0.5*math.random())
 		
 		for i = 1, #pieceDef.tiles do
 			if pieceDef.tiles[i].pieceFunc then
