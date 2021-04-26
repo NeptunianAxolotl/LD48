@@ -1,5 +1,5 @@
 
-local COST_MULT = 0.8
+local COST_MULT = 0.9
 
 local cats = {
 	tiny = {
