@@ -188,6 +188,7 @@ local function DoExplosion(tileX, tileY, radius)
 		
 		local x, y = self.WorldToScreen(tileX + 0.5, tileY + 0.5)
 		EffectsHandler.SpawnEffect("bomb_explode", {x, y})
+		SoundHandler.PlaySound("explosion")
 	elseif radius == 2 then
 		-- Do it like this for scroll ordering.
 		ExplodeBlock(tileX, tileY, 3)
@@ -211,6 +212,8 @@ local function DoExplosion(tileX, tileY, radius)
 		ExplodeBlock(tileX + 1, tileY - 2, 1, 2)
 		ExplodeBlock(tileX - 1, tileY + 2, 1, 2)
 		ExplodeBlock(tileX - 1, tileY - 2, 1, 2)
+		
+		SoundHandler.PlaySound("nuke")
 	end
 end
 
@@ -325,6 +328,7 @@ function self.CarveTerrain(pX, pY, pRot, pDef, tiles)
 	local processedBlocks = {}
 	local blockDestroyValues = {}
 	local valueMinY = false
+	local hitRock = false
 	while reCheck do
 		reCheck = false
 		for i = 1, #tiles do
@@ -346,6 +350,7 @@ function self.CarveTerrain(pX, pY, pRot, pDef, tiles)
 								trashPiece = true
 							end
 							if blockData.toughness > pDef.carveStrength then
+								hitRock = true
 								blockData.hitPoints = blockData.hitPoints - pDef.carveStrength^2
 								blockData.image = blockData.imageBase .. blockData.hitPoints
 								if blockData.hitPoints <= 0 then
@@ -363,7 +368,13 @@ function self.CarveTerrain(pX, pY, pRot, pDef, tiles)
 		end
 	end
 	
-	PlayerHandler.CollectBlockValues(pX, pY, blockDestroyValues, valueMinY or pY)
+	if hitRock then
+		SoundHandler.PlaySound("rock_hit")
+	end
+	
+	if not PlayerHandler.CollectBlockValues(pX, pY, blockDestroyValues, valueMinY or pY) then
+		SoundHandler.PlaySound("coin_collect_1")
+	end
 	if trashPiece then
 		PlayerHandler.TrashPiece(pDef.uniqueID)
 	end

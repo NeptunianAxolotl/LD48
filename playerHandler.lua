@@ -83,12 +83,14 @@ function self.TrashPiece(uniqueID)
 	if self.nextPiece.uniqueID == uniqueID then
 		self.nextPiece = nil
 		self.nextPiece = DiscardAndDrawNextPiece()
+		SoundHandler.PlaySound("vortex_hit")
 		return
 	end
 	for i = 1, #self.drawPile do
 		if self.drawPile[i].uniqueID == uniqueID then
 			self.drawPile[i] = self.drawPile[#self.drawPile]
 			self.drawPile[#self.drawPile] = nil
+			SoundHandler.PlaySound("vortex_hit")
 			return
 		end
 	end
@@ -96,6 +98,7 @@ function self.TrashPiece(uniqueID)
 		if self.discardPile[i].uniqueID == uniqueID then
 			self.discardPile[i] = self.discardPile[#self.discardPile]
 			self.discardPile[#self.discardPile] = nil
+			SoundHandler.PlaySound("vortex_hit")
 			return
 		end
 	end
@@ -103,7 +106,7 @@ end
 
 function self.CollectBlockValues(pX, pY, blockDestroyValues, valueMinY)
 	if #blockDestroyValues == 0 then
-		return
+		return false
 	end
 	local multiplier = 1 + (#blockDestroyValues - 1) / 2
 	local moneyMade = 0
@@ -112,8 +115,9 @@ function self.CollectBlockValues(pX, pY, blockDestroyValues, valueMinY)
 	end
 	
 	if moneyMade <= 0 then
-		return
+		return false
 	end
+	
 	
 	if multiplier > 1 then
 		local eX, eY = TerrainHandler.WorldToScreen(pX + 0.5, valueMinY + 0.5)
@@ -121,12 +125,24 @@ function self.CollectBlockValues(pX, pY, blockDestroyValues, valueMinY)
 	end
 	
 	local moneyGained = math.floor(moneyMade * multiplier + 0.5)
+	if moneyGained >= 600 then
+		SoundHandler.PlaySound("gold_mining")
+	elseif moneyGained >= 300 then
+		SoundHandler.PlaySound("level_clear")
+	elseif moneyGained >= 100 then
+		SoundHandler.PlaySound("coin_collect_3")
+	else
+		SoundHandler.PlaySound("coin_collect_2")
+	end
+	
 	self.money = self.money + moneyGained
 	self.totalMoney = self.totalMoney + moneyGained
 	
 	self.moneyUpdateProp = 0
 	self.moneyUpdateAmount = moneyMade
 	self.moneyUpdateMultiplier = multiplier
+	
+	return true
 end
 
 function self.OnScreenScroll()

@@ -148,6 +148,7 @@ local function PurchaseCurrentItem()
 				end
 			end
 		end
+		SoundHandler.PlaySound("pause")
 		return
 	end
 	
@@ -244,6 +245,7 @@ function self.OnScreenScroll()
 	self.active = true
 	self.selectedItem = 1
 	self.shopActiveProp = 0
+	SoundHandler.PlaySound("entering_shop")
 end
 
 function self.KeyPressed(key, scancode, isRepeat)

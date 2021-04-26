@@ -5,6 +5,8 @@ local util = require("include/util")
 local api = {}
 local sounds = IterableMap.New()
 
+local GLOBAL_VOL_MULT = 0.6
+
 local volMult = {
 }
 
@@ -28,7 +30,7 @@ function api.PlaySound(name, loop, id, fadeIn, fadeOut, delay)
 			name = name,
 			want = 1,
 			have = 0,
-			volumeMult = def.volMult,
+			volumeMult = def.volMult * GLOBAL_VOL_MULT,
 			source = addSource(name, id),
 			fadeOut = fadeOut,
 			fadeIn = fadeIn,

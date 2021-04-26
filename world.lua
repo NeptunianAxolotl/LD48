@@ -1,6 +1,6 @@
 local EffectsHandler = require("effectsHandler")
-local SoundHandler = require("soundHandler")
 local MusicHandler = require("musicHandler")
+SoundHandler = require("soundHandler")
 
 local util = require("include/util")
 local Resources = require("resourceHandler")
@@ -81,8 +81,10 @@ function self.KeyPressed(key, scancode, isRepeat)
 	if key == "space" or key == "escape" then
 		if self.paused and key == "escape" then
 			love.event.quit() 
+			return
 		end
 		self.paused = not self.paused
+		SoundHandler.PlaySound("pause")
 	end
 	if key == "r" and (self.GetPaused() or self.GetGameOver()) then
 		self.Initialize(self.difficulty)
@@ -90,6 +92,7 @@ function self.KeyPressed(key, scancode, isRepeat)
 	if self.GetPaused() then
 		if key == "return" or key == "kpenter" then
 			self.paused = false
+			SoundHandler.PlaySound("pause")
 		end
 		return
 	end
