@@ -69,7 +69,7 @@ local function GetNewItem()
 		end
 	end
 	
-	pieceCost = math.floor((pieceCost + 12)/25)*25
+	pieceCost = math.floor((pieceCost + 25)/50)*50
 	return pieceDef, pieceCost
 end
 

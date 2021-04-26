@@ -18,6 +18,8 @@ local spawnX, spawnY
 local cullWait
 
 local currentMinY, currentMaxY, scrollTrigger, desiredTopDraw
+local greatestDepth = 0
+local oldGreatestDepth = 0
 
 ------------------------------------------------------------------------
 ------------------------------------------------------------------------
@@ -108,6 +110,9 @@ local function DestroyBlock(x, y, valueList, moneyMult, ignoreVortex)
 	
 	if y >= scrollTrigger then
 		DoScroll(x, y)
+	end
+	if y > greatestDepth then
+		greatestDepth = y
 	end
 end
 
@@ -316,6 +321,11 @@ function self.CarveTerrain(pX, pY, pRot, pDef, tiles)
 	if trashPiece then
 		PlayerHandler.TrashPiece(pDef.uniqueID)
 	end
+	
+	if greatestDepth > oldGreatestDepth then
+		oldGreatestDepth = greatestDepth
+		PlayerHandler.OnDepthIncrease(greatestDepth - 3) -- Three air tiles
+	end
 end
 
 ------------------------------------------------------------------------
@@ -359,6 +369,8 @@ function self.Initialize(world)
 	cullWait = 0
 	currentMinY = spawnY - 1
 	currentMaxY = currentMinY + Global.BLOCK_SPAWN_SPAN
+	greatestDepth = 0
+	oldGreatestDepth = 0
 
 	scrollTrigger = spawnY + Global.TRIGGER_OFFSET
 	desiredTopDraw = (spawnY - 1) * Global.BLOCK_SIZE

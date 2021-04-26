@@ -117,10 +117,19 @@ function self.OnScreenScroll()
 	self.piecesRemaining = math.floor(self.piecesRemaining * PIECE_CARRYOVER) + self.piecesPerScreen
 end
 
+function self.OnDepthIncrease(newDepth)
+	newDepth = newDepth * Global.METRES_PER_TILE
+	
+	self.depthUpdateProp = 0
+	self.depthUpdateAmount = newDepth - self.greatestDepth
+	self.greatestDepth = newDepth
+end
+
 function self.Update(dt)
 	UpdateProportion(dt, "pieceUpdateProp", 0.25)
 	UpdateProportion(dt, "bonusUpdateProp", 0.6)
 	UpdateProportion(dt, "moneyUpdateProp", 0.25)
+	UpdateProportion(dt, "depthUpdateProp", 0.9)
 	if ShopHandler.IsActive() then
 		self.moneyUpdateProp = false
 	end
@@ -149,6 +158,10 @@ function self.Initialize(world)
 	self.moneyUpdateProp = false
 	self.moneyUpdateAmount = false
 	self.moneyUpdateMultiplier = false
+	
+	self.greatestDepth = 0
+	self.depthUpdateProp = false
+	self.depthUpdateAmount = false
 end
 
 function self.DrawInterface(dt)
@@ -226,6 +239,20 @@ function self.DrawInterface(dt)
 		
 		offset = 740
 		love.graphics.printf("This is a spicy piece. One of the spiciest. If only the pieceDefs could say.", offsetX, offset, 455)
+	else
+		offset = 740
+		if self.depthUpdateProp then
+			local prop = util.SmoothZeroToOne(self.depthUpdateProp, 3)
+			local newDepth = math.floor(util.AverageScalar(self.greatestDepth - self.depthUpdateAmount, self.greatestDepth, prop) + 0.5)
+			local addDepth = math.floor(util.AverageScalar(self.depthUpdateAmount, 0, prop) + 0.5)
+			love.graphics.print("Depth: " .. newDepth .. "m", offsetX, offset)
+			
+			love.graphics.setColor(1, 1, 1, (self.depthUpdateProp < 0.95 and 1) or (1 - (self.depthUpdateProp - 0.95) / 0.05))
+			love.graphics.print(" + " .. addDepth .. "m", offsetX + 170, offset)
+			love.graphics.setColor(1, 1, 1, 1)
+		else
+			love.graphics.print("Depth: " .. self.greatestDepth .. "m", offsetX, offset)
+		end
 	end
 end
 
