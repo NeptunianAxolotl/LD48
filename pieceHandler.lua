@@ -113,11 +113,11 @@ function self.KeyPressed(key, scancode, isRepeat)
 			currentPiece.dropTime = dropSpeed
 			MovePiece(0, 1, 0)
 		elseif key == "z" or key == "up" then
+			currentPiece.dropTime = dropSpeed
 			MovePiece(0, 0, -1)
-			currentPiece.dropTime = dropSpeed
 		elseif key == "x" then
-			MovePiece(0, 0, 1)
 			currentPiece.dropTime = dropSpeed
+			MovePiece(0, 0, 1)
 		elseif key == "return" or key == "kpenter" then
 			--PlacePiece()
 		end
