@@ -3,6 +3,7 @@ local util = require("include/util")
 local Resources = require("resourceHandler")
 local TerrainHandler = require("terrainHandler")
 local Global = require("global")
+local Progression = require("progression")
 
 local PlayerHandler
 
@@ -64,7 +65,7 @@ function MovePiece(xChange, yChange, rotChange, econCheckCarve)
 	currentPiece.y = newY
 	currentPiece.rotation = newRot
 	
-	if newY >= Global.PIECE_WIN_DISTANCE then
+	if newY >= Progression.GetWinDistance() then
 		self.world.SetGameOver(true)
 	end
 end

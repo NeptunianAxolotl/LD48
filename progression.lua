@@ -1,10 +1,10 @@
 
 local util = require("include/util")
 
-local progression = {}
 local self = {}
 
 local DISTANCE_MULT = 1
+local MAX_DISTANCE = 208 -- Please make this match distanceKeyframes
 
 local distanceKeyframes = {
 	{
@@ -629,6 +629,31 @@ local distanceKeyframes = {
 ------------------------------------------------------------------
 ------------------------------------------------------------------
 
+local function GetDistanceMult()
+	local diff = self.world.GetDifficulty()
+	if diff == 1 then
+		return 1
+	elseif diff == 2 then
+		return 1.5
+	else
+		return 2
+	end
+end
+
+local function ApplyHardModeToNumber(number, key, difficulty)
+	if key == "rock" or key == "hard_rock" then
+		return number * (1.25 + 0.5 * (difficulty - 2))
+	end
+	return number
+end
+
+function self.GetWinDistance()
+	return MAX_DISTANCE*GetDistanceMult() + 8
+end
+
+------------------------------------------------------------------
+------------------------------------------------------------------
+
 local function GetFrames(distance)
 	local index = 1
 	local first = distanceKeyframes[1]
@@ -674,11 +699,16 @@ end
 ------------------------------------------------------------------
 
 function self.GetWeightTable(distance, tableName)
-	local first, second, factor = Interpolate(distance*DISTANCE_MULT, tableName)
+	local difficulty = self.world.GetDifficulty()
+	local first, second, factor = Interpolate(distance*DISTANCE_MULT / GetDistanceMult(), tableName)
 	local weightList = {}
 	local keyList = {}
 	for key, value in pairs(first) do
-		weightList[#weightList + 1] = IntAndRand(factor, first, second, key)
+		local result = IntAndRand(factor, first, second, key)
+		if difficulty > 1 then
+			result = ApplyHardModeToNumber(result, key, difficulty)
+		end
+		weightList[#weightList + 1] = result
 		keyList[#keyList + 1] = key
 	end
 	
@@ -693,7 +723,7 @@ function self.SampleWeightedDistribution(distance, tableName)
 end
 
 function self.GetRandomValue(distance, name, tableName)
-	local first, second, factor = Interpolate(distance*DISTANCE_MULT, tableName)
+	local first, second, factor = Interpolate(distance*DISTANCE_MULT / GetDistanceMult(), tableName)
 	return IntAndRand(factor, first, second, name)
 end
 
@@ -705,7 +735,7 @@ end
 ------------------------------------------------------------------
 
 function self.GetBackgroundColor(cameraDistance)
-	local first, second, factor = Interpolate(cameraDistance*DISTANCE_MULT)
+	local first, second, factor = Interpolate(cameraDistance*DISTANCE_MULT / GetDistanceMult())
 	
 	local lushFactor = IntAndRand(factor, first, second, "lushFactor")/100
 	
@@ -718,7 +748,8 @@ end
 ------------------------------------------------------------------
 ------------------------------------------------------------------
 
-function self.Initialize()
+function self.Initialize(world)
+	self.world = world
 end
 
 return self

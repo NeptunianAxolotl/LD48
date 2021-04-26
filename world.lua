@@ -15,10 +15,34 @@ local PieceHandler = require("pieceHandler")
 local TerrainHandler = require("terrainHandler")
 local PlayerHandler = require("playerHandler")
 local ShopHandler = require("shopHandler")
+local Progression = require("progression")
 
 local lastDt = 0
 
+local hardMode = {
+	index = 1,
+	code = {"t", "h", "i", "c", "k"},
+	difficulty = 2,
+}
+local impossibleMode = {
+	index = 1,
+	code = {"a", "t", "u", "i", "n"},
+	difficulty = 3,
+}
+
 local self = {}
+
+local function ProcessModeChange(modeData, key)
+	if key == modeData.code[modeData.index] then
+		modeData.index = modeData.index + 1
+		if not modeData.code[modeData.index] then
+			modeData.index = 1
+			self.Initialize(modeData.difficulty)
+		end
+	else
+		modeData.index = 1
+	end
+end
 
 function self.GetDifficulty()
 	return self.difficulty
@@ -51,6 +75,9 @@ function self.MouseReleased()
 end
 
 function self.KeyPressed(key, scancode, isRepeat)
+	ProcessModeChange(hardMode, key)
+	ProcessModeChange(impossibleMode, key)
+	
 	if key == "space" or key == "escape" then
 		if self.paused and key == "escape" then
 			love.event.quit() 
@@ -58,7 +85,7 @@ function self.KeyPressed(key, scancode, isRepeat)
 		self.paused = not self.paused
 	end
 	if key == "r" and (self.GetPaused() or self.GetGameOver()) then
-		self.Initialize()
+		self.Initialize(self.difficulty)
 	end
 	if self.GetPaused() then
 		if key == "return" or key == "kpenter" then
@@ -106,7 +133,8 @@ function self.Draw()
 	EffectsHandler.Draw(drawQueue)
 	-- Draw world
 	local cameraPos = Camera.GetPos()
-	Resources.DrawImage("the_space", Global.WORLD_X, math.floor(util.AverageScalar(Global.PIECE_WIN_DISTANCE * Global.BLOCK_SIZE, cameraPos[2], 0.85)))
+	local winDist = util.AverageScalar(Progression.GetWinDistance() * Global.BLOCK_SIZE, cameraPos[2], 0.85)
+	Resources.DrawImage("the_space", Global.WORLD_X, math.floor(winDist))
 	TerrainHandler.Draw(lastDt)
 	PieceHandler.Draw()
 	
@@ -136,12 +164,13 @@ function self.Initialize(difficulty)
 	self.overType = false
 	self.difficulty = difficulty or 1
 	
-	self.SetGameOver(true, overType)
+	--self.SetGameOver(true, overType)
 	
 	self.cameraTransform = love.math.newTransform()
 	self.interfaceTransform = love.math.newTransform()
 	self.emptyTransform = love.math.newTransform()
 	
+	Progression.Initialize(self)
 	PlayerHandler.Initialize(self)
 	TerrainHandler.Initialize(self)
 	ShopHandler.Initialize(self)

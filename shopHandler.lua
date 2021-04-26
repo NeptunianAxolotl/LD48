@@ -144,6 +144,8 @@ function self.GetStartingDeck()
 		--AddSpecialToPiece(GetNewPieceByName("3I"), "nuke"),
 		--AddSpecialToPiece(GetNewPieceByName("3I"), "nuke"),
 		--AddSpecialToPiece(GetNewPieceByName("3I"), "nuke"),
+		--AddSpecialToPiece(GetNewPieceByName("3I"), "nuke"),
+		--AddSpecialToPiece(GetNewPieceByName("3I"), "nuke"),
 		GetNewPieceByName("3I"),
 		GetNewPieceByName("3L"),
 		GetNewPieceByName("4S"),

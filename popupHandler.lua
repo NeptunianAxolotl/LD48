@@ -26,9 +26,11 @@ local function DrawGameWon()
 			offsetX + spacingX, offsetY + spacing*6, popupWidth - spacingX*2, "center")
 	
 	if self.world.GetDifficulty() == 1 then
-		love.graphics.printf("Type 'diamond' for hard mode", offsetX + spacingX, offsetY + spacing*9, popupWidth - spacingX*2, "center")
+		love.graphics.printf("Type 'thick' for hard mode.", offsetX + spacingX, offsetY + spacing*9, popupWidth - spacingX*2, "center")
 	elseif self.world.GetDifficulty() == 2 then
-		love.graphics.printf("Type 'atuin' to attempt the impossible.", offsetX + spacingX, offsetY + spacing*9, popupWidth - spacingX*2, "center")
+		love.graphics.printf("Type 'atuin' to go harder.", offsetX + spacingX, offsetY + spacing*9, popupWidth - spacingX*2, "center")
+	else
+		love.graphics.printf("This did not seem possible.", offsetX + spacingX, offsetY + spacing*9, popupWidth - spacingX*2, "center")
 	end
 end
 
@@ -75,7 +77,7 @@ local function DrawGamePaused()
 	Font.SetSize(0)
 	love.graphics.printf("Paused", offsetX, offsetY + spacing, popupWidth, "center")
 	Font.SetSize(1)
-	love.graphics.printf("Press Space or Enter to unpause.\nPress Escape to quit.\nPress R to restart.", offsetX + spacingX, offsetY + spacing*3, popupWidth - spacingX*2)
+	love.graphics.printf("Toggle with Space.\nPress Enter to continue.\nPress Escape to quit.\nPress R to restart.", offsetX + spacingX, offsetY + spacing*3, popupWidth - spacingX*2)
 end
 
 function self.Initialize(world)
