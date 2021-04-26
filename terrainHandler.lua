@@ -130,21 +130,21 @@ end
 local function DoExplosion(tileX, tileY, radius)
 	if radius == 1 then
 		if ExplodeBlock(tileX, tileY, 1) then
-			local left = ExplodeBlock(tileX - 1, tileY)
-			local right = ExplodeBlock(tileX - 1, tileY)
-			local top = ExplodeBlock(tileX - 1, tileY)
-			local bottom = ExplodeBlock(tileX - 1, tileY)
+			local left = ExplodeBlock(tileX - 1, tileY, 1)
+			local right = ExplodeBlock(tileX - 1, tileY, 1)
+			local top = ExplodeBlock(tileX - 1, tileY, 1)
+			local bottom = ExplodeBlock(tileX - 1, tileY, 1)
 			if left or top then
-				ExplodeBlock(tileX - 1, tileY - 1)
+				ExplodeBlock(tileX - 1, tileY - 1, 1)
 			end
 			if right or top then
-				ExplodeBlock(tileX + 1, tileY - 1)
+				ExplodeBlock(tileX + 1, tileY - 1, 1)
 			end
 			if right or bottom then
-				ExplodeBlock(tileX + 1, tileY + 1)
+				ExplodeBlock(tileX + 1, tileY + 1, 1)
 			end
 			if left or bottom then
-				ExplodeBlock(tileX - 1, tileY + 1)
+				ExplodeBlock(tileX - 1, tileY + 1, 1)
 			end
 		end
 	elseif radius == 2 then
