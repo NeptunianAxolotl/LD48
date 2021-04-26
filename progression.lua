@@ -12,11 +12,11 @@ local distanceKeyframes = {
 		lushFactor    = 0,
 		
 		specialType   = {
-			bomb      = 2,
-			moneyMult = 5,
-			vortex    = 0,
+			bomb      = 2.5,
+			moneyMult = 4,
+			vortex    = 0.1,
 			nuke      = 0,
-			cutter    = 1,
+			cutter    = 2,
 			none      = 10,
 		},
 		specialCount = {
@@ -68,11 +68,11 @@ local distanceKeyframes = {
 		lushFactor    = 0,
 		
 		specialType   = {
-			bomb      = 2,
-			moneyMult = 5,
-			vortex    = 0,
+			bomb      = 3,
+			moneyMult = 4,
+			vortex    = 0.5,
 			nuke      = 0,
-			cutter    = 4,
+			cutter    = 2,
 			none      = 9,
 		},
 		specialCount = {
@@ -124,12 +124,12 @@ local distanceKeyframes = {
 		lushFactor    = 0,
 		
 		specialType   = {
-			bomb      = 3,
+			bomb      = 4,
 			moneyMult = 5,
 			vortex    = 1,
 			nuke      = 0,
-			cutter    = 0,
-			none      = 10,
+			cutter    = 4,
+			none      = 7.5,
 		},
 		specialCount = {
 			[1] = 8,
@@ -185,7 +185,7 @@ local distanceKeyframes = {
 			vortex    = 4,
 			nuke      = 0.2,
 			cutter    = 5,
-			none      = 10,
+			none      = 6.5,
 		},
 		specialCount = {
 			[1] = 7,
@@ -236,12 +236,12 @@ local distanceKeyframes = {
 		lushFactor    = 0,
 		
 		specialType   = {
-			bomb      = 4,
+			bomb      = 5,
 			moneyMult = 6,
 			vortex    = 6,
-			nuke      = 1.5,
+			nuke      = 2.5,
 			cutter    = 6,
-			none      = 7.5,
+			none      = 5,
 		},
 		specialCount = {
 			[1] = 6,
@@ -293,12 +293,12 @@ local distanceKeyframes = {
 		lushFactor    = 0,
 		
 		specialType   = {
-			bomb      = 4,
+			bomb      = 5,
 			moneyMult = 7,
 			vortex    = 7,
 			nuke      = 3,
 			cutter    = 7,
-			none      = 6,
+			none      = 4,
 		},
 		specialCount = {
 			[1] = 4,
@@ -405,11 +405,11 @@ local distanceKeyframes = {
 		lushFactor    = 0,
 		
 		specialType   = {
-			bomb      = 1,
+			bomb      = 5,
 			moneyMult = 7,
 			vortex    = 7,
 			nuke      = 7,
-			cutter    = 9,
+			cutter    = 7,
 			none      = 0,
 		},
 		specialCount = {
@@ -461,11 +461,11 @@ local distanceKeyframes = {
 		lushFactor    = 0,
 		
 		specialType   = {
-			bomb      = 1,
+			bomb      = 5,
 			moneyMult = 7,
 			vortex    = 7,
 			nuke      = 7,
-			cutter    = 9,
+			cutter    = 7,
 			none      = 0,
 		},
 		specialCount = {
@@ -517,11 +517,11 @@ local distanceKeyframes = {
 		lushFactor    = 0,
 		
 		specialType   = {
-			bomb      = 1,
+			bomb      = 5,
 			moneyMult = 7,
 			vortex    = 7,
 			nuke      = 7,
-			cutter    = 12,
+			cutter    = 7,
 			none      = 0,
 		},
 		specialCount = {
@@ -573,11 +573,11 @@ local distanceKeyframes = {
 		lushFactor    = 0,
 		
 		specialType   = {
-			bomb      = 1,
+			bomb      = 5,
 			moneyMult = 7,
 			vortex    = 7,
 			nuke      = 7,
-			cutter    = 12,
+			cutter    = 7,
 			none      = 0,
 		},
 		specialCount = {
