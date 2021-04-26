@@ -26,4 +26,13 @@ return {
 		xOffset = 0,
 		yOffset = 0,
 	},
+	{
+		name = "iron",
+		form = "image", -- image, sound or animation
+		file = "resources/images/iron_1.png",
+		xScale = 32/400,
+		yScale = 32/400,
+		xOffset = 0,
+		yOffset = 0,
+	},
 }
