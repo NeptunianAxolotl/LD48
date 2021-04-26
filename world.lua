@@ -19,6 +19,9 @@ local Progression = require("progression")
 
 local lastDt = 0
 
+local WINDOW_HEIGHT = 832
+local WINDOW_WIDTH = 1120
+
 local hardMode = {
 	index = 1,
 	code = {"t", "h", "i", "c", "k"},
@@ -119,8 +122,10 @@ end
 
 function self.Update(dt)
 	local windowX, windowY = love.window.getMode()
+	local windowScale = windowY / WINDOW_HEIGHT
+	local windowPad = math.floor((windowX - windowScale * WINDOW_WIDTH) / 2)
 	local cameraX, cameraY = Camera.UpdateCamera(dt, {Global.BLOCK_SIZE, TerrainHandler.GetWantedDrawY()}, {0, 0}, 0, 0.99, 0.3, 4)
-	self.cameraTransform:setTransformation(-cameraX, -cameraY, 0, 1, 1, -Global.WORLD_SCREEN_X, -Global.WORLD_Y)
+	self.cameraTransform:setTransformation(-cameraX*windowScale, -cameraY*windowScale, 0, windowScale, windowScale, -Global.WORLD_SCREEN_X - windowPad, -Global.WORLD_Y)
 
 	if not self.GetPaused() then
 		if Camera.GetMovementDone() and not ShopHandler.IsActive() and not self.GetGameOver() then
@@ -142,6 +147,9 @@ function self.Update(dt)
 end
 
 function self.Draw()
+	local windowX, windowY = love.window.getMode()
+	local windowScale = windowY / WINDOW_HEIGHT
+	local windowPad = math.floor((windowX - windowScale * WINDOW_WIDTH) / 2)
 	love.graphics.replaceTransform(self.cameraTransform)
 
 	local drawQueue = PriorityQueue.new(function(l, r) return l.y < r.y end)
@@ -160,8 +168,7 @@ function self.Draw()
 		d.f()
 	end
 	
-	local windowX, windowY = love.window.getMode()
-	self.interfaceTransform:setTransformation(0, 0, 0, 1, 1, 0, 0)
+	self.interfaceTransform:setTransformation(0, 0, 0, windowScale, windowScale, -windowPad, 0)
 	love.graphics.replaceTransform(self.interfaceTransform)
 	
 	-- Draw interface
