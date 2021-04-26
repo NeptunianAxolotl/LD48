@@ -147,23 +147,22 @@ end
 
 local function DoExplosion(tileX, tileY, radius)
 	if radius == 1 then
-		if ExplodeBlock(tileX, tileY, 2) then
-			local left   = ExplodeBlock(tileX - 1, tileY, 1)
-			local right  = ExplodeBlock(tileX + 1, tileY, 1)
-			local top    = ExplodeBlock(tileX, tileY - 1, 1)
-			local bottom = ExplodeBlock(tileX, tileY + 1, 1)
-			if left or top then
-				ExplodeBlock(tileX - 1, tileY - 1, 1)
-			end
-			if right or top then
-				ExplodeBlock(tileX + 1, tileY - 1, 1)
-			end
-			if right or bottom then
-				ExplodeBlock(tileX + 1, tileY + 1, 1)
-			end
-			if left or bottom then
-				ExplodeBlock(tileX - 1, tileY + 1, 1)
-			end
+		ExplodeBlock(tileX, tileY, 2)
+		local left   = ExplodeBlock(tileX - 1, tileY, 1)
+		local right  = ExplodeBlock(tileX + 1, tileY, 1)
+		local top    = ExplodeBlock(tileX, tileY - 1, 1)
+		local bottom = ExplodeBlock(tileX, tileY + 1, 1)
+		if left or top then
+			ExplodeBlock(tileX - 1, tileY - 1, 1)
+		end
+		if right or top then
+			ExplodeBlock(tileX + 1, tileY - 1, 1)
+		end
+		if right or bottom then
+			ExplodeBlock(tileX + 1, tileY + 1, 1)
+		end
+		if left or bottom then
+			ExplodeBlock(tileX - 1, tileY + 1, 1)
 		end
 	elseif radius == 2 then
 		for x = -2, 2 do
@@ -173,7 +172,7 @@ local function DoExplosion(tileX, tileY, radius)
 					if math.abs(x) == 2 or  math.abs(y) == 2 then
 						strength = 1
 					end
-					DestroyBlock(tileX + x, tileY + y, strength)
+					ExplodeBlock(tileX + x, tileY + y, strength)
 				end
 			end
 		end
