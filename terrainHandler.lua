@@ -125,12 +125,13 @@ local function ExplodeBlock(x, y, strength)
 	if not blockData then
 		return true
 	end
-	if blockData.toughness <= strength or (blockData.hitPoints and blockData.hitPoints <= 3) then
+	if blockData.toughness <= strength or (blockData.hitPoints and blockData.hitPoints <= 4) then
 		DestroyBlock(x, y, false, false, true)
 		return true
 	end
 	if blockData.hitPoints then
-		blockData.hitPoints = blockData.hitPoints - 3
+		blockData.hitPoints = blockData.hitPoints - 4
+		blockData.image = blockData.imageBase .. blockData.hitPoints
 	end
 	return false
 end
@@ -172,9 +173,9 @@ local function DoExplosion(tileX, tileY, radius)
 		for x = -2, 2 do
 			for y = -2, 2 do
 				if math.abs(x) + math.abs(y) < 4 then
-					local strength = 2
-					if math.abs(x) == 2 or  math.abs(y) == 2 then
-						strength = 1
+					local strength = 3
+					if math.abs(x) == 2 or math.abs(y) == 2 then
+						strength = 2
 					end
 					ExplodeBlock(tileX + x, tileY + y, strength)
 				end
@@ -304,7 +305,7 @@ function self.CarveTerrain(pX, pY, pRot, pDef, tiles)
 								trashPiece = true
 							end
 							if blockData.toughness > pDef.carveStrength then
-								blockData.hitPoints = blockData.hitPoints - pDef.carveStrength
+								blockData.hitPoints = blockData.hitPoints - pDef.carveStrength^2
 								blockData.image = blockData.imageBase .. blockData.hitPoints
 								if blockData.hitPoints <= 0 then
 									valueMinY = DestroyBlock(x, y, blockDestroyValues, tiles[i].moneyMult, false, valueMinY)
@@ -506,8 +507,10 @@ function self.Draw(dt)
 	for x = 1, Global.MAP_WIDTH do
 		for y = currentMinY, currentMaxY do
 			local block = blockMap[y][x]
-			local dx, dy = self.WorldToScreen(x, y)
-			Resources.DrawImage("empty", dx, dy)
+			if not block.noBackground then
+				local dx, dy = self.WorldToScreen(x, y)
+				Resources.DrawImage("empty", dx, dy)
+			end
 		end
 	end
 	for x = 1, Global.MAP_WIDTH do
@@ -519,7 +522,7 @@ function self.Draw(dt)
 		for y = currentMinY, currentMaxY do
 			local block = blockMap[y][x]
 			local dx, dy = self.WorldToScreen(x, y)
-			if block.image ~= "dirt" and not block.isGrass then
+			if block.image and block.image ~= "dirt" and not block.isGrass then
 				Resources.DrawImage(block.image, dx, dy)
 			end
 		end

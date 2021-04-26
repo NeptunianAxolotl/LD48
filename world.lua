@@ -2,6 +2,9 @@ local EffectsHandler = require("effectsHandler")
 local SoundHandler = require("soundHandler")
 local MusicHandler = require("musicHandler")
 
+local util = require("include/util")
+local Resources = require("resourceHandler")
+
 local PriorityQueue = require("include/PriorityQueue")
 
 local Camera = require("cameraUtilities")
@@ -79,7 +82,8 @@ function self.Draw()
 
 	EffectsHandler.Draw(drawQueue)
 	-- Draw world
-	
+	local cameraPos = Camera.GetPos()
+	Resources.DrawImage("the_space", Global.WORLD_X, math.floor(util.AverageScalar(230 * Global.BLOCK_SIZE, cameraPos[2], 0.85)))
 	TerrainHandler.Draw(lastDt)
 	PieceHandler.Draw()
 	

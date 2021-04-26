@@ -83,7 +83,7 @@ local function GetNewPiece()
 			dropTime = dropSpeed,
 			moneyToMake = 0,
 		}
-		MovePiece(0, 0, 0)
+		MovePiece(0, 0, 4) -- Rotate to get out of wall
 	else
 		noPiecesLeft = true
 	end

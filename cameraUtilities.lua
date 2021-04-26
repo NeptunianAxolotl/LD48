@@ -27,6 +27,10 @@ function api.GetMovementDone()
 	return self.cameraSpeed < 0.01 and self.cameraDist < 0.01
 end
 
+function api.GetPos()
+	return self.cameraPos
+end
+
 function api.Initialize(posX, posY)
 	self = {
 		cameraPos = {posX or 0, posY or 0},

@@ -54,6 +54,11 @@ local defs = {
 		toughness = 1,
 		wantDirt = true,
 	},
+	space = {
+		name = "space",
+		toughness = 0,
+		noBackground = true,
+	},
 }
 
 return defs
