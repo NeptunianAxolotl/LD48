@@ -12,8 +12,8 @@ local ShopHandler
 local PIECE_CARRYOVER = 0.8
 local SUFFLE_PER_PIECE_DOWN = 1
 local PIECE_DOWN_REDUCE = 1
-local INITIAL_PIECES = 36
-local PIECES_PER_SCREEN = 36
+local INITIAL_PIECES = 40
+local PIECES_PER_SCREEN = 40
 local PIECES_DOWN_STR = "1"
 
 local seconds = 0
