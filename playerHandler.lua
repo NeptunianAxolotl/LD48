@@ -185,6 +185,7 @@ function self.Initialize(world)
 	self.world = world
 	self.drawPile = ShopHandler.GetStartingDeck()
 
+	self.nextPiece = false
 	self.nextPiece = DiscardAndDrawNextPiece()
 	
 	self.bonusUpdateProp = false
