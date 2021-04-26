@@ -430,9 +430,9 @@ local distanceKeyframes = {
 			longFive   = 6,
 		},
 		blockType = {
-			dirt      = 30,
-			rock      = 4.2,
-			hard_rock = 2.2,
+			dirt      = 25,
+			rock      = 8.2,
+			hard_rock = 6.2,
 			coal      = 0,
 			gold      = 2,
 			diamond   = 1,
@@ -440,7 +440,7 @@ local distanceKeyframes = {
 		},
 		veinChance = {
 			rock      = 0.5,
-			hard_rock = 0.3,
+			hard_rock = 0.4,
 			coal      = 0,
 			gold      = 0.12,
 			diamond   = 0,
