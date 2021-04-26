@@ -48,15 +48,19 @@ end
 
 local function GetNewItem()
 	local distance = TerrainHandler.GetSpawnDepth() or 0
-	local specialType = Progression.SampleWeightedDistribution(distance, "specialType")
 	local pieceName, pieceCategory = GetRandomPieceType(distance)
 	
 	local pieceDef = GetNewPieceByName(pieceName)
 	pieceDef.category = pieceCategory
 	local pieceCost = pieceCategory.cost + pieceCategory.cost*1.5*math.random()
 	
+	local specialType = Progression.SampleWeightedDistribution(distance, "specialType")
+	if pieceDef.plainRedraw and specialType == "none" then
+		specialType = Progression.SampleWeightedDistribution(distance, "specialType")
+	end
+	
 	if specialType ~= "none" then
-		local specialCount = Progression.SampleWeightedDistribution(spawnDepth or 0, "specialCount")
+		local specialCount = Progression.SampleWeightedDistribution(distance, "specialCount")
 		for i = 1, specialCount do
 			pieceDef = AddSpecialToPiece(pieceDef, specialType)
 		end

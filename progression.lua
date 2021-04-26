@@ -93,7 +93,7 @@ local distanceKeyframes = {
 		},
 		blockType = {
 			dirt      = 30,
-			rock      = 3.5,
+			rock      = 4,
 			hard_rock = 0,
 			coal      = 1.5,
 			gold      = 2.5,
@@ -118,7 +118,7 @@ local distanceKeyframes = {
 		},
 	},
 	{
-		dist          = 25,
+		dist          = 23,
 		lushFactor    = 0,
 		
 		specialType   = {
@@ -185,10 +185,10 @@ local distanceKeyframes = {
 			none      = 7,
 		},
 		specialCount = {
-			[1] = 4,
-			[2] = 3,
-			[3] = 2,
-			[4] = 1,
+			[1] = 7,
+			[2] = 1,
+			[3] = 0.5,
+			[4] = 0,
 			[7] = 0,
 		},
 		pieceType = {
@@ -240,11 +240,11 @@ local distanceKeyframes = {
 			none      = 2,
 		},
 		specialCount = {
-			[1] = 1,
-			[2] = 4,
-			[3] = 4,
+			[1] = 4,
+			[2] = 6,
+			[3] = 5,
 			[4] = 3,
-			[7] = 2,
+			[7] = 1,
 		},
 		pieceType = {
 			tiny       = 1,
@@ -298,8 +298,8 @@ local distanceKeyframes = {
 			[1] = 0,
 			[2] = 3,
 			[3] = 8,
-			[4] = 6,
-			[7] = 3,
+			[4] = 7,
+			[7] = 5,
 		},
 		pieceType = {
 			tiny       = 0.5,

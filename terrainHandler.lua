@@ -86,13 +86,13 @@ local function SpawnArea(minY, maxY)
 	end
 end
 
-local function DestroyBlock(x, y, valueList, moneyMult, ignoreVortex)
+local function DestroyBlock(x, y, valueList, moneyMult, ignoreVortex, valueMinY)
 	local blockData = self.BlockAt(x, y)
 	if (not blockData) or (blockData.toughness == 0) then
-		return
+		return valueMinY
 	end
 	if ignoreVortex and blockData.vortex then
-		return
+		return valueMinY
 	end
 	blockData.image = "empty"
 	blockData.backImage = false
@@ -105,6 +105,9 @@ local function DestroyBlock(x, y, valueList, moneyMult, ignoreVortex)
 		valueList[#valueList + 1] = blockData.value * (moneyMult or 1)
 		local eX, eY = self.WorldToScreen(x + 0.5, y + 0.5)
 		EffectsHandler.SpawnEffect("money_popup", {eX, eY}, {velocity = {0, -0.55 - math.random()*0.2}, text = "$" .. math.floor(blockData.value * (moneyMult or 1) + 0.5)})
+		if (not valueMinY) or (y < valueMinY) then
+			valueMinY = y
+		end
 	end
 	blockData.value = false
 	
@@ -114,6 +117,7 @@ local function DestroyBlock(x, y, valueList, moneyMult, ignoreVortex)
 	if y > greatestDepth then
 		greatestDepth = y
 	end
+	return valueMinY
 end
 
 local function ExplodeBlock(x, y, strength)
@@ -278,6 +282,7 @@ function self.CarveTerrain(pX, pY, pRot, pDef, tiles)
 	local trashPiece = false
 	local processedBlocks = {}
 	local blockDestroyValues = {}
+	local valueMinY = false
 	while reCheck do
 		reCheck = false
 		for i = 1, #tiles do
@@ -302,11 +307,11 @@ function self.CarveTerrain(pX, pY, pRot, pDef, tiles)
 								blockData.hitPoints = blockData.hitPoints - pDef.carveStrength
 								blockData.image = blockData.imageBase .. blockData.hitPoints
 								if blockData.hitPoints <= 0 then
-									DestroyBlock(x, y, blockDestroyValues, tiles[i].moneyMult)
+									valueMinY = DestroyBlock(x, y, blockDestroyValues, tiles[i].moneyMult, false, valueMinY)
 									reCheck = true
 								end
 							else
-								DestroyBlock(x, y, blockDestroyValues, tiles[i].moneyMult)
+								valueMinY = DestroyBlock(x, y, blockDestroyValues, tiles[i].moneyMult, false, valueMinY)
 								reCheck = true
 							end
 						end
@@ -316,7 +321,7 @@ function self.CarveTerrain(pX, pY, pRot, pDef, tiles)
 		end
 	end
 	
-	PlayerHandler.CollectBlockValues(pX, pY, blockDestroyValues)
+	PlayerHandler.CollectBlockValues(pX, pY, blockDestroyValues, valueMinY or pY)
 	if trashPiece then
 		PlayerHandler.TrashPiece(pDef.uniqueID)
 	end

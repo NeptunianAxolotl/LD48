@@ -9,7 +9,8 @@ local cats = {
 		cost = 50,
 		specialCost = 75,
 		specialExtraCost = 20,
-		desc = "Ideal for those hard-to-reach places."
+		desc = "Ideal for those hard-to-reach places.",
+		plainRedraw = true,
 	},
 	small = {
 		list = {
@@ -21,6 +22,7 @@ local cats = {
 		specialCost = 100,
 		specialExtraCost = 25,
 		desc = "Your bog-standard three-block.",
+		plainRedraw = true,
 	},
 	smallFour = {
 		list = {
@@ -34,6 +36,7 @@ local cats = {
 		specialCost = 160,
 		specialExtraCost = 25,
 		desc = "Easy to control, easy to profit.",
+		plainRedraw = true,
 	},
 	longFour = {
 		list = {
@@ -46,6 +49,7 @@ local cats = {
 		specialCost = 160,
 		specialExtraCost = 25,
 		desc = "Decent reach for a low price, and not too hard to position.",
+		plainRedraw = true,
 	},
 	stumpyFive = {
 		list = {
@@ -88,7 +92,7 @@ local cats = {
 	},
 	longFive = {
 		list = {
-			"5I",
+			"5O",
 			"5L",
 			"5J",
 			"5YL",
