@@ -274,7 +274,7 @@ local distanceKeyframes = {
 			hard_rock = 0.04,
 			coal      = 0.1,
 			gold      = 0.25,
-			diamond   = 0.01,
+			diamond   = 0.004,
 		},
 		rockSpawnHealth = {
 			[1] = 0,
@@ -323,7 +323,7 @@ local distanceKeyframes = {
 			hard_rock = 0.9,
 			coal      = 0.8,
 			gold      = 2.8,
-			diamond   = 0.8,
+			diamond   = 0.6,
 			space     = 0,
 		},
 		veinChance = {
@@ -331,7 +331,7 @@ local distanceKeyframes = {
 			hard_rock = 0.05,
 			coal      = 0.05,
 			gold      = 0.3,
-			diamond   = 0.01,
+			diamond   = 0.005,
 		},
 		rockSpawnHealth = {
 			[1] = 0,
@@ -349,10 +349,10 @@ local distanceKeyframes = {
 		lushFactor    = 0,
 		
 		specialType   = {
-			bomb      = 3,
+			bomb      = 4,
 			moneyMult = 7,
 			vortex    = 7,
-			nuke      = 4,
+			nuke      = 5,
 			cutter    = 7,
 			none      = 2,
 		},
@@ -375,19 +375,19 @@ local distanceKeyframes = {
 		},
 		blockType = {
 			dirt      = 30,
-			rock      = 2.1,
-			hard_rock = 0.8,
+			rock      = 2.2,
+			hard_rock = 0.9,
 			coal      = 0,
 			gold      = 3,
-			diamond   = 1,
+			diamond   = 0.9,
 			space     = 0,
 		},
 		veinChance = {
 			rock      = 0.35,
-			hard_rock = 0.1,
+			hard_rock = 0.12,
 			coal      = 0,
 			gold      = 0.42,
-			diamond   = 0.01,
+			diamond   = 0.001,
 		},
 		rockSpawnHealth = {
 			[1] = 0,
@@ -409,7 +409,7 @@ local distanceKeyframes = {
 			moneyMult = 7,
 			vortex    = 7,
 			nuke      = 7,
-			cutter    = 12,
+			cutter    = 9,
 			none      = 0,
 		},
 		specialCount = {
@@ -431,16 +431,16 @@ local distanceKeyframes = {
 		},
 		blockType = {
 			dirt      = 30,
-			rock      = 3,
-			hard_rock = 1,
+			rock      = 4.2,
+			hard_rock = 2.2,
 			coal      = 0,
 			gold      = 2,
 			diamond   = 1,
 			space     = 0,
 		},
 		veinChance = {
-			rock      = 0.12,
-			hard_rock = 0.05,
+			rock      = 0.5,
+			hard_rock = 0.3,
 			coal      = 0,
 			gold      = 0.12,
 			diamond   = 0,
@@ -465,7 +465,7 @@ local distanceKeyframes = {
 			moneyMult = 7,
 			vortex    = 7,
 			nuke      = 7,
-			cutter    = 12,
+			cutter    = 9,
 			none      = 0,
 		},
 		specialCount = {
