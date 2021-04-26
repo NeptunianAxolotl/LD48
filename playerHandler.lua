@@ -6,7 +6,7 @@ local TerrainHandler = require("terrainHandler")
 local Global = require("global")
 local Font = require("include/font")
 
-local PopupHandler = require("PopupHandler")
+local PopupHandler = require("popupHandler")
 local ShopHandler
 
 local PIECE_CARRYOVER = 0.8

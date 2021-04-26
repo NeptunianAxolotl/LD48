@@ -8,7 +8,7 @@ local Resources = require("resourceHandler")
 local PriorityQueue = require("include/PriorityQueue")
 
 local Camera = require("cameraUtilities")
-local PopupHandler = require("PopupHandler")
+local PopupHandler = require("popupHandler")
 
 local Global = require("global")
 local PieceHandler = require("pieceHandler")
