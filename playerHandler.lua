@@ -115,6 +115,9 @@ function self.Update(dt)
 	UpdateProportion(dt, "pieceUpdateProp", 0.25)
 	UpdateProportion(dt, "bonusUpdateProp", 0.6)
 	UpdateProportion(dt, "moneyUpdateProp", 0.25)
+	if ShopHandler.IsActive() then
+		self.moneyUpdateProp = false
+	end
 end
 
 function self.KeyPressed(key, scancode, isRepeat)

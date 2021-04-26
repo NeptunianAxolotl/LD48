@@ -39,12 +39,13 @@ local function SpawnRow(row)
 			blockMap[row][x] = {
 				image = "sky",
 				toughness = 0,
-				emptyForEdge = true,
 			}
 		elseif row == 4 then
 			blockMap[row][x] = {
 				image = "dirt_grass_n",
 				toughness = 1,
+				wantDirt = true,
+				isGrass = true,
 			}
 		else
 			local blockType = Progression.SampleWeightedDistribution(row, "blockType")
@@ -86,8 +87,8 @@ local function DestroyBlock(x, y, valueList, moneyMult, ignoreVortex)
 	blockData.backImage = false
 	blockData.vortex = false
 	blockData.toughness = 0
-	blockData.emptyForEdge = true
 	blockData.animateImage = false
+	blockData.wantDirt = false
 	
 	if valueList and blockData.value then
 		valueList[#valueList + 1] = blockData.value * (moneyMult or 1)
@@ -106,7 +107,7 @@ local function CreateVortex(x, y)
 		return
 	end
 	blockData.vortex = true
-	blockData.emptyForEdge = true
+	blockData.wantDirt = false
 	blockData.toughness = 1
 	blockData.image = "empty"
 	blockData.animateImage = "vortex"
@@ -134,7 +135,7 @@ function self.BlockAt(x, y)
 end
 
 function self.Empty(x, y)
-	return blockMap[y] and blockMap[y][x] and blockMap[y][x].emptyForEdge
+	return blockMap[y] and blockMap[y][x] and not blockMap[y][x].wantDirt
 end
 
 ------------------------------------------------------------------------
@@ -326,9 +327,9 @@ function self.GetWantedDrawY()
 	return desiredTopDraw
 end
 
-local function DrawEdges(x, y)
+local function DrawDirt(x, y)
 	local block = blockMap[y][x]
-	if block.toughness ~= 0 then
+	if not block.wantDirt then
 		return
 	end
 	local dx, dy = self.WorldToScreen(x, y)
@@ -337,64 +338,104 @@ local function DrawEdges(x, y)
 	local bot = not self.Empty(x, y + 1)
 	local left = not self.Empty(x - 1, y)
 	local right = not self.Empty(x + 1, y)
+
+	if block.isGrass then
+		if left then
+			if right then
+				Resources.DrawImage("dirt_grass_n", dx, dy)
+			else
+				Resources.DrawImage("dirt_grass_ne", dx, dy)
+			end
+		elseif right then
+			Resources.DrawImage("dirt_grass_nw", dx, dy)
+		end
+		return
+	end
+
+	if not block.dirtStyle then
+		block.dirtStyle = {}
+		for i = 1, 4 do
+			block.dirtStyle[i] = math.floor(math.random()*4 + 1)
+			if block.dirtStyle[i] < 1 or block.dirtStyle[i] > 4 then
+				block.dirtStyle[i] = 1
+			end
+			block.dirtStyle[i] = "dirt_" .. block.dirtStyle[i]
+		end
+	end
 	
 	-- North West
 	if top then
 		if left then
-			Resources.DrawImage("edge_nw_inner", dx, dy)
+			if self.Empty(x - 1, y - 1) then
+				Resources.DrawImage("dirt_inner_nw", dx, dy)
+			else
+				Resources.DrawImage(block.dirtStyle[1], dx, dy)
+			end
 		else
-			Resources.DrawImage("edge_n", dx, dy)
+			Resources.DrawImage("dirt_outer_w", dx, dy)
 		end
 	else
 		if left then
-			Resources.DrawImage("edge_w", dx, dy)
-		elseif not self.Empty(x - 1, y - 1) then
-			Resources.DrawImage("edge_nw_outer", dx, dy)
+			Resources.DrawImage("dirt_outer_n", dx, dy)
+		else
+			Resources.DrawImage("dirt_outer_nw", dx, dy)
 		end
 	end
 	
 	-- North East
 	if top then
 		if right then
-			Resources.DrawImage("edge_ne_inner", dx + Global.BLOCK_SIZE/2, dy)
+			if self.Empty(x + 1, y - 1) then
+				Resources.DrawImage("dirt_inner_ne", dx + Global.BLOCK_SIZE/2, dy)
+			else
+				Resources.DrawImage(block.dirtStyle[2], dx + Global.BLOCK_SIZE/2, dy)
+			end
 		else
-			Resources.DrawImage("edge_n", dx + Global.BLOCK_SIZE/2, dy)
+			Resources.DrawImage("dirt_outer_e", dx + Global.BLOCK_SIZE/2, dy)
 		end
 	else
 		if right then
-			Resources.DrawImage("edge_e", dx + Global.BLOCK_SIZE/2, dy)
-		elseif not self.Empty(x + 1, y - 1) then
-			Resources.DrawImage("edge_ne_outer", dx + Global.BLOCK_SIZE/2, dy)
+			Resources.DrawImage("dirt_outer_n", dx + Global.BLOCK_SIZE/2, dy)
+		else
+			Resources.DrawImage("dirt_outer_ne", dx + Global.BLOCK_SIZE/2, dy)
 		end
 	end
 	
 	-- South West
 	if bot then
 		if left then
-			Resources.DrawImage("edge_sw_inner", dx, dy + Global.BLOCK_SIZE/2)
+			if self.Empty(x - 1, y + 1) then
+				Resources.DrawImage("dirt_inner_sw", dx, dy + Global.BLOCK_SIZE/2)
+			else
+				Resources.DrawImage(block.dirtStyle[3], dx, dy + Global.BLOCK_SIZE/2)
+			end
 		else
-			Resources.DrawImage("edge_s", dx, dy + Global.BLOCK_SIZE/2)
+			Resources.DrawImage("dirt_outer_w", dx, dy + Global.BLOCK_SIZE/2)
 		end
 	else
 		if left then
-			Resources.DrawImage("edge_w", dx, dy + Global.BLOCK_SIZE/2)
-		elseif not self.Empty(x - 1, y + 1) then
-			Resources.DrawImage("edge_sw_outer", dx, dy + Global.BLOCK_SIZE/2)
+			Resources.DrawImage("dirt_outer_s", dx, dy + Global.BLOCK_SIZE/2)
+		else
+			Resources.DrawImage("dirt_outer_sw", dx, dy + Global.BLOCK_SIZE/2)
 		end
 	end
 	
 	-- South East
 	if bot then
 		if right then
-			Resources.DrawImage("edge_se_inner", dx + Global.BLOCK_SIZE/2, dy + Global.BLOCK_SIZE/2)
+			if self.Empty(x + 1, y + 1) then
+				Resources.DrawImage("dirt_inner_se", dx + Global.BLOCK_SIZE/2, dy + Global.BLOCK_SIZE/2)
+			else
+				Resources.DrawImage(block.dirtStyle[4], dx + Global.BLOCK_SIZE/2, dy + Global.BLOCK_SIZE/2)
+			end
 		else
-			Resources.DrawImage("edge_s", dx + Global.BLOCK_SIZE/2, dy + Global.BLOCK_SIZE/2)
+			Resources.DrawImage("dirt_outer_e", dx + Global.BLOCK_SIZE/2, dy + Global.BLOCK_SIZE/2)
 		end
 	else
 		if right then
-			Resources.DrawImage("edge_e", dx + Global.BLOCK_SIZE/2, dy + Global.BLOCK_SIZE/2)
-		elseif not self.Empty(x + 1, y + 1) then
-			Resources.DrawImage("edge_se_outer", dx + Global.BLOCK_SIZE/2, dy + Global.BLOCK_SIZE/2)
+			Resources.DrawImage("dirt_outer_s", dx + Global.BLOCK_SIZE/2, dy + Global.BLOCK_SIZE/2)
+		else
+			Resources.DrawImage("dirt_outer_se", dx + Global.BLOCK_SIZE/2, dy + Global.BLOCK_SIZE/2)
 		end
 	end
 end
@@ -404,10 +445,21 @@ function self.Draw(dt)
 		for y = currentMinY, currentMaxY do
 			local block = blockMap[y][x]
 			local dx, dy = self.WorldToScreen(x, y)
-			if block.backImage then
-				Resources.DrawImage(block.backImage, dx, dy)
+			Resources.DrawImage("empty", dx, dy)
+		end
+	end
+	for x = 1, Global.MAP_WIDTH do
+		for y = currentMinY, currentMaxY do
+			DrawDirt(x, y)
+		end
+	end
+	for x = 1, Global.MAP_WIDTH do
+		for y = currentMinY, currentMaxY do
+			local block = blockMap[y][x]
+			local dx, dy = self.WorldToScreen(x, y)
+			if block.image ~= "dirt" and not block.isGrass then
+				Resources.DrawImage(block.image, dx, dy)
 			end
-			Resources.DrawImage(block.image, dx, dy)
 		end
 	end
 	
@@ -419,12 +471,6 @@ function self.Draw(dt)
 				block.animateRot = (block.animateRot + dt)%(2*math.pi)
 				Resources.DrawImage(block.animateImage, dx, dy, block.animateRot)
 			end
-		end
-	end
-	
-	for x = 1, Global.MAP_WIDTH do
-		for y = currentMinY, currentMaxY do
-			DrawEdges(x, y)
 		end
 	end
 end

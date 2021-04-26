@@ -12,12 +12,12 @@ local distanceKeyframes = {
 		lushFactor    = 0,
 		
 		specialType   = {
-			bomb = 1,
-			moneyMult = 1,
-			vortex = 1,
-			nuke = 1,
-			cutter = 10,
-			none = 10,
+			bomb      = 10,
+			moneyMult = 0,
+			vortex    = 1,
+			nuke      = 1,
+			cutter    = 10,
+			none      = 5,
 		},
 		specialCount = {
 			[1] = 10,
@@ -38,10 +38,10 @@ local distanceKeyframes = {
 		},
 		blockType = {
 			dirt    = 20,
-			rock    = 1,
-			coal    = 10,
+			rock    = 0,
+			coal    = 0,
 			gold    = 1,
-			diamond = 1,
+			diamond = 0,
 		},
 		veinChance = {
 			rock    = 0,
@@ -51,16 +51,16 @@ local distanceKeyframes = {
 		},
 	},
 	{
-		dist          = 20,
+		dist          = 8,
 		lushFactor    = 0,
 		
 		specialType   = {
-			bomb = 10,
+			bomb      = 10,
 			moneyMult = 0,
-			vortex = 1,
-			nuke = 1,
-			cutter = 10,
-			none = 5,
+			vortex    = 1,
+			nuke      = 1,
+			cutter    = 10,
+			none      = 5,
 		},
 		specialCount = {
 			[1] = 10,
@@ -81,10 +81,10 @@ local distanceKeyframes = {
 		},
 		blockType = {
 			dirt    = 15,
-			rock    = 1,
-			coal    = 1,
+			rock    = 0,
+			coal    = 0,
 			gold    = 1,
-			diamond = 1,
+			diamond = 0,
 		},
 		veinChance = {
 			rock    = 0,

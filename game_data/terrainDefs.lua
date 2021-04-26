@@ -7,6 +7,7 @@ local defs = {
 		toughness = 2,
 		hitPoints = 3,
 		canVein = true,
+		wantDirt = true,
 	},
 	coal = {
 		image = "coal",
@@ -15,6 +16,7 @@ local defs = {
 		toughness = 1,
 		value = 20,
 		canVein = true,
+		wantDirt = true,
 	},
 	gold = {
 		image = "gold",
@@ -23,6 +25,7 @@ local defs = {
 		toughness = 1,
 		value = 50,
 		canVein = true,
+		wantDirt = true,
 	},
 	diamond = {
 		image = "diamond_block",
@@ -31,11 +34,13 @@ local defs = {
 		toughness = 1,
 		value = 250,
 		canVein = true,
+		wantDirt = true,
 	},
 	dirt = {
 		image = "dirt",
 		name = "dirt",
 		toughness = 1,
+		wantDirt = true,
 	},
 }
 
