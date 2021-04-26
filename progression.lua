@@ -635,14 +635,22 @@ local function GetDistanceMult()
 		return 1
 	elseif diff == 2 then
 		return 1.5
-	else
+	elseif diff == 2 then
 		return 2
+	else
+		return 3.5
 	end
 end
 
 local function ApplyHardModeToNumber(number, key, difficulty)
 	if key == "rock" or key == "hard_rock" then
-		return number * (1.25 + 0.5 * (difficulty - 2))
+		if difficulty == 2 then
+			return number*1.25
+		elseif difficulty == 3 then
+			return number*1.75
+		else
+			return number*2
+		end
 	end
 	return number
 end

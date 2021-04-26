@@ -32,6 +32,11 @@ local impossibleMode = {
 	code = {"a", "t", "u", "i", "n"},
 	difficulty = 3,
 }
+local omegaMode = {
+	index = 1,
+	code = {"o", "m", "e", "g", "a"},
+	difficulty = 4,
+}
 
 local self = {}
 
@@ -93,6 +98,7 @@ end
 function self.KeyPressed(key, scancode, isRepeat)
 	ProcessModeChange(hardMode, key)
 	ProcessModeChange(impossibleMode, key)
+	ProcessModeChange(omegaMode, key)
 	
 	if key == "space" or key == "escape" then
 		if self.paused and key == "escape" then

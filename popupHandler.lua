@@ -30,8 +30,10 @@ local function DrawGameWon()
 		love.graphics.printf("Type 'thick' for hard mode.", offsetX + spacingX, offsetY + spacing*9, popupWidth - spacingX*2, "center")
 	elseif self.world.GetDifficulty() == 2 then
 		love.graphics.printf("Type 'atuin' to go harder.", offsetX + spacingX, offsetY + spacing*9, popupWidth - spacingX*2, "center")
+	elseif self.world.GetDifficulty() == 3 then
+		love.graphics.printf("I dare you to type 'omega'.", offsetX + spacingX, offsetY + spacing*9, popupWidth - spacingX*2, "center")
 	else
-		love.graphics.printf("This did not seem possible.", offsetX + spacingX, offsetY + spacing*9, popupWidth - spacingX*2, "center")
+		love.graphics.printf("You did the impossible.", offsetX + spacingX, offsetY + spacing*9, popupWidth - spacingX*2, "center")
 	end
 end
 
