@@ -253,7 +253,7 @@ function self.DrawInterface(dt)
 			offset = offset + spacing
 			love.graphics.printf(" - Free falling pieces dig resources.", offsetX, offset, textWidth)
 			offset = offset + spacing
-			love.graphics.printf(" - Chain resources to multiply profits.", offsetX, offset, textWidth)
+			love.graphics.printf(" - Bunch resources for multipliers.", offsetX, offset, textWidth)
 			offset = offset + spacing
 			love.graphics.printf(" - Dig deep, there is little profit near the surface!", offsetX, offset, textWidth)
 			offset = offset + spacing

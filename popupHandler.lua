@@ -26,7 +26,7 @@ function self.DrawInterface(dt)
 		Font.SetSize(0)
 		love.graphics.printf("Paused", offsetX, offsetY + spacing, popupWidth, "center")
 		Font.SetSize(1)
-		love.graphics.printf("Press space to unpause.\nPress Escape to quit.\nPress R to restart.", offsetX + spacingX, offsetY + spacing*3, popupWidth - spacingX*2)
+		love.graphics.printf("Press Space or Enter to unpause.\nPress Escape to quit.\nPress R to restart.", offsetX + spacingX, offsetY + spacing*3, popupWidth - spacingX*2)
 	end
 end
 

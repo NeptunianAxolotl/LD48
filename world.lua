@@ -29,9 +29,18 @@ end
 
 function self.KeyPressed(key, scancode, isRepeat)
 	if key == "space" or key == "escape" then
+		if self.paused and key == "escape" then
+			love.event.quit() 
+		end
 		self.paused = not self.paused
 	end
+	if key == "r" and self.GetPaused() then
+		self.Initialize()
+	end
 	if self.GetPaused() then
+		if key == "return" or key == "kpenter" then
+			self.paused = false
+		end
 		return
 	end
 	if Camera.GetMovementDone() then

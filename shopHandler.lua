@@ -150,6 +150,7 @@ end
 function self.Update(dt)
 	self.shopActiveProp = util.UpdateProportion(dt, self.shopActiveProp, 4)
 	self.shopDeactiveProp = util.UpdateProportion(dt, self.shopDeactiveProp, 2.5)
+	self.pulseDt = Resources.UpdateAnimation("button_pulse", self.pulseDt, dt)
 end
 
 function self.OnScreenScroll()
@@ -191,6 +192,7 @@ function self.Initialize(world)
 	self.interactedWithShop = false
 	self.shopActiveProp = false
 	self.shopDeactiveProp = false
+	self.pulseDt = 0
 	
 	PlayerHandler = world.GetPlayerHandler()
 	
@@ -296,7 +298,7 @@ function self.DrawInterface()
 	
 	if self.active then
 		local cardX, cardY = itemPositions[self.selectedItem][1], itemPositions[self.selectedItem][2]
-		Resources.DrawImage("select", cardX, cardY)
+		Resources.DrawAnimation("button_pulse", cardX, cardY, self.pulseDt)
 	end
 end
 
