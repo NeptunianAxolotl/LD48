@@ -100,6 +100,19 @@ local function DestroyBlock(x, y, valueList, moneyMult, ignoreVortex)
 	end
 end
 
+local function ExplodeBlock(x, y, strength)
+	local blockData = self.BlockAt(x, y)
+	if not blockData then
+		return true
+	end
+	if blockData.toughness <= strength or blockData.hitPoints <= 3 then
+		DestroyBlock(x, y, false, false, true)
+		return true
+	end
+	blockData.hitPoints = blockData.hitPoints - 3
+	return false
+end
+
 local function CreateVortex(x, y)
 	DestroyBlock(x, y)
 	local blockData = self.BlockAt(x, y)
@@ -112,6 +125,41 @@ local function CreateVortex(x, y)
 	blockData.image = "empty"
 	blockData.animateImage = "vortex"
 	blockData.animateRot = math.random()*2*math.pi
+end
+
+local function DoExplosion(tileX, tileY, radius)
+	if radius == 1 then
+		if ExplodeBlock(tileX, tileY, 1) then
+			local left = ExplodeBlock(tileX - 1, tileY)
+			local right = ExplodeBlock(tileX - 1, tileY)
+			local top = ExplodeBlock(tileX - 1, tileY)
+			local bottom = ExplodeBlock(tileX - 1, tileY)
+			if left or top then
+				ExplodeBlock(tileX - 1, tileY - 1)
+			end
+			if right or top then
+				ExplodeBlock(tileX + 1, tileY - 1)
+			end
+			if right or bottom then
+				ExplodeBlock(tileX + 1, tileY + 1)
+			end
+			if left or bottom then
+				ExplodeBlock(tileX - 1, tileY + 1)
+			end
+		end
+	elseif radius == 2 then
+		for x = -2, 2 do
+			for y = -2, 2 do
+				if math.abs(x) + math.abs(y) < 4 then
+					local strength = 2
+					if math.abs(x) == 2 or  math.abs(y) == 2 then
+						strength = 1
+					end
+					DestroyBlock(tileX + x, tileY + y, strength)
+				end
+			end
+		end
+	end
 end
 
 ------------------------------------------------------------------------
@@ -204,21 +252,7 @@ function self.CarveTerrain(pX, pY, pRot, pDef, tiles)
 		if tiles[i].explosionRadius then
 			local tilePos = util.RotateVectorOrthagonal(tiles[i], pRot * math.pi/2)
 			local tileX, tileY = pX + tilePos[1], pY + tilePos[2]
-			if tiles[i].explosionRadius == 1 then
-				for x = -1, 1 do
-					for y = -1, 1 do
-						DestroyBlock(tileX + x, tileY + y, false, false, true)
-					end
-				end
-			elseif tiles[i].explosionRadius == 2 then
-				for x = -2, 2 do
-					for y = -2, 2 do
-						if math.abs(x) + math.abs(y) < 4 then
-							DestroyBlock(tileX + x, tileY + y, false, false, true)
-						end
-					end
-				end
-			end
+			DoExplosion(tileX, tileY, tiles[i].explosionRadius)
 		end
 	end
 	
