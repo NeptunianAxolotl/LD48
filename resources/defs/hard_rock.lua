@@ -1,6 +1,6 @@
 return {
 	{
-		name = "hard_rock",
+		name = "hard_rock_6",
 		form = "image", -- image, sound or animation
 		file = "resources/images/hard_rock_single.png",
 		xScale = 32/400,

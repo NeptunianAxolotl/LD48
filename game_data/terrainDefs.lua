@@ -1,6 +1,6 @@
 local defs = {
 	rock = {
-		image = "rock",
+		image = "rock_3",
 		name = "rock",
 		imageBase = "rock_",
 		backImage = "dirt",
@@ -8,9 +8,10 @@ local defs = {
 		hitPoints = 3,
 		canVein = true,
 		wantDirt = true,
+		spawnHealth = "rockSpawnHealth",
 	},
 	hard_rock = {
-		image = "hard_rock",
+		image = "hard_rock_6",
 		name = "hard_rock",
 		imageBase = "hard_rock_",
 		backImage = "dirt",
@@ -18,6 +19,7 @@ local defs = {
 		hitPoints = 6,
 		canVein = true,
 		wantDirt = true,
+		spawnHealth = "hardRockSpawnHealth",
 	},
 	coal = {
 		image = "coal",

@@ -32,6 +32,15 @@ local function DoScroll(triggerX, triggerY)
 	ShopHandler.OnScreenScroll()
 end
 
+local function RandomiseHealth(distance, blockData)
+	if not blockData.spawnHealth then
+		return blockData
+	end
+	blockData.hitPoints = Progression.SampleWeightedDistribution(distance, blockData.spawnHealth)
+	blockData.image = blockData.imageBase .. blockData.hitPoints
+	return blockData
+end
+
 local function SpawnRow(row)
 	blockMap[row] = {}
 	for x = 1, Global.MAP_WIDTH do
@@ -49,7 +58,7 @@ local function SpawnRow(row)
 			}
 		else
 			local blockType = Progression.SampleWeightedDistribution(row, "blockType")
-			blockMap[row][x] = util.CopyTable(terrainDefs[blockType])
+			blockMap[row][x] = RandomiseHealth(row, util.CopyTable(terrainDefs[blockType]))
 		end
 	end
 end
@@ -67,7 +76,7 @@ local function SpawnArea(minY, maxY)
 				local otherBlockData = self.BlockAt(ox, oy)
 				if otherBlockData and not otherBlockData.canVein then
 					if math.random() < Progression.GetRandomValue(y, blockData.name, "veinChance") then
-						blockMap[oy][ox] = util.CopyTable(blockData)
+						blockMap[oy][ox] = RandomiseHealth(y, util.CopyTable(blockData))
 					end
 				end
 			end
