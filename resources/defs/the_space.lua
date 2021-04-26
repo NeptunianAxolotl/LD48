@@ -4,5 +4,5 @@ return {
 	xScale = 1,
 	yScale = 1,
 	xOffset = 0,
-	yOffset = 0,
+	yOffset = 0.1,
 }

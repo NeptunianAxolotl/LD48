@@ -27,6 +27,12 @@ local oldGreatestDepth = 0
 
 local function DoScroll(triggerX, triggerY)
 	spawnX, spawnY = triggerX, triggerY
+	if spawnX < 3 then
+		spawnX = 3
+	end
+	if spawnX > Global.MAP_WIDTH - 3 then
+		spawnX = Global.MAP_WIDTH - 3
+	end
 	desiredTopDraw = (spawnY - 1) * Global.BLOCK_SIZE
 	scrollTrigger = scrollTrigger + Global.TRIGGER_OFFSET
 	cullWait = 3
@@ -170,17 +176,28 @@ local function DoExplosion(tileX, tileY, radius)
 			ExplodeBlock(tileX - 1, tileY + 1, 1)
 		end
 	elseif radius == 2 then
-		for x = -2, 2 do
-			for y = -2, 2 do
-				if math.abs(x) + math.abs(y) < 4 then
-					local strength = 3
-					if math.abs(x) == 2 or math.abs(y) == 2 then
-						strength = 2
-					end
-					ExplodeBlock(tileX + x, tileY + y, strength)
-				end
-			end
-		end
+		-- Do it like this for scroll ordering.
+		ExplodeBlock(tileX, tileY, 3)
+		ExplodeBlock(tileX + 1, tileY, 3)
+		ExplodeBlock(tileX - 1, tileY, 3)
+		ExplodeBlock(tileX, tileY + 1, 3)
+		ExplodeBlock(tileX, tileY - 1, 3)
+		ExplodeBlock(tileX + 1, tileY + 1, 3)
+		ExplodeBlock(tileX + 1, tileY - 1, 3)
+		ExplodeBlock(tileX - 1, tileY + 1, 3)
+		ExplodeBlock(tileX - 1, tileY - 1, 3)
+		ExplodeBlock(tileX + 2, tileY, 2)
+		ExplodeBlock(tileX - 2, tileY, 2)
+		ExplodeBlock(tileX, tileY + 2, 2)
+		ExplodeBlock(tileX, tileY - 2, 2)
+		ExplodeBlock(tileX + 2, tileY + 1, 2)
+		ExplodeBlock(tileX + 2, tileY - 1, 2)
+		ExplodeBlock(tileX - 2, tileY + 1, 2)
+		ExplodeBlock(tileX - 2, tileY - 1, 2)
+		ExplodeBlock(tileX + 1, tileY + 2, 2)
+		ExplodeBlock(tileX + 1, tileY - 2, 2)
+		ExplodeBlock(tileX - 1, tileY + 2, 2)
+		ExplodeBlock(tileX - 1, tileY - 2, 2)
 	end
 end
 

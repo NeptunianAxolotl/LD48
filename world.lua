@@ -83,7 +83,7 @@ function self.Draw()
 	EffectsHandler.Draw(drawQueue)
 	-- Draw world
 	local cameraPos = Camera.GetPos()
-	Resources.DrawImage("the_space", Global.WORLD_X, math.floor(util.AverageScalar(230 * Global.BLOCK_SIZE, cameraPos[2], 0.85)))
+	Resources.DrawImage("the_space", Global.WORLD_X, math.floor(util.AverageScalar(Global.PIECE_WIN_DISTANCE * Global.BLOCK_SIZE, cameraPos[2], 0.85)))
 	TerrainHandler.Draw(lastDt)
 	PieceHandler.Draw()
 	

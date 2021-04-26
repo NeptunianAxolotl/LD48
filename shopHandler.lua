@@ -125,12 +125,14 @@ end
 
 function self.GetStartingDeck()
 	return {
-		AddSpecialToPiece(GetNewPieceByName("3I"), "nuke"),
-		AddSpecialToPiece(GetNewPieceByName("3L"), "nuke"),
-		AddSpecialToPiece(GetNewPieceByName("4S"), "nuke"),
-		AddSpecialToPiece(GetNewPieceByName("4Z"), "nuke"),
-		AddSpecialToPiece(GetNewPieceByName("4O"), "nuke"),
-		AddSpecialToPiece(GetNewPieceByName("4T"), "nuke"),
+		-- For testing
+		--AddSpecialToPiece(GetNewPieceByName("3I"), "nuke"),
+		GetNewPieceByName("3I"),
+		GetNewPieceByName("3L"),
+		GetNewPieceByName("4S"),
+		GetNewPieceByName("4Z"),
+		GetNewPieceByName("4O"),
+		GetNewPieceByName("4T"),
 	}
 end
 

@@ -209,12 +209,12 @@ local distanceKeyframes = {
 			rock      = 2,
 			hard_rock = 0.1,
 			coal      = 2,
-			gold      = 3.2,
+			gold      = 2.5,
 			diamond   = 0.05,
 			space     = 0,
 		},
 		veinChance = {
-			rock      = 0.02,
+			rock      = 0.09,
 			hard_rock = 0,
 			coal      = 0.1,
 			gold      = 0.08,
@@ -232,7 +232,7 @@ local distanceKeyframes = {
 		},
 	},
 	{
-		dist          = 100,
+		dist          = 85,
 		lushFactor    = 0,
 		
 		specialType   = {
@@ -262,15 +262,15 @@ local distanceKeyframes = {
 		},
 		blockType = {
 			dirt      = 30,
-			rock      = 2.5,
-			hard_rock = 0.3,
-			coal      = 0.8,
-			gold      = 4,
+			rock      = 2.2,
+			hard_rock = 0.35,
+			coal      = 1.2,
+			gold      = 3,
 			diamond   = 0.2,
 			space     = 0,
 		},
 		veinChance = {
-			rock      = 0.08,
+			rock      = 0.18,
 			hard_rock = 0.01,
 			coal      = 0.08,
 			gold      = 0.1,
@@ -289,7 +289,7 @@ local distanceKeyframes = {
 	},
 	
 	{
-		dist          = 160,
+		dist          = 120,
 		lushFactor    = 0,
 		
 		specialType   = {
@@ -319,15 +319,15 @@ local distanceKeyframes = {
 		},
 		blockType = {
 			dirt      = 30,
-			rock      = 2.5,
-			hard_rock = 0.75,
-			coal      = 0,
-			gold      = 3.8,
-			diamond   = 1.2,
+			rock      = 2,
+			hard_rock = 0.9,
+			coal      = 0.8,
+			gold      = 3.2,
+			diamond   = 1,
 			space     = 0,
 		},
 		veinChance = {
-			rock      = 0.06,
+			rock      = 0.26,
 			hard_rock = 0.02,
 			coal      = 0.08,
 			gold      = 0.1,
@@ -345,7 +345,7 @@ local distanceKeyframes = {
 		},
 	},
 	{
-		dist          = 200,
+		dist          = 150,
 		lushFactor    = 0,
 		
 		specialType   = {
@@ -375,19 +375,19 @@ local distanceKeyframes = {
 		},
 		blockType = {
 			dirt      = 30,
-			rock      = 2.6,
-			hard_rock = 1,
+			rock      = 2,
+			hard_rock = 0.8,
 			coal      = 0,
-			gold      = 4,
-			diamond   = 2.5,
+			gold      = 3.8,
+			diamond   = 1.8,
 			space     = 0,
 		},
 		veinChance = {
-			rock      = 0.06,
+			rock      = 0.3,
 			hard_rock = 0.02,
 			coal      = 0,
-			gold      = 0.12,
-			diamond   = 0.07,
+			gold      = 0.1,
+			diamond   = 0.05,
 		},
 		rockSpawnHealth = {
 			[1] = 0,
@@ -401,7 +401,7 @@ local distanceKeyframes = {
 		},
 	},
 	{
-		dist          = 225,
+		dist          = 192,
 		lushFactor    = 0,
 		
 		specialType   = {
@@ -431,16 +431,16 @@ local distanceKeyframes = {
 		},
 		blockType = {
 			dirt      = 30,
-			rock      = 5,
-			hard_rock = 3.5,
+			rock      = 3,
+			hard_rock = 1,
 			coal      = 0,
-			gold      = 3,
-			diamond   = 3.5,
+			gold      = 1,
+			diamond   = 5,
 			space     = 0,
 		},
 		veinChance = {
-			rock      = 0.1,
-			hard_rock = 0.04,
+			rock      = 0.12,
+			hard_rock = 0.05,
 			coal      = 0,
 			gold      = 0.12,
 			diamond   = 0.07,
@@ -457,7 +457,7 @@ local distanceKeyframes = {
 		},
 	},
 	{
-		dist          = 240,
+		dist          = 196,
 		lushFactor    = 0,
 		
 		specialType   = {
@@ -486,9 +486,9 @@ local distanceKeyframes = {
 			longFive   = 6,
 		},
 		blockType = {
-			dirt      = 5,
+			dirt      = 0,
 			rock      = 10,
-			hard_rock = 20,
+			hard_rock = 25,
 			coal      = 0,
 			gold      = 1,
 			diamond   = 3,
@@ -498,7 +498,7 @@ local distanceKeyframes = {
 			rock      = 0.1,
 			hard_rock = 0.1,
 			coal      = 0,
-			gold      = 0.12,
+			gold      = 0.04,
 			diamond   = 0.07,
 		},
 		rockSpawnHealth = {
@@ -513,7 +513,7 @@ local distanceKeyframes = {
 		},
 	},
 	{
-		dist          = 244,
+		dist          = 203,
 		lushFactor    = 0,
 		
 		specialType   = {
@@ -569,7 +569,7 @@ local distanceKeyframes = {
 		},
 	},
 	{
-		dist          = 250,
+		dist          = 208,
 		lushFactor    = 0,
 		
 		specialType   = {
