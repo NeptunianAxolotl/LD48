@@ -21,17 +21,17 @@ local defs = {
 			piece.desc = "The war on rocks just went nuclear. Point away from gold and/or face."
 			return piece
 		end,
-		specialCostMult = 2.6,
-		specialCostBoost = 300,
+		specialCostMult = 2.9,
+		specialCostBoost = 320,
 	},
 	moneyMult = {
 		tileFunc = function (tile)
 			tile.imageFile = "money_mult"
-			tile.moneyMult = 2
+			tile.moneyMult = 3
 			return tile
 		end,
 		pieceFunc = function (piece)
-			piece.desc = "Double the money gained for resources mined by golden tiles."
+			piece.desc = "Triple the money gained for resources mined by golden tiles."
 			return piece
 		end,
 		specialCostMult = 1.2,
@@ -46,7 +46,8 @@ local defs = {
 			piece.desc = "Opens a vortex that annihilates both this piece and the next to touch it."
 			return piece
 		end,
-		specialCostMult = 0.9,
+		specialCostMult = 0.65,
+		baseCostMult = 0.65,
 	},
 	cutter = {
 		tileFunc = function (tile)
@@ -63,7 +64,7 @@ local defs = {
 			return piece
 		end,
 		specialCostMult = 1.1,
-		atLeastTwoSpecialCostBoost = 450,
+		atLeastTwoSpecialCostBoost = 500,
 	},
 }
 

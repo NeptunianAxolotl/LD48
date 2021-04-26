@@ -67,8 +67,12 @@ local function GetNewItem()
 		end
 		local maxCount = math.min(specialCount, pieceCategory.size)
 		
+		if specialDef.baseCostMult then
+			pieceCost = pieceCost * specialDef.baseCostMult
+		end
+		
 		pieceCost = pieceCost + (pieceCategory.specialCost + 0.5 * pieceCategory.specialCost*math.random()) * specialDef.specialCostMult
-		pieceCost = pieceCost + (maxCount - 1) * pieceCategory.specialExtraCost * (0.5 + 0.5*math.random())
+		pieceCost = pieceCost + (maxCount - 1) * pieceCategory.specialExtraCost * (0.5 + 0.5*math.random()) * specialDef.specialCostMult
 		
 		if specialDef.specialCostBoost then
 			pieceCost = pieceCost + specialDef.specialCostBoost
@@ -138,7 +142,10 @@ local function PurchaseCurrentItem()
 		self.shopDeactiveProp = 0
 		for i = 1, #self.options do
 			if self.options[i].isRefresh then
-				self.options[i].price = 0
+				self.options[i].price = math.floor(self.options[i].price/4 + 0.5)
+				if self.options[i].price < Global.REFRESH_COST then
+					self.options[i].price = 0
+				end
 			end
 		end
 		return
