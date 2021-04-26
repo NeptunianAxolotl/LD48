@@ -21,8 +21,8 @@ local defs = {
 			piece.desc = "The war on rocks just went nuclear. Point away from gold and/or face."
 			return piece
 		end,
-		specialCostMult = 2.7,
-		specialCostBoost = 250,
+		specialCostMult = 2.6,
+		specialCostBoost = 300,
 	},
 	moneyMult = {
 		tileFunc = function (tile)

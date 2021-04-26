@@ -25,7 +25,11 @@ local function DrawGameWon()
 	love.graphics.printf("Money Earned: $" .. self.world.GetPlayerHandler().GetTotalMoney() .. "\nPieces Used: " .. self.world.GetPlayerHandler().GetTotalPiecesUsed(),
 			offsetX + spacingX, offsetY + spacing*6, popupWidth - spacingX*2, "center")
 	
-	love.graphics.printf("Press R to restart", offsetX + spacingX, offsetY + spacing*9, popupWidth - spacingX*2, "center")
+	if self.world.GetDifficulty() == 1 then
+		love.graphics.printf("Type 'diamond' for hard mode", offsetX + spacingX, offsetY + spacing*9, popupWidth - spacingX*2, "center")
+	elseif self.world.GetDifficulty() == 2 then
+		love.graphics.printf("Type 'atuin' to attempt the impossible.", offsetX + spacingX, offsetY + spacing*9, popupWidth - spacingX*2, "center")
+	end
 end
 
 local function DrawGameLost(lossType)

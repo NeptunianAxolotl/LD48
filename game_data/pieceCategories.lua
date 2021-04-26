@@ -62,8 +62,8 @@ local cats = {
 		},
 		size = 5,
 		cost = 180 * COST_MULT,
-		specialCost = 150 * COST_MULT,
-		specialExtraCost = 35 * COST_MULT,
+		specialCost = 210 * COST_MULT,
+		specialExtraCost = 40 * COST_MULT,
 		desc = "If you want a lot of tiles in a small space, look no further.",
 	},
 	mediumFive = {
@@ -75,8 +75,8 @@ local cats = {
 		},
 		size = 5,
 		cost = 190 * COST_MULT,
-		specialCost = 150 * COST_MULT,
-		specialExtraCost = 30 * COST_MULT,
+		specialCost = 210 * COST_MULT,
+		specialExtraCost = 40 * COST_MULT,
 		desc = "Don't let it fool you, this piece means mischief.",
 	},
 	bigFive = {
@@ -88,8 +88,8 @@ local cats = {
 		},
 		size = 5,
 		cost = 200 * COST_MULT,
-		specialCost = 150 * COST_MULT,
-		specialExtraCost = 30 * COST_MULT,
+		specialCost = 210 * COST_MULT,
+		specialExtraCost = 40 * COST_MULT,
 		desc = "A simple way to zig a lot of zag.",
 	},
 	longFive = {
@@ -102,8 +102,8 @@ local cats = {
 		},
 		size = 5,
 		cost = 220 * COST_MULT,
-		specialCost = 150 * COST_MULT,
-		specialExtraCost = 35 * COST_MULT,
+		specialCost = 210 * COST_MULT,
+		specialExtraCost = 40 * COST_MULT,
 		desc = "Extremely long, but tends to get caught on rocks.",
 	},
 }

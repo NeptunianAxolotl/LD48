@@ -135,17 +135,17 @@ local function DestroyBlock(x, y, valueList, moneyMult, ignoreVortex, valueMinY)
 	return valueMinY
 end
 
-local function ExplodeBlock(x, y, strength)
+local function ExplodeBlock(x, y, strength, damage)
 	local blockData = self.BlockAt(x, y)
 	if not blockData then
 		return true
 	end
-	if blockData.toughness <= strength or (blockData.hitPoints and blockData.hitPoints <= 4) then
+	if blockData.toughness <= strength or (blockData.hitPoints and blockData.hitPoints <= damage) then
 		DestroyBlock(x, y, false, false, true)
 		return true
 	end
 	if blockData.hitPoints then
-		blockData.hitPoints = blockData.hitPoints - 4
+		blockData.hitPoints = blockData.hitPoints - damage
 		blockData.image = blockData.imageBase .. blockData.hitPoints
 	end
 	return false
@@ -167,22 +167,22 @@ end
 
 local function DoExplosion(tileX, tileY, radius)
 	if radius == 1 then
-		ExplodeBlock(tileX, tileY, 2)
-		local left   = ExplodeBlock(tileX - 1, tileY, 1)
-		local right  = ExplodeBlock(tileX + 1, tileY, 1)
-		local top    = ExplodeBlock(tileX, tileY - 1, 1)
-		local bottom = ExplodeBlock(tileX, tileY + 1, 1)
+		ExplodeBlock(tileX, tileY, 2, 3)
+		local left   = ExplodeBlock(tileX - 1, tileY, 1, 3)
+		local right  = ExplodeBlock(tileX + 1, tileY, 1, 3)
+		local top    = ExplodeBlock(tileX, tileY - 1, 1, 3)
+		local bottom = ExplodeBlock(tileX, tileY + 1, 1, 3)
 		if left or top then
-			ExplodeBlock(tileX - 1, tileY - 1, 1)
+			ExplodeBlock(tileX - 1, tileY - 1, 1, 2)
 		end
 		if right or top then
-			ExplodeBlock(tileX + 1, tileY - 1, 1)
+			ExplodeBlock(tileX + 1, tileY - 1, 1, 2)
 		end
 		if right or bottom then
-			ExplodeBlock(tileX + 1, tileY + 1, 1)
+			ExplodeBlock(tileX + 1, tileY + 1, 1, 2)
 		end
 		if left or bottom then
-			ExplodeBlock(tileX - 1, tileY + 1, 1)
+			ExplodeBlock(tileX - 1, tileY + 1, 1, 2)
 		end
 	elseif radius == 2 then
 		-- Do it like this for scroll ordering.
@@ -195,18 +195,18 @@ local function DoExplosion(tileX, tileY, radius)
 		ExplodeBlock(tileX + 1, tileY - 1, 3)
 		ExplodeBlock(tileX - 1, tileY + 1, 3)
 		ExplodeBlock(tileX - 1, tileY - 1, 3)
-		ExplodeBlock(tileX + 2, tileY, 2)
-		ExplodeBlock(tileX - 2, tileY, 2)
-		ExplodeBlock(tileX, tileY + 2, 2)
-		ExplodeBlock(tileX, tileY - 2, 2)
-		ExplodeBlock(tileX + 2, tileY + 1, 2)
-		ExplodeBlock(tileX + 2, tileY - 1, 2)
-		ExplodeBlock(tileX - 2, tileY + 1, 2)
-		ExplodeBlock(tileX - 2, tileY - 1, 2)
-		ExplodeBlock(tileX + 1, tileY + 2, 2)
-		ExplodeBlock(tileX + 1, tileY - 2, 2)
-		ExplodeBlock(tileX - 1, tileY + 2, 2)
-		ExplodeBlock(tileX - 1, tileY - 2, 2)
+		ExplodeBlock(tileX + 2, tileY, 2, 3)
+		ExplodeBlock(tileX - 2, tileY, 2, 3)
+		ExplodeBlock(tileX, tileY + 2, 2, 3)
+		ExplodeBlock(tileX, tileY - 2, 2, 3)
+		ExplodeBlock(tileX + 2, tileY + 1, 1, 2)
+		ExplodeBlock(tileX + 2, tileY - 1, 1, 2)
+		ExplodeBlock(tileX - 2, tileY + 1, 1, 2)
+		ExplodeBlock(tileX - 2, tileY - 1, 1, 2)
+		ExplodeBlock(tileX + 1, tileY + 2, 1, 2)
+		ExplodeBlock(tileX + 1, tileY - 2, 1, 2)
+		ExplodeBlock(tileX - 1, tileY + 2, 1, 2)
+		ExplodeBlock(tileX - 1, tileY - 2, 1, 2)
 	end
 end
 

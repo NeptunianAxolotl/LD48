@@ -20,6 +20,10 @@ local lastDt = 0
 
 local self = {}
 
+function self.GetDifficulty()
+	return self.difficulty
+end
+
 function self.GetPaused()
 	return self.paused
 end
@@ -125,13 +129,14 @@ function self.Draw()
 	love.graphics.replaceTransform(self.emptyTransform)
 end
 
-function self.Initialize()
+function self.Initialize(difficulty)
 	self.paused = true
 	self.gameWon = false
 	self.gameLost = false
 	self.overType = false
+	self.difficulty = difficulty or 1
 	
-	--self.SetGameOver(true, overType)
+	self.SetGameOver(true, overType)
 	
 	self.cameraTransform = love.math.newTransform()
 	self.interfaceTransform = love.math.newTransform()

@@ -210,7 +210,7 @@ local distanceKeyframes = {
 			hard_rock = 0.1,
 			coal      = 1.9,
 			gold      = 2.3,
-			diamond   = 0.05,
+			diamond   = 0.01,
 			space     = 0,
 		},
 		veinChance = {
@@ -331,7 +331,7 @@ local distanceKeyframes = {
 			hard_rock = 0.05,
 			coal      = 0.05,
 			gold      = 0.3,
-			diamond   = 0.02,
+			diamond   = 0.01,
 		},
 		rockSpawnHealth = {
 			[1] = 0,
@@ -387,7 +387,7 @@ local distanceKeyframes = {
 			hard_rock = 0.1,
 			coal      = 0,
 			gold      = 0.4,
-			diamond   = 0.05,
+			diamond   = 0.01,
 		},
 		rockSpawnHealth = {
 			[1] = 0,
@@ -443,7 +443,7 @@ local distanceKeyframes = {
 			hard_rock = 0.05,
 			coal      = 0,
 			gold      = 0.12,
-			diamond   = 0.07,
+			diamond   = 0.08,
 		},
 		rockSpawnHealth = {
 			[1] = 0,
