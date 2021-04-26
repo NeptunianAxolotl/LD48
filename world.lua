@@ -93,6 +93,8 @@ function self.Initialize()
 	EffectsHandler.Initialize()
 	MusicHandler.Initialize()
 	SoundHandler.Initialize()
+	
+	MusicHandler.SwitchTrack("music")
 end
 
 function self.GetPlayerHandler()

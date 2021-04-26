@@ -7,10 +7,7 @@ local api = {}
 local font = love.graphics.newFont(70)
 
 local tracks = {
-	intro = {id = 'a', sound = 'crocodial_a', duration = 6.04, canLoop = false},
-	normal = {id = 'b', sound = 'crocodial_b', duration = 12.170, canLoop = true},
-	late = {id = 'c', sound = 'crocodial_c', duration = 12.170, canLoop = true},
-	boss = {id = 'd', sound = 'crocodial_d', duration = 12.170, canLoop = true}
+	music = {id = 'music_1', sound = 'music', duration = 40.76, canLoop = true},
 }
 
 local fadeRate = 1
