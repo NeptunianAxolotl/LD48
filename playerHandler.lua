@@ -41,8 +41,14 @@ end
 
 function self.UseNextPiece()
 	local nextPiece = self.nextPiece
+	if not nextPiece then
+		return false
+	end
 	self.nextPiece = DiscardAndDrawNextPiece()
 	self.piecesRemaining = self.piecesRemaining - 1
+	if self.piecesRemaining < 0 then
+		self.world.SetGameOver(false, "out_of_pieces")
+	end
 	return nextPiece
 end
 
@@ -56,6 +62,10 @@ end
 
 function self.GetMoney()
 	return self.money
+end
+
+function self.GetTotalMoney()
+	return self.totalMoney
 end
 
 function self.AddCard(pieceDef)
@@ -103,7 +113,9 @@ function self.CollectBlockValues(pX, pY, blockDestroyValues, valueMinY)
 		EffectsHandler.SpawnEffect("mult_popup", {eX + 10, eY - 40}, {velocity = {1.3, 0}, text = "x" .. math.floor(multiplier*100 + 0.5) .. "%"})
 	end
 	
-	self.money = self.money + math.floor(moneyMade * multiplier + 0.5)
+	local moneyGained = math.floor(moneyMade * multiplier + 0.5)
+	self.money = self.money + moneyGained
+	self.totalMoney = self.totalMoney + moneyGained
 	
 	self.moneyUpdateProp = 0
 	self.moneyUpdateAmount = moneyMade
@@ -139,12 +151,14 @@ end
 
 function self.Initialize(world)
 	self.money = 0
+	self.totalMoney = 0
 	self.piecesRemaining = INITIAL_PIECES
 	self.piecesPerScreen = PIECES_PER_SCREEN
 	self.discardPile = {}
 	self.shufflesUntilPiecePerScreenDown = SUFFLE_PER_PIECE_DOWN
 
 	ShopHandler = world.GetShopHandler()
+	self.world = world
 	self.drawPile = ShopHandler.GetStartingDeck()
 
 	self.nextPiece = DiscardAndDrawNextPiece()

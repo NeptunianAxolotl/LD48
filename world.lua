@@ -24,6 +24,23 @@ function self.GetPaused()
 	return self.paused
 end
 
+function self.GetGameOver()
+	return self.gameWon or self.gameLost, self.gameWon, self.gameLost, self.overType
+end
+
+function self.SetGameOver(hasWon, overType)
+	if hasWon then
+		if not self.gameLost then
+			self.gameWon = true
+		end
+	else
+		if not self.gameWon then
+			self.gameLost = true
+			self.overType = overType
+		end
+	end
+end
+
 function self.MousePressed()
 end
 
@@ -46,10 +63,12 @@ function self.KeyPressed(key, scancode, isRepeat)
 		end
 		return
 	end
-	if Camera.GetMovementDone() then
-		PieceHandler.KeyPressed(key, scancode, isRepeat)
+	if not self.GetGameOver() then
+		if Camera.GetMovementDone() then
+			PieceHandler.KeyPressed(key, scancode, isRepeat)
+		end
+		ShopHandler.KeyPressed(key, scancode, isRepeat)
 	end
-	ShopHandler.KeyPressed(key, scancode, isRepeat)
 end
 
 function self.Update(dt)
@@ -58,16 +77,17 @@ function self.Update(dt)
 	self.cameraTransform:setTransformation(-cameraX, -cameraY, 0, 1, 1, -Global.WORLD_SCREEN_X, -Global.WORLD_Y)
 
 	if not self.GetPaused() then
-		if Camera.GetMovementDone() and not ShopHandler.IsActive() then
+		if Camera.GetMovementDone() and not ShopHandler.IsActive() and not self.GetGameOver() then
 			TerrainHandler.UpdateAreaCulling(dt)
 			PieceHandler.Update(dt)
 		end
 		TerrainHandler.Update(dt)
 		PlayerHandler.Update(dt)
 		ShopHandler.Update(dt)
-
+		
 		EffectsHandler.Update(dt)
 	end
+
 	MusicHandler.Update(dt)
 	SoundHandler.Update(dt)
 	
@@ -108,6 +128,11 @@ end
 
 function self.Initialize()
 	self.paused = true
+	self.gameWon = false
+	self.gameLost = false
+	self.overType = false
+	
+	--self.SetGameOver(true, overType)
 	
 	self.cameraTransform = love.math.newTransform()
 	self.interfaceTransform = love.math.newTransform()

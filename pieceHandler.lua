@@ -11,7 +11,6 @@ local self = {}
 local dropSpeed = 0.9
 local currentPiece = false
 local currentPieceTimer = 0
-local noPiecesLeft = false
 
 function MovePiece(xChange, yChange, rotChange, econCheckCarve)
 	local newX = currentPiece.x + xChange
@@ -64,6 +63,10 @@ function MovePiece(xChange, yChange, rotChange, econCheckCarve)
 	currentPiece.x = newX
 	currentPiece.y = newY
 	currentPiece.rotation = newRot
+	
+	if newY >= Global.PIECE_WIN_DISTANCE then
+		self.world.SetGameOver(true)
+	end
 end
 
 local function PlacePiece()
@@ -85,7 +88,7 @@ local function GetNewPiece()
 		}
 		MovePiece(0, 0, 4) -- Rotate to get out of wall
 	else
-		noPiecesLeft = true
+		self.world.SetGameOver(false, "empty_deck")
 	end
 end
 
@@ -127,7 +130,7 @@ end
 function self.Initialize(world)
 	currentPiece = false
 	currentPieceTimer = 0
-	noPiecesLeft = false
+	self.world = world
 	
 	PlayerHandler = world.GetPlayerHandler()
 end
