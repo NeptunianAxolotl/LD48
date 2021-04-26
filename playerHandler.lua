@@ -308,7 +308,7 @@ function self.DrawInterface(dt)
 			love.graphics.print("Depth: " .. newDepth .. "m", offsetX, offset)
 			
 			love.graphics.setColor(1, 1, 1, (self.depthUpdateProp < 0.95 and 1) or (1 - (self.depthUpdateProp - 0.95) / 0.05))
-			love.graphics.print(" + " .. addDepth .. "m", offsetX + 180, offset)
+			love.graphics.print(" + " .. addDepth .. "m", offsetX + 150, offset)
 			love.graphics.setColor(1, 1, 1, 1)
 		else
 			love.graphics.print("Depth: " .. self.greatestDepth .. "m", offsetX, offset)
