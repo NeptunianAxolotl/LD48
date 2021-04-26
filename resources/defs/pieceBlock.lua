@@ -33,7 +33,7 @@ local defs = {
 		name = "4T",
 	},
 	{
-		name = "5I",
+		name = "5O",
 	},
 	{
 		name = "5P",

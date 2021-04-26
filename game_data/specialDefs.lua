@@ -51,7 +51,7 @@ local defs = {
 		pieceFunc = function (piece)
 			piece.carveStrength = piece.carveStrength + 1
 			if piece.carveStrength > 2 then
-				piece.desc = "Rocks, what rocks? The UPGRADED Diamond Drill cuts through everything!"
+				piece.desc = "Cut through everything with more than one Diamond Drills!"
 			else
 				piece.desc = "Rocks, what rocks? The Diamond Drill cuts through (most) rocks like butter!"
 			end
