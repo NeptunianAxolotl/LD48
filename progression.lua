@@ -8,16 +8,126 @@ local DISTANCE_MULT = 1
 
 local distanceKeyframes = {
 	{
-		dist          = 10,
+		dist          = 15,
 		lushFactor    = 0,
 		
 		specialType   = {
-			bomb      = 5,
-			moneyMult = 8,
+			bomb      = 2,
+			moneyMult = 5,
 			vortex    = 0,
 			nuke      = 0,
+			cutter    = 1,
+			none      = 10,
+		},
+		specialCount = {
+			[1] = 8,
+			[2] = 0,
+			[3] = 0,
+			[4] = 0,
+			[7] = 0,
+		},
+		pieceType = {
+			tiny       = 2,
+			small      = 7,
+			smallFour  = 10,
+			longFour   = 6,
+			stumpyFive = 2,
+			mediumFive = 1,
+			bigFive    = 0,
+			longFive   = 0,
+		},
+		blockType = {
+			dirt      = 30,
+			rock      = 0.7,
+			hard_rock = 0,
+			coal      = 2.5,
+			gold      = 1,
+			diamond   = 0,
+		},
+		veinChance = {
+			rock      = 0,
+			hard_rock = 0,
+			coal      = 0.06,
+			gold      = 0.05,
+			diamond   = 0.02,
+		},
+		rockSpawnHealth = {
+			[1] = 4,
+			[2] = 8,
+			[3] = 12
+		},
+		hardRockSpawnHealth = {
+			[2] = 4,
+			[4] = 8,
+			[6] = 12
+		},
+	},
+	{
+		dist          = 22,
+		lushFactor    = 0,
+		
+		specialType   = {
+			bomb      = 2,
+			moneyMult = 5,
+			vortex    = 0,
+			nuke      = 0,
+			cutter    = 4,
+			none      = 9,
+		},
+		specialCount = {
+			[1] = 8,
+			[2] = 0,
+			[3] = 0,
+			[4] = 0,
+			[7] = 0,
+		},
+		pieceType = {
+			tiny       = 2,
+			small      = 7,
+			smallFour  = 10,
+			longFour   = 6,
+			stumpyFive = 2,
+			mediumFive = 1,
+			bigFive    = 0,
+			longFive   = 0,
+		},
+		blockType = {
+			dirt      = 30,
+			rock      = 3.5,
+			hard_rock = 0,
+			coal      = 1.5,
+			gold      = 2.5,
+			diamond   = 0,
+		},
+		veinChance = {
+			rock      = 0,
+			hard_rock = 0,
+			coal      = 0.06,
+			gold      = 0.05,
+			diamond   = 0.02,
+		},
+		rockSpawnHealth = {
+			[1] = 4,
+			[2] = 8,
+			[3] = 8
+		},
+		hardRockSpawnHealth = {
+			[2] = 4,
+			[4] = 8,
+			[6] = 12
+		},
+	},
+	{
+		dist          = 25,
+		lushFactor    = 0,
+		
+		specialType   = {
+			bomb      = 3,
+			moneyMult = 5,
+			vortex    = 1,
+			nuke      = 0,
 			cutter    = 0,
-			none      = 15,
+			none      = 10,
 		},
 		specialCount = {
 			[1] = 8,
@@ -63,58 +173,168 @@ local distanceKeyframes = {
 		},
 	},
 	{
-		dist          = 30,
+		dist          = 50,
 		lushFactor    = 0,
 		
 		specialType   = {
-			bomb      = 8,
-			moneyMult = 8,
-			vortex    = 2,
+			bomb      = 4,
+			moneyMult = 5,
+			vortex    = 3,
 			nuke      = 0,
-			cutter    = 1,
-			none      = 12,
+			cutter    = 5,
+			none      = 7,
 		},
 		specialCount = {
 			[1] = 8,
-			[2] = 1,
-			[3] = 0,
+			[2] = 2,
+			[3] = 1,
 			[4] = 0,
 			[7] = 0,
 		},
 		pieceType = {
 			tiny       = 2,
-			small      = 5,
-			smallFour  = 8,
-			longFour   = 6,
-			stumpyFive = 3,
-			mediumFive = 2,
-			bigFive    = 1,
-			longFive   = 0,
+			small      = 7,
+			smallFour  = 9,
+			longFour   = 8,
+			stumpyFive = 5,
+			mediumFive = 3,
+			bigFive    = 2,
+			longFive   = 1,
 		},
 		blockType = {
 			dirt      = 40,
-			rock      = 1.5,
-			hard_rock = 0,
-			coal      = 3,
-			gold      = 2,
-			diamond   = 0,
+			rock      = 2,
+			hard_rock = 0.1,
+			coal      = 2,
+			gold      = 3.5,
+			diamond   = 0.05,
 		},
 		veinChance = {
 			rock      = 0,
 			hard_rock = 0,
-			coal      = 0.08,
-			gold      = 0.06,
-			diamond   = 0.02,
+			coal      = 0.1,
+			gold      = 0.08,
+			diamond   = 0,
 		},
 		rockSpawnHealth = {
-			[1] = 4,
-			[2] = 8,
-			[3] = 18
+			[1] = 2,
+			[2] = 12,
+			[3] = 30
 		},
 		hardRockSpawnHealth = {
 			[2] = 4,
 			[4] = 8,
 			[6] = 12
+		},
+	},
+	{
+		dist          = 100,
+		lushFactor    = 0,
+		
+		specialType   = {
+			bomb      = 5,
+			moneyMult = 6,
+			vortex    = 6,
+			nuke      = 2,
+			cutter    = 8,
+			none      = 4,
+		},
+		specialCount = {
+			[1] = 4,
+			[2] = 4,
+			[3] = 2,
+			[4] = 1.5,
+			[7] = 1,
+		},
+		pieceType = {
+			tiny       = 3,
+			small      = 7,
+			smallFour  = 8,
+			longFour   = 8,
+			stumpyFive = 7,
+			mediumFive = 5,
+			bigFive    = 4,
+			longFive   = 3,
+		},
+		blockType = {
+			dirt      = 40,
+			rock      = 2.8,
+			hard_rock = 0.4,
+			coal      = 1,
+			gold      = 5,
+			diamond   = 0.2,
+		},
+		veinChance = {
+			rock      = 0,
+			hard_rock = 0,
+			coal      = 0.08,
+			gold      = 0.1,
+			diamond   = 0.01,
+		},
+		rockSpawnHealth = {
+			[1] = 0,
+			[2] = 10,
+			[3] = 30
+		},
+		hardRockSpawnHealth = {
+			[2] = 4,
+			[4] = 8,
+			[6] = 16
+		},
+	},
+	{
+		dist          = 160,
+		lushFactor    = 0,
+		
+		specialType   = {
+			bomb      = 2,
+			moneyMult = 6,
+			vortex    = 6,
+			nuke      = 6,
+			cutter    = 4,
+			none      = 10,
+		},
+		specialCount = {
+			[1] = 1,
+			[2] = 4,
+			[3] = 6,
+			[4] = 2.5,
+			[7] = 1.5,
+		},
+		pieceType = {
+			tiny       = 2.5,
+			small      = 6,
+			smallFour  = 6,
+			longFour   = 6,
+			stumpyFive = 6,
+			mediumFive = 7,
+			bigFive    = 7,
+			longFive   = 6,
+		},
+		blockType = {
+			dirt      = 40,
+			rock      = 2.2,
+			hard_rock = 1,
+			coal      = 3,
+			gold      = 4,
+			diamond   = 1,
+		},
+		veinChance = {
+			rock      = 0,
+			hard_rock = 0,
+			coal      = 0.08,
+			gold      = 0.1,
+			diamond   = 0.05,
+		},
+		rockSpawnHealth = {
+			[1] = 0,
+			[2] = 5,
+			[3] = 30
+		},
+		hardRockSpawnHealth = {
+			[2] = 1,
+			[4] = 4,
+			[6] = 20
 		},
 	},
 }

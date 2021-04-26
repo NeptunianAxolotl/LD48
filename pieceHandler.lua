@@ -34,13 +34,22 @@ function MovePiece(xChange, yChange, rotChange, econCheckCarve)
 		end
 	end
 	
-	local piecePlacement, econBlockCount = TerrainHandler.CheckPiecePlaceTrigger(newX, newY, newRot, currentPiece.def)
-	if econCheckCarve and econBlockCount and econBlockCount < currentPiece.econBlockCount then
+	-- Shift rotated pieces to not place.
+	if rotChange ~= 0 and TerrainHandler.CheckPiecePlaceTrigger(newX, newY, newRot, currentPiece.def) then
+		if not TerrainHandler.CheckPiecePlaceTrigger(newX - 1, newY, newRot, currentPiece.def) then
+			newX = newX - 1
+		elseif not TerrainHandler.CheckPiecePlaceTrigger(newX + 1, newY, newRot, currentPiece.def) then
+			newX = newX + 1
+		end
+	end
+	
+	local piecePlacement, moneyToMake = TerrainHandler.CheckPiecePlaceTrigger(newX, newY, newRot, currentPiece.def)
+	if econCheckCarve and moneyToMake and moneyToMake < currentPiece.moneyToMake then
 		TerrainHandler.CarveTerrain(currentPiece.x, currentPiece.y, currentPiece.rotation, currentPiece.def)
 		currentPiece = false
 		return
 	end
-	currentPiece.econBlockCount = (econBlockCount or 0)
+	currentPiece.moneyToMake = (moneyToMake or 0)
 	
 	if piecePlacement then
 		if blockInsteadOfPlace then
@@ -72,7 +81,7 @@ local function GetNewPiece()
 			y = spawnY,
 			rotation = 0,
 			dropTime = dropSpeed,
-			econBlockCount = 0,
+			moneyToMake = 0,
 		}
 		MovePiece(0, 0, 0)
 	else
@@ -105,8 +114,10 @@ function self.KeyPressed(key, scancode, isRepeat)
 			MovePiece(0, 1, 0)
 		elseif key == "z" or key == "up" then
 			MovePiece(0, 0, -1)
+			currentPiece.dropTime = dropSpeed
 		elseif key == "x" then
 			MovePiece(0, 0, 1)
+			currentPiece.dropTime = dropSpeed
 		elseif key == "return" or key == "kpenter" then
 			--PlacePiece()
 		end

@@ -53,7 +53,7 @@ local function GetNewItem()
 	
 	local pieceDef = GetNewPieceByName(pieceName)
 	pieceDef.category = pieceCategory
-	local pieceCost = pieceCategory.cost + pieceCategory.cost*2*math.random()
+	local pieceCost = pieceCategory.cost + pieceCategory.cost*1.5*math.random()
 	
 	if specialType ~= "none" then
 		local specialCount = Progression.SampleWeightedDistribution(spawnDepth or 0, "specialCount")
@@ -85,7 +85,7 @@ local function PurchaseCurrentItem()
 		self.shopDeactiveProp = 0
 		for i = 1, #self.options do
 			if self.options[i].isRefresh then
-				self.options[i].price = Global.REFRESH_COST
+				self.options[i].price = 0
 			end
 		end
 		return
@@ -97,7 +97,11 @@ local function PurchaseCurrentItem()
 				self.options[i].pDef, self.options[i].price = GetNewItem()
 			end
 		end
-		item.price = item.price * 2
+		if item.price > 0 then
+			item.price = item.price * 2
+		else
+			item.price = Global.REFRESH_COST
+		end
 		return
 	end
 	
@@ -122,6 +126,7 @@ function self.GetStartingDeck()
 		GetNewPieceByName("4S"),
 		GetNewPieceByName("4Z"),
 		GetNewPieceByName("4O"),
+		GetNewPieceByName("4T"),
 	}
 end
 
@@ -131,6 +136,11 @@ function self.GetPieceDesc()
 	end
 	local item = self.options[self.selectedItem]
 	if item.isRefresh then
+		if item.price == 0 then
+			return "Clear the shop and draw four new options. First time is free."
+		elseif item.price <= 150 then
+			return "Clear the shop and draw four new options, for a small fee."
+		end
 		return "Clear the shop and draw four new options, for a 'small' fee."
 	end
 	if item.isDone then
@@ -201,7 +211,7 @@ function self.Initialize(world)
 		self.options[i] = {
 			position = i,
 			label = (i == 3 and "Refresh") or (i == 6 and "Done"),
-			price = (i ~= 6) and Global.REFRESH_COST,
+			price = (i ~= 6) and 0,
 			isRefresh = (i == 3),
 			isDone = (i == 6),
 		}
@@ -271,7 +281,11 @@ function self.DrawCardOnInterface(cardX, cardY, pDef, label, price, disabledAmou
 			love.graphics.setColor(1, 1, 1)
 		end
 		
-		love.graphics.print("$" .. price, cardX + 16, cardY + 2.82*Global.BLOCK_SIZE)
+		if price > 0 then
+			love.graphics.print("$" .. price, cardX + 16, cardY + 2.82*Global.BLOCK_SIZE)
+		else
+			love.graphics.print("Free", cardX + 16, cardY + 2.82*Global.BLOCK_SIZE)
+		end
 	end
 end
 

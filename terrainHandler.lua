@@ -147,7 +147,7 @@ end
 
 local function DoExplosion(tileX, tileY, radius)
 	if radius == 1 then
-		if ExplodeBlock(tileX, tileY, 1) then
+		if ExplodeBlock(tileX, tileY, 2) then
 			local left   = ExplodeBlock(tileX - 1, tileY, 1)
 			local right  = ExplodeBlock(tileX + 1, tileY, 1)
 			local top    = ExplodeBlock(tileX, tileY - 1, 1)
@@ -225,7 +225,7 @@ function self.CheckPiecePlaceTrigger(pX, pY, pRot, pDef)
 	local tiles = pDef.tiles
 	local fullyCovered = true
 	local hitRock = false
-	local econBlockCount = 0
+	local moneyToMake = 0
 	for i = 1, #tiles do
 		local tilePos = util.RotateVectorOrthagonal(tiles[i], pRot * math.pi/2)
 		local x, y = pX + tilePos[1], pY + tilePos[2]
@@ -241,7 +241,7 @@ function self.CheckPiecePlaceTrigger(pX, pY, pRot, pDef)
 			end
 			-- Placement is triggered if the piece moves off econ blocks.
 			if blockData.value then
-				econBlockCount = econBlockCount + (tiles[i].moneyMult or 1)
+				moneyToMake = moneyToMake + blockData.value*(tiles[i].moneyMult or 1)
 			end
 			-- Placement is triggered if the block hits something that is too tough.
 			if blockData.toughness > pDef.carveStrength then
@@ -249,7 +249,7 @@ function self.CheckPiecePlaceTrigger(pX, pY, pRot, pDef)
 			end
 		end
 	end
-	return hitRock or fullyCovered, econBlockCount
+	return hitRock or fullyCovered, moneyToMake
 end
 
 ------------------------------------------------------------------------

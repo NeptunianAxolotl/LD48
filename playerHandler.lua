@@ -10,8 +10,11 @@ local PopupHandler = require("PopupHandler")
 local ShopHandler
 
 local PIECE_CARRYOVER = 0.8
-local SUFFLE_PER_PIECE_DOWN = 2
+local SUFFLE_PER_PIECE_DOWN = 1
 local PIECE_DOWN_REDUCE = 1
+local INITIAL_PIECES = 36
+local PIECES_PER_SCREEN = 36
+local PIECES_DOWN_STR = "1"
 
 local seconds = 0
 local self = {}
@@ -136,8 +139,8 @@ end
 
 function self.Initialize(world)
 	self.money = 0
-	self.piecesRemaining = 46
-	self.piecesPerScreen = 20
+	self.piecesRemaining = INITIAL_PIECES
+	self.piecesPerScreen = PIECES_PER_SCREEN
 	self.discardPile = {}
 	self.shufflesUntilPiecePerScreenDown = SUFFLE_PER_PIECE_DOWN
 
@@ -192,7 +195,7 @@ function self.DrawInterface(dt)
 	if self.bonusUpdateProp then
 		local prop = util.SmoothZeroToOne(self.bonusUpdateProp, 7)
 		love.graphics.setColor(1, 1, 1, (self.bonusUpdateProp < 0.8 and 1) or (1 - (self.bonusUpdateProp - 0.8) / 0.2))
-		love.graphics.print(" - " .. (PIECE_DOWN_REDUCE / SUFFLE_PER_PIECE_DOWN), offsetX + 292, offset)
+		love.graphics.print(" -" .. PIECES_DOWN_STR, offsetX + 292, offset)
 		love.graphics.setColor(1, 1, 1, 1)
 	end
 	
@@ -231,9 +234,9 @@ function self.DrawInterface(dt)
 	if ShopHandler.IsActive() then
 		seconds = seconds + dt
 		if not self.moneyUpdateProp then
-			love.graphics.setColor(1, 1, 1, 0.58 + 0.36*math.sin(seconds*4))
+			--love.graphics.setColor(1, 1, 1, 0.58 + 0.36*math.sin(seconds*4))
 			love.graphics.print("Enter to Select", offsetX + 282, offset)
-			love.graphics.setColor(1, 1, 1, 1)
+			--love.graphics.setColor(1, 1, 1, 1)
 		end
 		
 		offset = 740

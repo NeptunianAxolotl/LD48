@@ -9,7 +9,7 @@ local cats = {
 		cost = 50,
 		specialCost = 75,
 		specialExtraCost = 20,
-		desc = "Ideal for infiltrating those hard-to-reach places."
+		desc = "Ideal for those hard-to-reach places."
 	},
 	small = {
 		list = {
@@ -45,7 +45,7 @@ local cats = {
 		cost = 140,
 		specialCost = 160,
 		specialExtraCost = 25,
-		desc = "Dececent reach for a low price, and not too hard to position.",
+		desc = "Decent reach for a low price, and not too hard to position.",
 	},
 	stumpyFive = {
 		list = {
@@ -58,7 +58,7 @@ local cats = {
 		cost = 180,
 		specialCost = 150,
 		specialExtraCost = 20,
-		desc = "This piece is right up there in terms of sheer density.",
+		desc = "If you want a lot of tiles in a small space, look no further.",
 	},
 	mediumFive = {
 		list = {

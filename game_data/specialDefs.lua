@@ -24,11 +24,11 @@ local defs = {
 	moneyMult = {
 		tileFunc = function (tile)
 			tile.imageFile = "money_mult"
-			tile.moneyMult = 3
+			tile.moneyMult = 2
 			return tile
 		end,
 		pieceFunc = function (piece)
-			piece.desc = "Triple the value mined from blocks under the golden tile."
+			piece.desc = "Double the money gained for resources mined by golden tiles."
 			return piece
 		end,
 	},
