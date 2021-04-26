@@ -124,6 +124,7 @@ local pieceDefs = {
 		},
 		carveStrength = 1,
 		imageFile = "5O",
+		desc = "The longest piece money can buy.",
 	},
 	{
 		name = "5PR",

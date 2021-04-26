@@ -52,6 +52,7 @@ local function GetNewItem()
 	local pieceName, pieceCategory = GetRandomPieceType(distance)
 	
 	local pieceDef = GetNewPieceByName(pieceName)
+	pieceDef.category = pieceCategory
 	local pieceCost = pieceCategory.cost + pieceCategory.cost*2*math.random()
 	
 	if specialType ~= "none" then
@@ -90,6 +91,7 @@ local function PurchaseCurrentItem()
 				self.options[i].pDef, self.options[i].price = GetNewItem()
 			end
 		end
+		item.price = item.price * 2
 		return
 	end
 	
@@ -113,20 +115,48 @@ function self.GetStartingDeck()
 	}
 end
 
+function self.GetPieceDesc()
+	if not self.interactedWithShop then
+		return "Use the Arrow Keys to navigate and Enter/Return to select an item."
+	end
+	local item = self.options[self.selectedItem]
+	if item.isRefresh then
+		return "Clear the shop and draw four new options, for a 'small' fee."
+	end
+	if item.isDone then
+		return "Leave the shop."
+	end
+	
+	if item.pDef then
+		if item.pDef.desc then
+			return item.pDef.desc
+		end
+		return item.pDef.category.desc
+	end
+	
+	return "An ordinary piece."
+end
+
 function self.Update(dt)
 end
 
 function self.OnScreenScroll()
 	self.active = true
 	self.selectedItem = 1
+	for i = 1, #self.options do
+		if self.options[i].isRefresh then
+			self.options[i].price = Global.REFRESH_COST
+		end
+	end
 end
 
 function self.KeyPressed(key, scancode, isRepeat)
-	if self.active then
+	if self.active and not isRepeat then
 		if key == "right" then
 			if self.selectedItem ~= 3 and self.selectedItem ~= 6 then
 				self.selectedItem = self.selectedItem + 1
 			end
+			self.interactedWithShop = true
 		elseif key == "left" then
 			if self.selectedItem ~= 1 and self.selectedItem ~= 4 then
 				self.selectedItem = self.selectedItem - 1
@@ -139,8 +169,10 @@ function self.KeyPressed(key, scancode, isRepeat)
 			if self.selectedItem <= 3 then
 				self.selectedItem = self.selectedItem + 3
 			end
+			self.interactedWithShop = true
 		elseif key == "return" or key == "kpenter" then
 			PurchaseCurrentItem()
+			self.interactedWithShop = true
 		end
 	end
 end
@@ -148,6 +180,7 @@ end
 function self.Initialize(world)
 	self.active = false
 	self.selectedItem = 1
+	self.interactedWithShop = false
 	
 	PlayerHandler = world.GetPlayerHandler()
 	
@@ -156,7 +189,7 @@ function self.Initialize(world)
 		self.options[i] = {
 			position = i,
 			label = (i == 3 and "Refresh") or (i == 6 and "Done"),
-			price = (i ~= 6) and 50,
+			price = (i ~= 6) and Global.REFRESH_COST,
 			isRefresh = (i == 3),
 			isDone = (i == 6),
 		}
@@ -194,7 +227,11 @@ function self.DrawCardOnInterface(cardX, cardY, pDef, label, price)
 	end
 	if price then
 		Font.SetSize(1)
-		love.graphics.setColor(1, 1, 1)
+		if PlayerHandler.GetMoney() < price then
+			love.graphics.setColor(0.5, 0.5, 0.5)
+		else
+			love.graphics.setColor(1, 1, 1)
+		end
 		
 		love.graphics.print("$" .. price, cardX + 16, cardY + 2.82*Global.BLOCK_SIZE)
 	end

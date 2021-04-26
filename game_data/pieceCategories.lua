@@ -9,6 +9,7 @@ local cats = {
 		cost = 50,
 		specialCost = 75,
 		specialExtraCost = 20,
+		desc = "Ideal for infiltrating those hard-to-reach places."
 	},
 	small = {
 		list = {
@@ -19,6 +20,7 @@ local cats = {
 		cost = 80,
 		specialCost = 100,
 		specialExtraCost = 25,
+		desc = "Your bog-standard three-block.",
 	},
 	smallFour = {
 		list = {
@@ -31,6 +33,7 @@ local cats = {
 		cost = 120,
 		specialCost = 160,
 		specialExtraCost = 25,
+		desc = "Easy to control, easy to profit.",
 	},
 	longFour = {
 		list = {
@@ -42,6 +45,7 @@ local cats = {
 		cost = 140,
 		specialCost = 160,
 		specialExtraCost = 25,
+		desc = "Perfect for those looking for some length on a tight budget.",
 	},
 	stumpyFive = {
 		list = {
@@ -54,6 +58,7 @@ local cats = {
 		cost = 180,
 		specialCost = 150,
 		specialExtraCost = 20,
+		desc = "This piece is right up there in terms of sheer density.",
 	},
 	mediumFive = {
 		list = {
@@ -66,6 +71,7 @@ local cats = {
 		cost = 190,
 		specialCost = 150,
 		specialExtraCost = 25,
+		desc = "Don't let it fool you, this piece means mischief.",
 	},
 	bigFive = {
 		list = {
@@ -78,6 +84,7 @@ local cats = {
 		cost = 200,
 		specialCost = 150,
 		specialExtraCost = 30,
+		desc = "A simple way to zig a lot of zag.",
 	},
 	longFive = {
 		list = {
@@ -91,6 +98,7 @@ local cats = {
 		cost = 220,
 		specialCost = 150,
 		specialExtraCost = 35,
+		desc = "Extremely long, and useful, if you can handle it.",
 	},
 }
 

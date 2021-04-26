@@ -59,6 +59,10 @@ function self.SpendMoney(amount)
 	return true
 end
 
+function self.GetMoney()
+	return self.money
+end
+
 function self.AddCard(pieceDef)
 	self.discardPile[#self.discardPile + 1] = pieceDef
 end
@@ -238,7 +242,7 @@ function self.DrawInterface(dt)
 		love.graphics.setColor(1, 1, 1, 1)
 		
 		offset = 740
-		love.graphics.printf("This is a spicy piece. One of the spiciest. If only the pieceDefs could say.", offsetX, offset, 455)
+		love.graphics.printf(ShopHandler.GetPieceDesc(), offsetX, offset, 440)
 	else
 		offset = 740
 		if self.depthUpdateProp then
