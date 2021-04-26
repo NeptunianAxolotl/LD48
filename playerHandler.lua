@@ -15,15 +15,6 @@ local PIECE_DOWN_REDUCE = 1
 local seconds = 0
 local self = {}
 
-local function UpdateProportion(dt, name, speed)
-	if self[name] then
-		self[name] = self[name] + speed*dt
-		if self[name] > 1 then
-			self[name] = false
-		end
-	end
-end
-
 local function DiscardAndDrawNextPiece()
 	if self.nextPiece then
 		self.discardPile[#self.discardPile + 1] = self.nextPiece
@@ -130,10 +121,10 @@ function self.OnDepthIncrease(newDepth)
 end
 
 function self.Update(dt)
-	UpdateProportion(dt, "pieceUpdateProp", 0.25)
-	UpdateProportion(dt, "bonusUpdateProp", 0.6)
-	UpdateProportion(dt, "moneyUpdateProp", 0.25)
-	UpdateProportion(dt, "depthUpdateProp", 0.9)
+	self.pieceUpdateProp = util.UpdateProportion(dt, self.pieceUpdateProp, 0.25)
+	self.bonusUpdateProp = util.UpdateProportion(dt, self.bonusUpdateProp, 0.6)
+	self.moneyUpdateProp = util.UpdateProportion(dt, self.moneyUpdateProp, 0.25)
+	self.depthUpdateProp = util.UpdateProportion(dt, self.depthUpdateProp, 0.9)
 	if ShopHandler.IsActive() then
 		self.moneyUpdateProp = false
 	end

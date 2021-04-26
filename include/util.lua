@@ -437,6 +437,16 @@ function util.SecondsToString(seconds, dashForEmpty)
 	return string.format("%d:%02.f", minutes, seconds)
 end
 
+function util.UpdateProportion(dt, value, speed)
+	if value then
+		value = value + speed*dt
+		if value > 1 then
+			value = false
+		end
+	end
+	return value
+end
+
 --------------------------------------------------
 --------------------------------------------------
 -- Table Utilities

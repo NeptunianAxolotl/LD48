@@ -82,6 +82,12 @@ local function PurchaseCurrentItem()
 	
 	if item.isDone then
 		self.active = false
+		self.shopDeactiveProp = 0
+		for i = 1, #self.options do
+			if self.options[i].isRefresh then
+				self.options[i].price = Global.REFRESH_COST
+			end
+		end
 		return
 	end
 	
@@ -138,16 +144,14 @@ function self.GetPieceDesc()
 end
 
 function self.Update(dt)
+	self.shopActiveProp = util.UpdateProportion(dt, self.shopActiveProp, 4)
+	self.shopDeactiveProp = util.UpdateProportion(dt, self.shopDeactiveProp, 2.5)
 end
 
 function self.OnScreenScroll()
 	self.active = true
 	self.selectedItem = 1
-	for i = 1, #self.options do
-		if self.options[i].isRefresh then
-			self.options[i].price = Global.REFRESH_COST
-		end
-	end
+	self.shopActiveProp = 0
 end
 
 function self.KeyPressed(key, scancode, isRepeat)
@@ -181,6 +185,8 @@ function self.Initialize(world)
 	self.active = false
 	self.selectedItem = 1
 	self.interactedWithShop = false
+	self.shopActiveProp = false
+	self.shopDeactiveProp = false
 	
 	PlayerHandler = world.GetPlayerHandler()
 	
@@ -199,10 +205,13 @@ function self.Initialize(world)
 	end
 end
 
-function self.DrawCardOnInterface(cardX, cardY, pDef, label, price)
+function self.DrawCardOnInterface(cardX, cardY, pDef, label, price, disabledAmount)
 	local centX = cardX + 2*Global.BLOCK_SIZE - Global.SHOP_BLOCK_SIZE/2
 	local centY = cardY + 2*Global.BLOCK_SIZE - Global.SHOP_BLOCK_SIZE*1.1
 	Resources.DrawImage("cardFront", cardX, cardY)
+	if disabledAmount then
+		Resources.DrawImage("cardDisabled", cardX, cardY, 0, 0.7*disabledAmount)
+	end
 	if pDef then
 		local tiles = pDef.tiles
 		for i = 1, #tiles do
@@ -219,15 +228,38 @@ function self.DrawCardOnInterface(cardX, cardY, pDef, label, price)
 			end
 		end
 	end
+	if disabledAmount then
+		Resources.DrawImage("cardDisabled", cardX, cardY, 0, 0.5*disabledAmount)
+	end
+	
 	if label then
 		Font.SetSize(1)
-		love.graphics.setColor(1, 1, 1)
+		local canAfford = not (price and (PlayerHandler.GetMoney() < price))
+		if disabledAmount then
+			if canAfford then
+				love.graphics.setColor(1 - 0.5*disabledAmount, 1 - 0.5*disabledAmount, 1 - 0.5*disabledAmount)
+			else
+				love.graphics.setColor(0.5, 0.5, 0.5)
+			end
+		elseif not canAfford then
+			love.graphics.setColor(0.5, 0.5, 0.5)
+		else
+			love.graphics.setColor(1, 1, 1)
+		end
 		
 		love.graphics.printf(label, cardX, centY + 0.25*Global.BLOCK_SIZE, 4*Global.BLOCK_SIZE, "center")
+		love.graphics.setColor(1, 1, 1)
 	end
 	if price then
 		Font.SetSize(1)
-		if PlayerHandler.GetMoney() < price then
+		local canAfford = not ((PlayerHandler.GetMoney() < price))
+		if disabledAmount then
+			if canAfford then
+				love.graphics.setColor(1 - 0.5*disabledAmount, 1 - 0.5*disabledAmount, 1 - 0.5*disabledAmount)
+			else
+				love.graphics.setColor(0.5, 0.5, 0.5)
+			end
+		elseif not canAfford then
 			love.graphics.setColor(0.5, 0.5, 0.5)
 		else
 			love.graphics.setColor(1, 1, 1)
@@ -239,7 +271,15 @@ end
 
 local function DrawItem(opt)
 	local cardX, cardY = itemPositions[opt.position][1], itemPositions[opt.position][2]
-	self.DrawCardOnInterface(cardX, cardY, opt.pDef, opt.label, opt.price)
+	local disabledAmount = false
+	if self.shopActiveProp then
+		disabledAmount = (1 - self.shopActiveProp)
+	elseif self.shopDeactiveProp then
+		disabledAmount = self.shopDeactiveProp
+	elseif not self.IsActive() then
+		disabledAmount = 1
+	end
+	self.DrawCardOnInterface(cardX, cardY, opt.pDef, opt.label, opt.price, disabledAmount)
 end
 
 function self.DrawInterface()
