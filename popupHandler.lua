@@ -79,6 +79,12 @@ local function DrawGamePaused()
 	local popupWidth = 360
 	
 	Resources.DrawImage("popup_menu", offsetX, offsetY, 0 , 0.8)
+	if self.world.MusicEnabled() then
+		Resources.DrawImage("music_on", offsetX + popupWidth - 56, offsetY + 24, 0 , 0.8)
+	else
+		Resources.DrawImage("music_off", offsetX + popupWidth - 56, offsetY + 24, 0 , 0.8)
+	end
+	
 	offsetY = offsetY + 4
 	Font.SetSize(0)
 	love.graphics.printf("Paused", offsetX, offsetY + spacing, popupWidth, "center")

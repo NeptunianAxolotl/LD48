@@ -52,6 +52,10 @@ function self.GetPaused()
 	return self.paused
 end
 
+function self.MusicEnabled()
+	return self.musicEnabled
+end
+
 function self.GetGameOver()
 	return self.gameWon or self.gameLost, self.gameWon, self.gameLost, self.overType
 end
@@ -68,7 +72,16 @@ function self.SetGameOver(hasWon, overType)
 	end
 end
 
-function self.MousePressed()
+function self.MousePressed(x, y)
+	if x > 415 and y > 297 and x < 415 + 32 and y < 297 + 32 then
+		self.musicEnabled = not self.musicEnabled
+		if self.musicEnabled then
+			MusicHandler.SwitchTrack("music")
+		else
+			MusicHandler.SwitchTrack("none")
+			MusicHandler.StopCurrentTrack()
+		end
+	end
 end
 
 function self.MouseReleased()
@@ -166,6 +179,7 @@ function self.Initialize(difficulty)
 	self.gameLost = false
 	self.overType = false
 	self.difficulty = difficulty or 1
+	self.musicEnabled = true
 	
 	--self.SetGameOver(true, "empty_deck")
 	

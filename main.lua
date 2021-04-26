@@ -26,6 +26,7 @@ function love.keypressed(key, scancode, isRepeat)
 end
 
 function love.mousepressed(x, y, button, istouch, presses)
+	World.MousePressed(x, y, button, istouch, presses)
 end
 
 --------------------------------------------------
