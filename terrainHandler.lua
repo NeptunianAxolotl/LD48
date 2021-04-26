@@ -417,6 +417,29 @@ function self.GetWantedDrawY()
 	return desiredTopDraw
 end
 
+local function DrawBackground(x, y)
+	local block = blockMap[y][x]
+	if block.noBackground then
+		return
+	end
+	local dx, dy = self.WorldToScreen(x, y)
+
+	if not block.dirtStyle then
+		block.dirtStyle = {}
+		for i = 1, 4 do
+			block.dirtStyle[i] = math.floor(math.random()*4 + 1)
+			if block.dirtStyle[i] < 1 or block.dirtStyle[i] > 4 then
+				block.dirtStyle[i] = 1
+			end
+		end
+	end
+	
+	Resources.DrawImage("empty_" .. block.dirtStyle[1], dx, dy)
+	Resources.DrawImage("empty_" .. block.dirtStyle[2], dx + Global.BLOCK_SIZE/2, dy)
+	Resources.DrawImage("empty_" .. block.dirtStyle[3], dx, dy + Global.BLOCK_SIZE/2)
+	Resources.DrawImage("empty_" .. block.dirtStyle[4], dx + Global.BLOCK_SIZE/2, dy + Global.BLOCK_SIZE/2)
+end
+
 local function DrawDirt(x, y)
 	local block = blockMap[y][x]
 	if not block.wantDirt then
@@ -532,6 +555,7 @@ end
 function self.Draw(dt)
 	for x = 1, Global.MAP_WIDTH do
 		for y = currentMinY, currentMaxY do
+			--DrawBackground(x, y)
 			local block = blockMap[y][x]
 			if not block.noBackground then
 				local dx, dy = self.WorldToScreen(x, y)
@@ -539,6 +563,7 @@ function self.Draw(dt)
 			end
 		end
 	end
+	
 	for x = 1, Global.MAP_WIDTH do
 		for y = currentMinY, currentMaxY do
 			DrawDirt(x, y)
@@ -548,7 +573,7 @@ function self.Draw(dt)
 		for y = currentMinY, currentMaxY do
 			local block = blockMap[y][x]
 			local dx, dy = self.WorldToScreen(x, y)
-			if block.image and block.image ~= "dirt" and not block.isGrass then
+			if block.image and block.image ~= "dirt" and block.image ~= "empty" and not block.isGrass then
 				Resources.DrawImage(block.image, dx, dy)
 			end
 		end

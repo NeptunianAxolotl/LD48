@@ -38,6 +38,9 @@ local defs = {
 	{
 		name = "dirt",
 	},
+	{
+		name = "empty",
+	},
 }
 
 local defMults = {}
